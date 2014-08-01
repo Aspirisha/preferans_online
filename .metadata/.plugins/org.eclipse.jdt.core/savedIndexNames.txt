@@ -1,0 +1,1 @@
+INDEX VERSION 1.126+D:\Nick\Polytech\6_semestr\Технопрога\PrefOmega\.metadata\.plugins\org.eclipse.jdt.core

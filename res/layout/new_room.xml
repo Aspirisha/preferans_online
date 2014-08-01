@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeRooms"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" 
+    android:background="@drawable/table" >
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/buttonOkNewRoom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/buttonNewRoomBack"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="21dp"
+            android:text="@string/create_room" />
+
+        <CheckBox
+            android:id="@+id/checkStalingrad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/buttonOkNewRoom"
+            android:layout_centerHorizontal="true"
+            android:text="@string/enable_stalingrad" />
+
+        <Button
+            android:id="@+id/buttonNewRoomBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="@string/cancel" />
+
+        <Spinner
+            android:id="@+id/spinnerGameType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/textView1"
+            android:drawSelectorOnTop="true" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/spinnerBullet"
+            android:layout_centerHorizontal="true"
+            android:text="@string/chooseBullet" />
+
+        <TextView
+            android:id="@+id/textInsertBet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/editBet"
+            android:layout_centerHorizontal="true"
+            android:text="@string/set_bet" />
+
+        <EditText
+            android:id="@+id/editBet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/checkStalingrad"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="33dp"
+            android:ems="10"
+            android:inputType="number" />
+
+        <Spinner
+            android:id="@+id/spinnerBullet"
+            style="@style/AppTheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/textInsertBet"
+            android:layout_alignParentLeft="true" />
+
+        <TextView
+            android:id="@+id/yourMoneyOnNewRoom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/checkStalingrad"
+            android:layout_centerHorizontal="true"
+            android:text="@string/your_money" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/yourMoneyOnNewRoom"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="15dp"
+            android:text="@string/gameType" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
