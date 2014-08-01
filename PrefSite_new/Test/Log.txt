@@ -1,0 +1,997 @@
+New player is online. His id = 27
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":7258212473882782165,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1405897680904328%cafc83b2f9fd7ecd"}]}
+
+User  decided to connect to existing room 1
+
+Player 27 has exited
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":8553254166030727255,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1405898649900064%cafc83b2f9fd7ecd"}]}
+
+New player is online. His id = 27
+
+User  has asked for his name
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":6133195002134399425,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1405924261952612%cafc83b2f9fd7ecd"}]}
+
+User  decided to connect to existing room 1
+
+User  asked about all data about room 1
+
+Player 27 has exited
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":8268068932699461891,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1405924275575431%cafc83b2f9fd7ecd"}]}
+
+New player is online. His id = 27
+
+User  has asked for his name
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":5439256284938836805,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406661000048707%cafc83b2f9fd7ecd"}]}
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":5231393301627607330,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406661161584006%cafc83b2f9fd7ecd"}]}
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":6749819498020347717,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406661219097451%cafc83b2f9fd7ecd"}]}
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":7915601661591524972,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406661395021119%cafc83b2f9fd7ecd"}]}
+
+User  decided to connect to existing room 0
+
+User  asked about all data about room 0
+
+Player  has exited
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":8329091475668920242,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406661442665370%cafc83b2f9fd7ecd"}]}
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":6889971978423451144,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406661743856559%cafc83b2f9fd7ecd"}]}
+
+New player is online. His id = 27
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":7294543309719016525,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406666645377682%cafc83b2f9fd7ecd"}]}
+
+User  has asked for his name
+
+User  has asked for his name
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":5383143090178234467,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406666736375247%cafc83b2f9fd7ecd"}]}
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":8382026799461710253,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406667023905405%cafc83b2f9fd7ecd"}]}
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":9118529288358799654,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406667027271982%cafc83b2f9fd7ecd"}]}
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":7701585337935896875,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406667285970629%cafc83b2f9fd7ecd"}]}
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":6735749921683832353,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406667597466156%cafc83b2f9fd7ecd"}]}
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":9124049735942282903,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406667601749252%cafc83b2f9fd7ecd"}]}
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":8496035694439689704,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406668221019004%cafc83b2f9fd7ecd"}]}
+
+User  has asked for his name
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":4658960044559997797,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406668226061329%cafc83b2f9fd7ecd"}]}
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":7245130509255009083,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406668782208338%cafc83b2f9fd7ecd"}]}
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":5243039054233633782,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406668824976381%cafc83b2f9fd7ecd"}]}
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":9123302840866272026,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406669545775840%cafc83b2f9fd7ecd"}]}
+
+New player is online. His id = 27
+
+User  has asked for his name
+
+New player is online. His id = 27
+
+New player is online. His id = 27
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":7034623274900443482,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406670935039735%cafc83b2f9fd7ecd"}]}
+
+User  has asked for his name
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":8403405491399720654,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406670980700496%cafc83b2f9fd7ecd"}]}
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":5294320542142163798,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406671124538778%cafc83b2f9fd7ecd"}]}
+
+New player is online. His id = 27
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":5544849875685911019,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406671395917788%cafc83b2f9fd7ecd"}]}
+
+New player is online. His id = 27
+
+New player is online. His id = 27
+
+Keepalive message received from id = 
+
+New player is online. His id = 27
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+New player is online. His id = 27
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+User  has asked for his name
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+User  has asked for his name
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+New player is online. His id = 27
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+User  has asked for his name
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+User  has asked for his name
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+User  has asked for his name
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":5796966147811784706,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406749695446122%cafc83b2f9fd7ecd"}]}
+
+Keepalive message received from id = 
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":8379643911139166211,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406749709648265%cafc83b2f9fd7ecd"}]}
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+User  asked for existing rooms
+
+Keepalive message received from id = 
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":6225342545227286697,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406749974636534%cafc83b2f9fd7ecd"}]}
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received from id = 
+
+Keepalive message received. Sent reply. Response is {"multicast_id":8766731734915258966,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]}
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":9023807525780215664,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406750424332225%cafc83b2f9fd7ecd"}]}
+
+Keepalive message received. Sent reply. Response is {"multicast_id":7773768336304166785,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]}
+
+Keepalive message received. Sent reply. Response is {"multicast_id":7417024515559465715,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]}
+
+Keepalive message received. Sent reply. Response is {"multicast_id":5454701885685651768,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]}
+
+Keepalive message received. Sent reply. Response is {"multicast_id":8006497634847550921,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]}
+
+Keepalive message received. Sent reply. Response is {"multicast_id":8384971113879893613,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]}
+
+Keepalive message received. Sent reply. Response is {"multicast_id":8903939639996364007,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]}
+
+Keepalive message received. Sent reply. Response is {"multicast_id":8819057270836832773,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]}
+
+Keepalive message received. Sent reply. Response is {"multicast_id":8191150493221650715,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]}
+
+Keepalive message received. Sent reply. Response is {"multicast_id":8265905731918801648,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]}
+
+Regid is 
+
+Keepalive message received. Sent reply. Response is {"multicast_id":5967053993792569200,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]}
+
+Regid is 
+
+Keepalive message received. Sent reply. Response is {"multicast_id":9171489111361569134,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]}
+
+Regid is 
+
+Keepalive message received. Sent reply. Response is {"multicast_id":5343274741025992306,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]}
+
+Regid is 
+
+Keepalive message received. Sent reply. Response is {"multicast_id":6538840691418282362,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]}
+
+Regid is 
+
+Keepalive message received. Sent reply. Response is {"multicast_id":6146356418604523839,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]}
+
+Regid is 
+
+Keepalive message received. Sent reply. Response is {"multicast_id":8428575687039475267,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]}
+
+Regid is 
+
+Keepalive message received. Sent reply. Response is {"multicast_id":6204663137545800557,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]}
+
+Regid is 
+
+Keepalive message received. Sent reply. Response is {"multicast_id":5100470382447973349,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]}
+
+Regid is 
+
+Keepalive message received. Sent reply. Response is {"multicast_id":7098494339539074795,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]}
+
+Regid is 
+
+Keepalive message received. Sent reply. Response is {"multicast_id":7988964192512018221,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]}
+
+Regid is 
+
+Keepalive message received. Sent reply. Response is {"multicast_id":5184287763213254458,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]}
+
+Regid is 
+
+Keepalive message received. Sent reply. Response is {"multicast_id":6860870277911598179,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]}
+
+Regid is 
+
+Keepalive message received. Sent reply. Response is {"multicast_id":5083918222427664770,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]}
+
+Regid is 
+
+Keepalive message received. Sent reply. Response is {"multicast_id":4785893889442954954,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]}
+
+Regid is 
+
+Keepalive message received. Sent reply. Response is {"multicast_id":8744911330896125101,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]}
+
+Regid is 
+
+Keepalive message received. Sent reply. Response is {"multicast_id":4940899151683413124,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]}
+
+Regid is 
+
+Keepalive message received. Sent reply. Response is {"multicast_id":7306600019756317019,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]}
+
+Regid is 
+
+Keepalive message received. Sent reply. Response is {"multicast_id":6364740802028023123,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]}
+
+Regid is 
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":5982445580736096713,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406753010143691%cafc83b2f9fd7ecd"}]}
+
+Keepalive message received. Sent reply. Response is {"multicast_id":5828342625402820980,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]}
+
+Regid is 
+
+Keepalive message received. Sent reply. Response is {"multicast_id":4962705987046517466,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]}
+
+Regid is 
+
+Keepalive message received. Sent reply. Response is {"multicast_id":8307985144128362445,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]}
+
+Regid is 
+
+Keepalive message received. Sent reply. Response is {"multicast_id":7766854195077895232,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]}
+
+Regid is 
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":7931128299584154660,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406753129861823%cafc83b2f9fd7ecd"}]}
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+
+Keepalive message received. Sent reply. Response is {"multicast_id":6720295310723181368,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]}
+
+Regid is 
+
+Keepalive message received. Sent reply. Response is {"multicast_id":8793190746077829563,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]}
+
+Regid is 
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":8681418740204940706,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406753221650168%cafc83b2f9fd7ecd"}]}
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+
+Keepalive message received. Sent reply. Response is {"multicast_id":4639560747286634883,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]} 
+Regid is 
+
+Keepalive message received. Sent reply. Response is {"multicast_id":8696244773467730273,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]} 
+Regid is 
+
+Keepalive message received. Sent reply. Response is {"multicast_id":5025282647866504007,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]} 
+Regid is 
+
+Keepalive message received. Sent reply. Response is {"multicast_id":5994435528288866112,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]} 
+Regid is 
+
+Keepalive message received. Sent reply. Response is {"multicast_id":5594086582970498975,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]} 
+Regid is 
+
+Keepalive message received. Sent reply. Response is {"multicast_id":4612838280165567319,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]} 
+Regid is 
+
+Keepalive message received. Sent reply. Response is {"multicast_id":8002197944796664471,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]} 
+Regid is 
+
+Keepalive message received. Sent reply. Response is {"multicast_id":6100989757415034953,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]} 
+Regid is 
+
+Keepalive message received. Sent reply. Response is {"multicast_id":7879749389235522145,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]} 
+Regid is 
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":5146480059147911249,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406753598184775%cafc83b2f9fd7ecd"}]}
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+
+Keepalive message received. Sent reply. Response is {"multicast_id":7621287848734400191,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]} 
+Regid is 
+
+Keepalive message received. Sent reply. Response is {"multicast_id":6279462879318601067,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]} 
+Regid is 
+
+Keepalive message received. Sent reply. Response is {"multicast_id":4697078612054095949,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]} 
+Regid is 
+
+Keepalive message received. Sent reply. Response is {"multicast_id":7150933299224296160,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]} 
+Regid is 
+
+New player is online. His id = 27
+
+User  has asked for his name
+
+Keepalive message received. Sent reply. Response is {"multicast_id":7659429402825022173,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406753885368103%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+
+User  asked for existing rooms
+
+Keepalive message received. Sent reply. Response is {"multicast_id":5527530707529550268,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406753915439720%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":9174726020400389898,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406753915574295%cafc83b2f9fd7ecd"}]}
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+
+Keepalive message received. Sent reply. Response is {"multicast_id":4684630640308556850,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406753944457056%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+
+Keepalive message received. Sent reply. Response is {"multicast_id":7176605316423221019,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406753975126297%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+
+Keepalive message received. Sent reply. Response is {"multicast_id":7029482338539935971,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406754004763927%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+
+Keepalive message received. Sent reply. Response is {"multicast_id":6402433022819337244,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406754039079169%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+
+Keepalive message received. Sent reply. Response is {"multicast_id":7469541376268656330,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406754064942367%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":7173401138458622393,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406754101617394%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":6459322633588282790,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406754124498502%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":5359105350214017359,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406754154678333%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":7079008804709502698,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406754184586323%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":6158596176291097476,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406754215766487%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":8327121971669104529,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406754252481560%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":7161701514094396947,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406754274703496%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":7554242131927463705,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406754304694951%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":7271036736507929731,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406754334771621%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":8594755680156418364,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406754364698114%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":7150948609184774185,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406754394429402%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":7168459598804854624,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406754424592043%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":5618966126848734722,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406754454542699%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":7056302700878316859,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406754484715214%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":7650126013534273015,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406754514730054%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":5239098364238822022,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406754544829482%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":7381187492866937665,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406754574868473%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":7994621502087336188,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406754604463391%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":4792394733524622171,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406754634532011%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":8512954385087723716,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406754664551430%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":7051121931057317468,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406754694740621%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":7811035710808847160,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406754724562917%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":8982299162617217834,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406756344536917%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":6092965031957315079,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406756563733436%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":8745152407573604565,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406756584699115%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":8997471050154526891,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406756614806063%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":5650273316727876544,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406756644581676%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":7853362456886872047,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406756676710952%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":8686372761821372367,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406756705053878%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":6348327457428285204,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406756735183357%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":5456158041280166604,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406756765295093%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":8935664445438810811,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406756795408435%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":7654896306916761231,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406756825611744%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":9101984346105303456,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406756854677408%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":6706306034025017985,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406756884897636%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":8598047584791352141,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406756914917349%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":7165549265945699282,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406756945754477%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":5583464891894092936,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406756974608953%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":7106321684382464231,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406757005222745%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":7562612659926416410,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406757039504111%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":6196081207178523785,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406757065080506%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":6148896394418322208,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406757096329801%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":9156572927168385431,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406757124996498%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":6261042893219098262,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406757154756649%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":5118936763174995438,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406757184977080%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":5725756838522671702,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406757215361145%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":8184501735655330907,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406757244941883%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":8435790616182980440,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406757274986853%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":6283792314136790544,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406757276594611%cafc83b2f9fd7ecd"}]}
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":6123228459865840263,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406757282300961%cafc83b2f9fd7ecd"}]}
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":8475848806504236957,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406757296645963%cafc83b2f9fd7ecd"}]}
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+
+Keepalive message received. Sent reply. Response is {"multicast_id":6510571540231882713,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406757305190802%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+New player is online. His id = 27
+
+Keepalive message received. Sent reply. Response is {"multicast_id":6618597156815040689,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]} 
+Regid is 
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":8905874704668450127,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406757349340319%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":8139295996646325534,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406757379568823%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":5421840919219752260,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406757409140323%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+User  has asked for his name
+
+Keepalive message received. Sent reply. Response is {"multicast_id":6701480966797015975,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406757441600924%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":5389095401542357921,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406757468898558%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":5972899762053092380,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406757498888213%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":7891772037491178112,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406757529675044%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":6226788596257192033,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406757558931547%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":5167738960371393705,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406757589192878%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":4887866623412938025,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406757619358517%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":8043926125675123825,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406757649648330%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":8981318792915084840,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406757679045613%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":9023913693117636636,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406757708907447%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":5647700952669133143,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406757739165947%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":6684118829324174823,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406757769274615%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":9191370950839480560,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406757799112205%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":8803537576153935960,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406757829739237%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":6592197262372836617,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406757834571524%cafc83b2f9fd7ecd"}]}
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":6887935879651533449,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406757852433775%cafc83b2f9fd7ecd"}]}
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+
+Keepalive message received. Sent reply. Response is {"multicast_id":6284503837200859503,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406757858850600%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":8039830342021464700,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406757889241013%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":4967358112348145900,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406757918820715%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":7723036688250567837,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]} 
+Regid is 
+ ReceiverIds::KEEP_ALIVE = 777
+
+New player is online. His id = 27
+
+Keepalive message received. Sent reply. Response is {"multicast_id":5599881423217734279,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406758011094053%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":6147954036919852281,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406758030690603%cafc83b2f9fd7ecd"}]}
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+
+Keepalive message received. Sent reply. Response is {"multicast_id":7031486344574281645,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406758041099708%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+User  has asked for his name
+
+User  has asked for his name
+
+Keepalive message received. Sent reply. Response is {"multicast_id":4759165184833403116,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406758071380023%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":8121415953937440343,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406758101476687%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":6936503846037101708,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406758131269061%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":6070790002896820923,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406758161195421%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":5305424227577592140,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406758191370849%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":5876576485819626655,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406758221784608%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":6608945261359017746,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]} 
+Regid is 
+ ReceiverIds::KEEP_ALIVE = 777
+
+New player is online. His id = 27
+
+Keepalive message received. Sent reply. Response is {"multicast_id":9091350621115923544,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]} 
+Regid is 
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":9003822838974172658,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406759128190572%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":6176983003465920622,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406759158194651%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":6499965476130426077,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406759188173729%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+User  has asked for his name
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":7902690443161605306,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406759217821826%cafc83b2f9fd7ecd"}]}
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+
+Keepalive message received. Sent reply. Response is {"multicast_id":7965226660141850588,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406759218089937%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+New player is online. His id = 27
+
+Keepalive message received. Sent reply. Response is {"multicast_id":5988292467859239707,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]} 
+Regid is 
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":5768756548938377505,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406759267169010%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":4963190796931404301,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406759297516207%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":6948859253506761712,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406759327352143%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+Keepalive message received. Sent reply. Response is {"multicast_id":5400607102416877520,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406759357544267%cafc83b2f9fd7ecd"}]} 
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+ ReceiverIds::KEEP_ALIVE = 777
+
+User  asked for existing rooms
+
+User  was sent message with existing rooms info. The response is: {"multicast_id":7516171459427622903,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1406759367127969%cafc83b2f9fd7ecd"}]}
+Regid is APA91bG5W-sQOhWM8TJOJNSg2XE_uD2Otrb_9cxxniA0NObHxPd013mmRvyAbUxPJENpYZAfomNLIsY0X05IgxfbTasFQt43wQOJkhyEJgrEb52zVeeo3cOum8iAFcfqM0kF6cKD1EjnR5Ky4y8oMWZbGVebuZv--y88apTNQmLVKcRwcS_WSnY
+
