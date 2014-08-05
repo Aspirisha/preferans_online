@@ -126,7 +126,11 @@ public class RoomsActivity extends Activity implements OnClickListener {
 			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
 			nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
 			nameValuePairs.add(new BasicNameValuePair("request", "connect_to_existing")); 
-			nameValuePairs.add(new BasicNameValuePair("room_id", Integer.toString(rowIds.get(prevSelectedId))));
+			TableRow row = (TableRow)findViewById(prevSelectedId);
+			TextView numberTextView = (TextView)row.getChildAt(0);
+			int number = Integer.parseInt(numberTextView.getText().toString()) - 1;
+			String s = rooms[number].id;
+			nameValuePairs.add(new BasicNameValuePair("room_id", rooms[number].id));
 			PrefApplication.sendData(nameValuePairs, "RequestManager.php");
 			break;
 		}
