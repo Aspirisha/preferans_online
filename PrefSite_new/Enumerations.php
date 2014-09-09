@@ -11,8 +11,32 @@
   }
   
   abstract class GameStates {
-  
+    const GAME_NOT_STARTED = 0;
+    const TALON_TRADING = 1;
     
   }
+  
+  abstract class EntryActivityMessageTypes {
+    const ONLINE_NOTIFICATION_ANSWER = 0;
+  }
+  
+  abstract class NewRoomActivityMessageTypes {
+    const BLA = 0;
+  }
+  
+  abstract class RoomsActivityMessageTypes {
+    const BLA = 0;
+  }
+  
+  abstract class GameActivityMessageTypes {
+    const CARDS_INFO = 2;
+    const ACTIVE_PLAYER_THROWN_CARDS = 6;
+  }
+  
+  abstract class SettingsActivityMessageTypes {
+    const BLA = 0;
+  }
+  
+  
 
 ?>

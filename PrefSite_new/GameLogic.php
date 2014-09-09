@@ -2,6 +2,7 @@
 	include_once  'Connection.php';
 	include_once  'mysql.php';
 	include_once  'DebugManager.php';
+  include_once  'Enumerations.php';
   
   $link = openMysqlConnection();
 
@@ -37,7 +38,7 @@
     $curTime = time(); 
     $prevTime = $activeRow["start_move_time"];
     $leftTime = $activeRow["time_left"];
-    if ($curTime - prevTime > $leftTime) { // active player actually lost!
+    if ($curTime - $prevTime > $leftTime) { // active player actually lost!
       appendLog("User ".$activeRow["id"]." has lost by time in room ".$roomRow["id"]);
       $newActiveMoney = $activeRow["money"] - $roomRow["game_bet"];
       mysql_query("UPDATE players SET money = ".$newActiveMoney." WHERE id = ".$activeRow["id"], $link);
@@ -83,7 +84,7 @@
     mysql_query("UPDATE players SET cards = '".$cards1."', last_card_move = -1 WHERE id = ".$row["player1"]."", $link);
     mysql_query("UPDATE players SET cards = '".$cards2."', last_card_move = -1 WHERE id = ".$row["player2"]."", $link);
     mysql_query("UPDATE players SET cards = '".$cards3."', last_card_move = -1 WHERE id = ".$row["player3"]."", $link);
-    mysql_query("UPDATE rooms SET talon = '".$talon."', active_player = ".$active.", current_first_hand = ".$active.", triplets_thrown = 0 WHERE id = '".$roomId."'", $link);  
+    mysql_query("UPDATE rooms SET talon = '".$talon."', game_state = 1, active_player = ".$active.", current_first_hand = ".$active.", triplets_thrown = 0 WHERE id = '".$roomId."'", $link);  
     // now we need to send all data about current cards to players
     sendCards($cards1, $row["player1"]);
     sendCards($cards2, $row["player2"]);
@@ -105,11 +106,8 @@
     $row = mysql_fetch_assoc($result);
     
     $regId = $row["reg_id"];
-    $activityAddress = "3"; // game activity
-		$m_type = "2";            // cards info
-    
-   // $filename="Test/name.html";
-   // file_put_contents($filename, $cards);  
+    $activityAddress = ReceiverIds::GAME_ACTIVITY; // game activity
+		$m_type = GameActivityMessageTypes::CARDS_INFO;            // cards info
     
 		$response = sendMessage($regId, (string)$cards, $m_type, $activityAddress);      
   }
@@ -210,7 +208,7 @@
     
     $message = "";
     switch ($gameState) {
-    case 1:
+    case GameStates::TALON_TRADING:
       $result = mysql_query("SELECT * FROM players WHERE room_id = ".$roomId, $link);
       $bet1 = $player1["current_trade_bet"];
       $bet2 = $player2["current_trade_bet"];
@@ -361,11 +359,12 @@
           $passersNumber++;
         }
       }
-      file_put_contents("Test/i.txt", "i = ".$i);
+
       // DEBUG VERSION: force assign. Delete this two rows later
       if ($roomId == 14) {
         $allPlayersStoppedTrading = 1;
-        $activePlayer = 1;
+        $activePlayer = 2;
+        $passersNumber = 2;
       }
       
       if ($passersNumber <= 1) {
@@ -378,7 +377,6 @@
         if ($row["stopped_trading"] == 0) { // player that has just send us his descicion is going to play
           mysql_query("UPDATE rooms SET game_state = 3, active_player = ".$activePlayer." WHERE id = ".$roomId, $link);
           $oldCards = $row["cards"];
-          file_put_contents("Test/zzz.txt", $gameRow["talon"]);
           $newCards = $oldCards." ".$gameRow["talon"];
           mysql_query("UPDATE players SET cards = '".$newCards."', my_current_role = 2 WHERE id = ".$row["id"], $link);
         } else {  // raspasy start
@@ -407,10 +405,12 @@
     $result = mysql_query("SELECT * FROM players WHERE reg_id = '".$regId."'", $link);
     $playerRow = mysql_fetch_assoc($result);
     
+    appendLog("Player threw cards. His id = ".$playerRow["id"]);
+    
     if ($playerRow["my_number"] == $roomRow["active_player"] && $playerRow["room_id"] == $roomId) {
       $cards = explode(" ", $cards);
       if (count($cards) != 2)  {
-        file_put_contents("Test/zzzz.txt", "cards number is not right");
+        appendLog("Player has thrown wrong number of cards. His id = ".$playerRow["id"]);
         return;                 
       }
       $cardsOnHand = explode(" ", $playerRow["cards"]);
@@ -426,12 +426,11 @@
         }                            
       }
       if ($foundCards < 2)   {
-        file_put_contents("Test/zzzz.txt", "this cards:".$cards." not found; found ".$foundCards." cards");
+        // cheater!
         return;
       }
         
       mysql_query("UPDATE players SET cards = '".$newCards."' WHERE id = ".$playerRow["id"], $link);
-      file_put_contents("Test/zzzz.txt", "notifyThatPlayerThrew");
       notifyThatPlayerThrew($roomId);
     }
   }
@@ -442,16 +441,14 @@
     $result = mysql_query("SELECT * FROM rooms WHERE id = '".$roomId."'", $link);
     $roomRow = mysql_fetch_assoc($result);
     for ($i = 1; $i <= 3; $i++) {
-      
-      $m_type = "6"; // active player has thrown cards
+      appendLog("Notifying other players about what player threw in room number ".$roomId);
+      $m_type = GameActivityMessageTypes::ACTIVE_PLAYER_THROWN_CARDS; // active player has thrown cards
       $id = $roomRow["player".$i];
       $result = mysql_query("SELECT reg_id FROM players WHERE id = ".$id, $link);
       $row = mysql_fetch_assoc($result);
       $message = "";
-      $activityAddress = 3;
+      $activityAddress = ReceiverIds::GAME_ACTIVITY;
       $response = sendMessage($row["reg_id"], $message, $m_type, $activityAddress);
-      if ($i == 1)
-        file_put_contents("Test/zzzz.txt", $row["reg_id"]);
     }
   }
   

@@ -13,7 +13,6 @@
      $result = mysql_query("SELECT reg_id FROM players WHERE id = ".$id, $link);
      $row = mysql_fetch_assoc($result);
      $regId = $row["reg_id"];
-     file_put_contents("Test/z.txt", $id);
   }
 	
   $roomId = $_POST["room_id"];
@@ -29,7 +28,7 @@
     if ($row = mysql_fetch_assoc($result))  
        $receiverRegId = $row["reg_id"];
     
-    $activityAddress   = "3"; // game activity
+    $activityAddress = ReceiverIds::GAME_ACTIVITY; // game activity
 		$m_type = "4";            // player exited
     $message = $exitedPlayerId." ".$playersNumber;   // send id of new player and current amount of people in room
     if ($playerToNotifyId != $exitedPlayerId) // HACK just debug version not to notify myself. IRL it will be impossible
@@ -39,7 +38,6 @@
   }                  
   
   
-  file_put_contents($filename, 0);
 	switch ($notification) {
 	case "online":
 		$result = mysql_query("SELECT * FROM players WHERE reg_id = '".$regId."'", $link);
@@ -52,8 +50,8 @@
 		}
     
 		$message = $row["id"];
-    $activityAddress = 0;
-    $m_type = 0;
+    $activityAddress = ReceiverIds::ENTRY_ACTIVITY;
+    $m_type = EntryActivityMessageTypes::ONLINE_NOTIFICATION_ANSWER;
     $response = sendMessage($regId, $message, $m_type, $activityAddress);
     
     appendLog("New player is online. His id = ".$row["id"]);
@@ -63,7 +61,12 @@
     //$message = date(DATE_RFC822); // send current timestamp to client
     $message = time();
     $response = sendMessage($regId, $message, 0, ReceiverIds::KEEP_ALIVE);   // HARDCODED NOW: 777 means it's keepalive anser
-    appendLog("Keepalive message received. Sent reply. Response is ".$response." \r\nRegid is ".$regId."\r\n ReceiverIds::KEEP_ALIVE = ".ReceiverIds::KEEP_ALIVE);
+    $result = mysql_query("SELECT room_id FROM players WHERE reg_id = ".$regId, $link);
+    $row = mysql_fetch_assoc($result);
+    
+    //checkTimeExpiration($row["room_id"]);
+    
+    appendLog("Keepalive message received. Sent reply. ".date(DATE_RFC822));
     break;
   
   case "old_id":

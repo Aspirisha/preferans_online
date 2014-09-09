@@ -43,5 +43,10 @@
     file_put_contents("Test/Log.txt", $string."\r\n\r\n", FILE_APPEND);
     
   }
+  
+  // this function will be called each time keepAlive appears
+  function BotMove($roomId) {
+  
+  }
 
 ?>

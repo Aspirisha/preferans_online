@@ -3,6 +3,7 @@
 	include_once  'mysql.php';
 	include_once  'GameLogic.php';
   include_once  'DebugManager.php';
+  include_once  'Enumerations.php';
   
 	$regId = $_POST["reg_id"];
 	$request = $_POST["request"];
@@ -156,6 +157,7 @@
              notifyNewPlayerAppeared($row["player3"], (string)$playerId, $newPlayersNumber, 2);
           $playerNextId = $row["player3"];
           $playerPrevId = $row["player1"];
+          appendLog("User ".$id." will be second!");
         }
         else
         {
@@ -175,10 +177,12 @@
       
 		}
 		
-		$activityAddress   = "2"; // rooms activity
+		$activityAddress = ReceiverIds::ROOMS_ACTIVITY; // rooms activity
 		$m_type = "1";    // new player appeared
     
+    appendLog("Sending message = ".$message);
 		$response = sendMessage($regId, $message, $m_type, $activityAddress);
+    appendLog("response is = ".$response);
     if ($newPlayersNumber == 3) { // ask if players are ready to play?
       appendLog("User ".$id." connected to room and now there are 3 players. The game is about to start!");
       srand();
@@ -186,12 +190,13 @@
       $result = mysql_query("UPDATE players SET current_trade_bet = 0 WHERE room_id = ".$roomId, $link);    
       
       
-      if (!isDebug()) {  
+      if (isDebug()) {  
         if ($roomId == 14) { // !!! DEBUG VERSION: shuffler is always 3 so 1 will be active player
-          appendLog("User ".$id." connected to 14th room so he is the shuffler (DEBUG!)");
-          $shuffler = 3;
+          appendLog("User ".$id." connected to 14th room so he is not the shuffler (DEBUG!)");
+          $shuffler = 1;
         }
-      }
+      } else
+        appendLog("Not debug!");
       
       $result = mysql_query("UPDATE rooms SET shuffler = ".$shuffler.", game_state = 1 WHERE id = '".$roomId."'", $link);
       $result = mysql_query("UPDATE players SET my_bullet = 0, my_mountain = 0, my_whists_left = 0, my_whists_right = 0, my_current_role = -1, current_trade_bet = -1, stopped_trading = 0, my_tricks = 0 WHERE room_id = ".$roomId, $link);
