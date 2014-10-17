@@ -101,9 +101,9 @@ class BetCellView extends ImageView {
 		else if (myNumber == 29 && prevSelected != null) {
 			GameInfo gameInfo = GameInfo.getInstance();
 			if (prevSelected.myNumber != 28)
-				gameInfo.ownPlayer.myNewBet = prevSelected.myNumber;
+				gameInfo.ownPlayer.setNewBet(prevSelected.myNumber);
 			else
-				gameInfo.ownPlayer.myNewBet = 0;
+				gameInfo.ownPlayer.setNewBet(0);
 			GameActivity gameActivity = (GameActivity)this.getContext();
 			gameActivity.sendMyTradeBetChoiceToServer();
 		}

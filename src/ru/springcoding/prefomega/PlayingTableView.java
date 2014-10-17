@@ -205,7 +205,7 @@ private static final int INVALID_POINTER_ID = -1;
             mLastTouchY = y;
             
             // define if some card was touched
-            if (gameInfo.activePlayer == gameInfo.ownPlayer.number) {
+            if (gameInfo.activePlayer == gameInfo.ownPlayer.getMyNumber()) {
 	            switch (gameInfo.getGameState()) {
 	            case 3:
 	            	if (gameInfo.thrownCards.cardsNumber == 2) 
@@ -267,7 +267,7 @@ private static final int INVALID_POINTER_ID = -1;
             final float x = ev.getX(pointerIndex);
             final float y = ev.getY(pointerIndex);
 
-            if (gameInfo.activePlayer == gameInfo.ownPlayer.number) {
+            if (gameInfo.activePlayer == gameInfo.ownPlayer.getMyNumber()) {
             	// Only move if the ScaleGestureDetector isn't processing a gesture.
             	if (!mScaleDetector.isInProgress()) {
             		final float dx = x - mLastTouchX;
@@ -644,11 +644,11 @@ private static final int INVALID_POINTER_ID = -1;
 		PlayingCard[] ref;
 		PlayingCard[] movingCards = new PlayingCard[2];
 		int flag = 0;
-		if (gameInfo.activePlayer == gameInfo.ownPlayer.number) {
+		if (gameInfo.activePlayer == gameInfo.ownPlayer.getMyNumber()) {
 			flag = 1;
 			ref = cards;
 			gameInfo.ownPlayer.cardsNumber = 12;
-		} else if (gameInfo.activePlayer == gameInfo.nextPlayer.number) {
+		} else if (gameInfo.activePlayer == gameInfo.nextPlayer.getMyNumber()) {
 			ref = nextCards;
 			gameInfo.nextPlayer.cardsNumber = 12;
 			flag = 2;
@@ -711,7 +711,7 @@ private static final int INVALID_POINTER_ID = -1;
 	}
 	
 	public void drawThrownCards() {
-		if (gameInfo.activePlayer == gameInfo.prevPlayer.number) {
+		if (gameInfo.activePlayer == gameInfo.prevPlayer.getMyNumber()) {
 			gameInfo.prevPlayer.cardsNumber = 10;
 			for (int i = 0; i < 2; i++) {
 				PlayingCard temp = talonCards[i];
@@ -741,23 +741,7 @@ private static final int INVALID_POINTER_ID = -1;
 	}
 	
 	public void showMyClowd() {
-		ownClowd.setVisible(true);
-		//postInvalidate();
-	}
-	
-	public void showLeftClowd() {
-		leftClowd.setVisible(true);
-		//postInvalidate();
-	}
-
-	public void showRightClowd() {
-		rightClowd.setVisible(true);
-		//postInvalidate();
-	}
-	
-	public void showMyClowdBet() {
-		if (gameInfo.ownPlayer.myNewBet != -1) {
-			ownClowd.setBet(gameInfo.ownPlayer.myNewBet);
+		if (gameInfo.ownPlayer.getNewBet() != -1) {
 			ownClowd.setVisible(true);
 		} else {
 			ownClowd.setVisible(false);
@@ -765,21 +749,21 @@ private static final int INVALID_POINTER_ID = -1;
 		//postInvalidate();
 	}
 	
-	public void showLeftClowdBet() {
-		if (gameInfo.nextPlayer.myNewBet != -1) {
-			leftClowd.setBet(gameInfo.nextPlayer.myNewBet);
+	public void showLeftClowd() {
+		if (gameInfo.nextPlayer.getNewBet() != -1) {
 			leftClowd.setVisible(true);
-		} else
+		} else {
 			leftClowd.setVisible(false);
+		}
 		//postInvalidate();
 	}
 
-	public void showRightClowdBet() {
-		if (gameInfo.prevPlayer.myNewBet != -1) {
-			rightClowd.setBet(gameInfo.prevPlayer.myNewBet);
+	public void showRightClowd() {
+		if (gameInfo.nextPlayer.getNewBet() != -1) {
 			rightClowd.setVisible(true);
-		} else
+		} else {
 			rightClowd.setVisible(false);
+		}
 		//postInvalidate();
 	}
 	

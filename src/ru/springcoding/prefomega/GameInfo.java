@@ -18,6 +18,8 @@ public class GameInfo {
 	public Player prevPlayer;
 	public Player ownPlayer;
 	
+	public Player[] players;
+	
 	boolean isStalingrad;
 	int gameMoneyBet;
 	int gameBullet;
@@ -45,6 +47,7 @@ public class GameInfo {
 		nextPlayer = new Player();
 		prevPlayer = new Player();
 		ownPlayer = new Player();
+		players = new Player[3];
 		
 		talon = new Talon();
 		thrownCards = new Talon();
@@ -71,14 +74,17 @@ public class GameInfo {
 	}
 	
 	public class Player {
-		int number;
+		private int myNumber;
+		private int nextNumber;
+		private int prevNumber;
 		String name;
 		String id;   // id in database
 		int cardsNumber;
 		ArrayList<Integer> cards;
 		boolean cardsAreVisible; 
 		boolean moveIsDrawn;
-		int myNewBet;
+		private Integer myBet;
+		private Object lock;
 		int myRole; // true if I'm whisting or if other player asked me to help him whisting (closed whisting)
 		int lastCardMove;
 		boolean hasNoTrumps;
@@ -91,7 +97,7 @@ public class GameInfo {
 		public Player() {
 			cards = new ArrayList<Integer>(12);
 			this.cardsNumber = 0;
-			myNewBet = -1;
+			myBet = -1;
 			myRole = -1;
 			bullet = new ArrayList<Integer>();
 			mountain = new ArrayList<Integer>();
@@ -100,6 +106,7 @@ public class GameInfo {
 			name = "";
 			hasNoTrumps = false;
 			hasNoSuit = false;
+			lock = new Object();
 		}
 		
 		public void initBeforeNewParty() {
@@ -107,7 +114,7 @@ public class GameInfo {
 				cardsNumber = 10;
 				cardsAreVisible = false;
 				myRole = -1;
-				myNewBet = -1;
+				myBet = -1;
 				cards.clear();
 				lastCardMove = -1;
 				moveIsDrawn = false;
@@ -123,6 +130,46 @@ public class GameInfo {
 				whists_left.clear();
 				whists_right.clear();
 			}
+		}
+		
+		public void setNewBet(int bet) {
+			synchronized(lock) {
+				myBet = bet;
+			}
+		}
+		
+		public int getNewBet() {
+			synchronized(lock) {
+				return myBet;
+			}
+		}
+		
+		public void setMyNumber(int n) {
+			synchronized (lock) {
+				if (n > 3 || n < 1)
+					return;
+				myNumber = n;
+				nextNumber = n + 1;
+				prevNumber = n - 1;
+				if (prevNumber == 0)
+					prevNumber = 3; 
+				if (nextNumber == 4)
+					nextNumber = 1;
+			}
+		}
+		
+		public int getMyNumber() {
+			synchronized (lock) {
+				return myNumber;
+			}
+		}
+		
+		public int getNextNumber() {
+			return nextNumber;
+		}
+		
+		public int getPrevNumber() {
+			return prevNumber;
 		}
 	}
 	

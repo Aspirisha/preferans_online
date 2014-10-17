@@ -75,6 +75,9 @@ public class TalkClowd {
 	}
 	
 	private void setSuitAsText(int bet) {
+		if (bet == -1)
+			return;
+		
 		if (bet >= 16 && bet <= 21)
 			bet--;
 		else if (bet >= 22)
