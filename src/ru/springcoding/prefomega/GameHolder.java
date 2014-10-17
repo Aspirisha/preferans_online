@@ -29,17 +29,16 @@ public class GameHolder extends LinearLayout implements OnTouchListener {
     
 	public GameHolder(Context context) {
 		super(context);
-		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+		LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 		setLayoutParams(params);
 		flipper = new ViewFlipper(context);
-		params = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 		flipper.setLayoutParams(params);
 		addView(flipper);
 		
 		
 		gameView = new GameView(context);
         scoreView = new ScoreView(context);
-		flipper.addView(gameView);
+		flipper.addView(gameView, params);
 		flipper.addView(scoreView);
 		
 		gameView.setGameHolder(this);

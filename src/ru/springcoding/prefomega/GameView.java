@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import ru.springcoding.prefomega.BetCellView.SIZE;
-import ru.springcoding.prefomega.GameInfo.Talon;
 import android.content.Context;
 import android.graphics.BitmapRegionDecoder;
 import android.view.Gravity;
@@ -92,9 +91,11 @@ public class GameView extends FrameLayout {
 	    		row.addView(v);
 	    		betTableBig.addView(row);
 	        }
-	        betTableSmall.layout(30, 100, 30 + decoder.getWidth() / 3, 100 + 5 * cellHeight);
-	        betTableMedium.layout(30, 100 + 5 * cellHeight, 30 + decoder.getWidth() / 3, 100 + 6 * cellHeight);
-	        betTableBig.layout(30, 100 + 6 * cellHeight, 30 + decoder.getWidth() / 3, 100 + 8 * cellHeight);
+	        
+	        // hardcoded now
+	        betTableSmall.layout(0, 0, decoder.getWidth() / 3, 5 * cellHeight);
+	        betTableMedium.layout(0, 0, decoder.getWidth() / 3, cellHeight);
+	        betTableBig.layout(0, 0, decoder.getWidth() / 3, 2 * cellHeight);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -102,16 +103,19 @@ public class GameView extends FrameLayout {
 		
 		int initTop = playingTable.leftClowd.getBottom() + 5 * (PrefApplication.screenHeight) / 480;
 		LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT); 
+		params.gravity = Gravity.TOP;
 		params.topMargin = initTop;
 		params.leftMargin = (PrefApplication.screenWidth - betTableSmall.getWidth()) / 2;
 		this.addView(betTableSmall, params);	
 		
 		params = new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT); 
+		params.gravity = Gravity.TOP;
 		params.topMargin = initTop + betTableSmall.getHeight();
 		params.leftMargin = (PrefApplication.screenWidth - betTableSmall.getWidth()) / 2;
 		this.addView(betTableMedium, params);
 		
 		params = new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT); 
+		params.gravity = Gravity.TOP;
 		params.topMargin = initTop + betTableSmall.getHeight() + betTableMedium.getHeight();
 		params.leftMargin = (PrefApplication.screenWidth - betTableSmall.getWidth()) / 2;
 		this.addView(betTableBig, params);
