@@ -66,7 +66,7 @@ public class WhistCellView extends TextView {
 		} else if (myNumber == 3 && prevSelected != null) {
 			GameInfo gameInfo = GameInfo.getInstance();
 			GameActivity gameActivity = (GameActivity)this.getContext();
-			switch (gameInfo.gameState) {
+			switch (gameInfo.getGameState()) {
 			case 5:
 				if (prevSelected.myNumber == 1)
 					gameInfo.ownPlayer.myRole = 1;

@@ -75,6 +75,10 @@ private static final int INVALID_POINTER_ID = -1;
 		SHOW_PASSER_CARDS
 	}
 	
+	public GameLoopThread GetGameLoopThread() {
+		return gameLoopThread;
+	}
+	
     public PlayingTableView(Context context) {
     	super(context);
     	temp = 0;
@@ -202,7 +206,7 @@ private static final int INVALID_POINTER_ID = -1;
             
             // define if some card was touched
             if (gameInfo.activePlayer == gameInfo.ownPlayer.number) {
-	            switch (gameInfo.gameState) {
+	            switch (gameInfo.getGameState()) {
 	            case 3:
 	            	if (gameInfo.thrownCards.cardsNumber == 2) 
 	            		break;
@@ -273,7 +277,7 @@ private static final int INVALID_POINTER_ID = -1;
             			movingCard.x += dx;
             			movingCard.y += dy;
 
-            			switch (gameInfo.gameState) {
+            			switch (gameInfo.getGameState()) {
             			case 3:
             				if (movingCard.savedY - movingCard.y > movingCard.height) {
             					movingCard.setBackUp(); 
@@ -301,7 +305,7 @@ private static final int INVALID_POINTER_ID = -1;
 
         case MotionEvent.ACTION_UP: {
             mActivePointerId = INVALID_POINTER_ID;
-            switch (gameInfo.gameState) {
+            switch (gameInfo.getGameState()) {
             case 3:
             	if (movingCard != null) {
             		if (movingCard.y + 3 * movingCard.height + 10 < getHeight())

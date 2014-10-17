@@ -30,7 +30,7 @@ import android.widget.Toast;
 
 
 public class PrefApplication extends Application {
-	private static PrefApplication singleton;
+	private static PrefApplication singleton = null;
 	
 	public static String regid;
 	public static String message;
@@ -53,6 +53,8 @@ public class PrefApplication extends Application {
 	private static GoogleCloudMessaging gcm;
 	private RegistrationTestThread regTestThread;
 	private static KeepAliveThread keepAliveThread;
+	private Object lock;
+	
 	public static PrefApplication getInstance() {
 		return singleton;
 	}
@@ -61,6 +63,7 @@ public class PrefApplication extends Application {
 	public final void onCreate() {
 		super.onCreate();
 		singleton = this;
+		lock = new Object();
 		DisplayMetrics metrics = this.getResources().getDisplayMetrics();
 		screenWidth = metrics.widthPixels;
 		screenHeight = metrics.heightPixels;
@@ -107,12 +110,16 @@ public class PrefApplication extends Application {
     }
 	
 	public static void setVisibleWindow(int i, Context c) {
-		currentVisibleWindow = i;
-		context = c;
+		synchronized (singleton.lock) {
+			currentVisibleWindow = i;
+			context = c;
+		}
 	}
 	
 	public static int getVisibleWindow() {
-		return currentVisibleWindow;
+		synchronized (singleton.lock) {
+			return currentVisibleWindow;
+		}
 	}
 	
 	/**

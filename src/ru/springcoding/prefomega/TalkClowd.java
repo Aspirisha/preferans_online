@@ -74,7 +74,7 @@ public class TalkClowd {
 		}
 	}
 	
-	public void setSuitAsText(int bet) {
+	private void setSuitAsText(int bet) {
 		if (bet >= 16 && bet <= 21)
 			bet--;
 		else if (bet >= 22)
@@ -129,7 +129,7 @@ public class TalkClowd {
 		return xClowd + width;
 	}
 	
-	boolean getVisible() {
+	public boolean getVisible() {
 		return isVisible;
 	}
 	

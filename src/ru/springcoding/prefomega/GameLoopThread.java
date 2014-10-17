@@ -27,13 +27,31 @@ public class GameLoopThread extends Thread {
 	@Override
      public void run() {
 		 long ticksPS = 1000 / FPS;
-         long startTime;
+         long startTime = System.currentTimeMillis();
+         long prevTime;
          long sleepTime;
          int timer;
          
          while (isRunning) {
         	 Canvas c = null;
+        	 prevTime = startTime;
         	 startTime = System.currentTimeMillis();
+        	 long delta_t = startTime - prevTime;
+        	 
+        	 switch (gameInfo.getGameState()) {
+        	 case 3: {
+        		 long time = gameInfo.getTimeToShowClouds();
+        		 if (time > 0)
+        			 gameInfo.setTimeToShowClouds(time - delta_t);
+        		 else {
+        			 playingTable.hideLeftClowd();
+        			 playingTable.hideRightClowd();
+        			 playingTable.hideOwnClowd();
+        		 }
+        		 break;
+        	 	}
+        	 }
+        	 
         	 switch (playingTable.drawState) {
         	 case TALON_SHOW:
         		 if (playingTable.talonShowTimer > 0) {

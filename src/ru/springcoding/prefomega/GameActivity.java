@@ -27,7 +27,6 @@ public class GameActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		PrefApplication.setVisibleWindow(3, this);
 		gameInfo = GameInfo.getInstance();
 		gameHolder = new GameHolder(this);
 		gameView = gameHolder.gameView;
@@ -46,6 +45,7 @@ public class GameActivity extends Activity implements OnClickListener {
 		if (gameInfo.nextPlayer.number == 4)
 			gameInfo.nextPlayer.number = 1;
 		getInfoAboutRoom();
+		PrefApplication.setVisibleWindow(3, this);
 	}
 
 	private void getInfoAboutRoom() {
@@ -196,18 +196,14 @@ public class GameActivity extends Activity implements OnClickListener {
 	
 	private void manageNewState(String msg) {
 		String[] data = msg.split(" ");
-		gameInfo.gameState = Integer.parseInt(data[0]);
+		gameInfo.setGameState(Integer.parseInt(data[0]));
 		gameInfo.activePlayer = Integer.parseInt(data[1]);
-		switch (gameInfo.gameState) {
+		switch (gameInfo.getGameState()) {
 		case 1:  // trading for the talon!
 			// get actual info about other players bets
-			for (int i = 1; i <= 3; i++) {
-				if (gameInfo.prevPlayer.number == i) {
-					gameInfo.prevPlayer.myNewBet = Integer.parseInt(data[i + 2]);
-				} else if (gameInfo.nextPlayer.number == i) {
-					gameInfo.nextPlayer.myNewBet = Integer.parseInt(data[i + 2]);
-				}
-			}
+						
+			gameInfo.nextPlayer.myNewBet = Integer.parseInt(data[2 + gameInfo.nextPlayer.number]);
+			gameInfo.prevPlayer.myNewBet = Integer.parseInt(data[2 + gameInfo.prevPlayer.number]);
 			
 			if (gameInfo.activePlayer == gameInfo.ownPlayer.number) {
 				// draw some table that allows user to choose bet
@@ -236,10 +232,16 @@ public class GameActivity extends Activity implements OnClickListener {
 		case 2: // raspasy
 			break;
 		case 3: // active thinks what to throw; others watch talon and admire
-			playingTable.hideOwnClowd();
-			playingTable.hideLeftClowd();
-			playingTable.hideRightClowd();
-			playingTable.talonShowTimer = 100;
+			gameInfo.nextPlayer.myNewBet = Integer.parseInt(data[2 + gameInfo.nextPlayer.number]);
+			gameInfo.prevPlayer.myNewBet = Integer.parseInt(data[2 + gameInfo.prevPlayer.number]);
+			
+			//playingTable.hideOwnClowd();
+			playingTable.showLeftClowd();
+			playingTable.showRightClowd();
+			gameInfo.setTimeToShowClouds(10000);
+			gameInfo.setTimeToShowTalon(10000);
+			
+			playingTable.talonShowTimer = 100; // TODO DELETE it
 			playingTable.setDrawState(DrawState.TALON_SHOW);
 			gameInfo.talon.cardsNumber = 2;
 			int cards[] = new int[2];
@@ -358,11 +360,12 @@ public class GameActivity extends Activity implements OnClickListener {
 	public void sendMyTradeBetChoiceToServer() {
 		if (gameInfo.currentCardBet < gameInfo.ownPlayer.myNewBet)
 			gameInfo.currentCardBet = gameInfo.ownPlayer.myNewBet;
-		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(5);
+		nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
 		nameValuePairs.add(new BasicNameValuePair("id", gameInfo.ownPlayer.id));
-		if (gameInfo.gameState == 1) { // trading is going on
+		if (gameInfo.getGameState() == 1) { // trading is going on
 			nameValuePairs.add(new BasicNameValuePair("notification", "bet_is_done")); 
-		} else if (gameInfo.gameState == 3) { // we send put chosen game
+		} else if (gameInfo.getGameState() == 3) { // we send put chosen game
 			nameValuePairs.add(new BasicNameValuePair("notification", "real_bet_chosen")); 
 		}
 		nameValuePairs.add(new BasicNameValuePair("room_id", gameInfo.roomId));

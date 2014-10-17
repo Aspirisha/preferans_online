@@ -177,7 +177,7 @@ public class GameView extends FrameLayout {
 					bv.setUnavailable();
 				}
 				if (bv.myNumber == 16 || bv.myNumber == 22 || bv.myNumber == 28) { // misere or misere with no talon or pass are unavailable
-					if (gameInfo.gameState == 3) 
+					if (gameInfo.getGameState() == 3) 
 						bv.setUnavailable();
 				}
 				if (bv.myNumber == 29)

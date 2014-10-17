@@ -8,6 +8,8 @@ import org.apache.http.message.BasicNameValuePair;
 
 public class GameInfo {
 	private static GameInfo singleton = null;
+	private Long timeToShowClouds;
+	private Long timeToShowTalon;
 	
 	public String roomId;
 	public String roomName;
@@ -23,7 +25,7 @@ public class GameInfo {
 	String gameType;
 	int playersNumber;
 	int activePlayer;
-	int gameState;
+	private Integer gameState;
 	int onside; // who is onside (1..3) or -1 if it's raspasy or trading
 	boolean isOpenGame;
 	int currentSuit;
@@ -36,6 +38,7 @@ public class GameInfo {
 	
 	Talon talon;
 	Talon thrownCards; // after trading
+	private Object lock; // lok for GameInfo
 	
 	private GameInfo () {
 		playersNumber = 0;
@@ -51,6 +54,10 @@ public class GameInfo {
 		
 		previous_server_keepalive_time = -1;
 		current_server_keepalive_time = -1;
+		lock = new Object();
+		timeToShowClouds = Long.valueOf(0);
+		timeToShowTalon
+		= Long.valueOf(0);
 	}
 	
 	public static GameInfo getInstance() {
@@ -59,7 +66,6 @@ public class GameInfo {
 				if (singleton == null) {
 					singleton = new GameInfo();
 				}
-				
 			}
 		return singleton;
 	}
@@ -97,22 +103,26 @@ public class GameInfo {
 		}
 		
 		public void initBeforeNewParty() {
-			cardsNumber = 10;
-			cardsAreVisible = false;
-			myRole = -1;
-			myNewBet = -1;
-			cards.clear();
-			lastCardMove = -1;
-			moveIsDrawn = false;
-			hasNoSuit = false;
-			hasNoTrumps = false;
+			synchronized(lock) {
+				cardsNumber = 10;
+				cardsAreVisible = false;
+				myRole = -1;
+				myNewBet = -1;
+				cards.clear();
+				lastCardMove = -1;
+				moveIsDrawn = false;
+				hasNoSuit = false;
+				hasNoTrumps = false;
+			}
 		}
 		
 		public void initBeforeNewGame() {
-			bullet.clear();
-			mountain.clear();
-			whists_left.clear();
-			whists_right.clear();
+			synchronized(lock) {
+				bullet.clear();
+				mountain.clear();
+				whists_left.clear();
+				whists_right.clear();
+			}
 		}
 	}
 	
@@ -127,30 +137,71 @@ public class GameInfo {
 	}
 	
 	public void initNewDistribution() {
-		currentCardBet = 0;
-		ownPlayer.initBeforeNewParty();
-		prevPlayer.initBeforeNewParty();
-		nextPlayer.initBeforeNewParty();
-		talon.cardsNumber = 2;
-		thrownCards.cardsNumber = 0;
-		ownPlayer.myRole = -1;
-		currentSuit = -1;
-		currentTrump = -1;
-		isOpenGame = false;
-		cardsOnTable = 0;
+		synchronized(lock) {
+			currentCardBet = 0;
+			ownPlayer.initBeforeNewParty();
+			prevPlayer.initBeforeNewParty();
+			nextPlayer.initBeforeNewParty();
+			talon.cardsNumber = 2;
+			thrownCards.cardsNumber = 0;
+			ownPlayer.myRole = -1;
+			currentSuit = -1;
+			currentTrump = -1;
+			isOpenGame = false;
+			cardsOnTable = 0;
+		}
 	}
 	
 	public void initNewGame() {
-		ownPlayer.initBeforeNewGame();
-		prevPlayer.initBeforeNewGame();
-		nextPlayer.initBeforeNewGame();
+		synchronized(lock) {
+			ownPlayer.initBeforeNewGame();
+			prevPlayer.initBeforeNewGame();
+			nextPlayer.initBeforeNewGame();
+		}
 	}
 	
-	public int getCardSuit(int clientCard) {
+	public int getCardSuit(final int clientCard) {
 		int serverCard = PrefApplication.ServerToClientCards.get(clientCard);
 		
 		if (serverCard == -1)
 			return -1;
 		return ((serverCard - 1) / 8 + 1);	//1..4
 	}
+	
+	public void setTimeToShowClouds(long time) {
+		synchronized (timeToShowClouds) {
+			timeToShowClouds = time;
+		}
+	}
+	
+	public long getTimeToShowClouds() {
+		synchronized (timeToShowClouds) {
+			return timeToShowClouds;
+		}
+	}
+	
+	public void setTimeToShowTalon(long time) {
+		synchronized (timeToShowTalon) {
+			timeToShowTalon = time;
+		}
+	}
+	
+	public long getTimeToShowTalon() {
+		synchronized (timeToShowTalon) {
+			return timeToShowTalon;
+		}
+	}
+	
+	public void setGameState(int state) {
+		synchronized (gameState) {
+			gameState = state;
+		}
+	}
+	
+	public int getGameState() {
+		synchronized (gameState) {
+			return gameState;
+		}
+	}
+	
 }
