@@ -28,7 +28,7 @@ private static final int INVALID_POINTER_ID = -1;
     private ScaleGestureDetector mScaleDetector;
     private float mScaleFactor = 1.f;
     
-    private PlayingCard[] cards;
+    private PlayingCard[] ownCards;
     private PlayingCard[] nextCards;
     private PlayingCard[] prevCards;
     private PlayingCard[] talonCards;
@@ -41,7 +41,6 @@ private static final int INVALID_POINTER_ID = -1;
     private PlayingCard movingCard;
     private int movingCardIndex;
     private GameInfo gameInfo;
-    private TableClickListener tableClickListener;
     private SurfaceHolder holder;
     private GameLoopThread gameLoopThread;
     
@@ -51,7 +50,7 @@ private static final int INVALID_POINTER_ID = -1;
     TalkClowd ownClowd;
     TalkClowd leftClowd;
     TalkClowd rightClowd;
-    GameHolder gameHolder;
+    GameLayout gameHolder;
     
     int temp;
 	DrawState drawState;
@@ -79,17 +78,16 @@ private static final int INVALID_POINTER_ID = -1;
     	super(context);
     	temp = 0;
     	gameHolder = null;
-    	tableClickListener = new TableClickListener();
     	mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
 
-    	cards = new PlayingCard[12];
+    	ownCards = new PlayingCard[12];
     	prevCards =  new PlayingCard[12];
     	nextCards =  new PlayingCard[12];
     	talonCards =  new PlayingCard[2];
 
     	for (int i = 0; i < 12; i++)
     	{
-    		cards[i] = new PlayingCard(this);
+    		ownCards[i] = new PlayingCard(this);
     		prevCards[i] = new PlayingCard(this);
     		nextCards[i] = new PlayingCard(this);
 
@@ -112,7 +110,7 @@ private static final int INVALID_POINTER_ID = -1;
     	Bitmap card = BitmapFactory.decodeResource(getResources(), R.drawable.card1);
     	Bitmap clowd = BitmapFactory.decodeResource(getResources(), R.drawable.clowd_left);
 
-    	// hardcode
+    	// TODO hardcode
     	rightClowd = new TalkClowd(this, false, PrefApplication.screenWidth - clowd.getWidth() - 20, 5);
     	leftClowd = new TalkClowd(this, true, 20, 5);
     	ownClowd = new TalkClowd(this, true, (PrefApplication.screenWidth - clowd.getWidth()) / 2, PrefApplication.screenHeight - 10 - card.getHeight() - clowd.getHeight());
@@ -140,7 +138,7 @@ private static final int INVALID_POINTER_ID = -1;
     			}
 
     			for (int i = 0; i < 12; i++) {
-    				cards[i].destroy();
+    				ownCards[i].destroy();
     				nextCards[i].destroy();
     				prevCards[i].destroy();
     			}
@@ -208,14 +206,14 @@ private static final int INVALID_POINTER_ID = -1;
 	            		break;
 		            movingCardIndex = -1;
 		            for (int i = 0; i < 12; i++) {
-		            	PlayingCard card = cards[i];
-		            	if (card.value != -1) {
-		            		if (card.y <= y && (y <= card.y + card.height) && x >= card.x && (x <= card.x + card.width))
+		            	PlayingCard card = ownCards[i];
+		            	if (card.getValue() != -1) {
+		            		if (card.containtsPoint(x, y))
 		            			movingCardIndex = i;
 		            	}
 		            }
 		            if (movingCardIndex != -1) {
-		            	movingCard = cards[movingCardIndex];
+		            	movingCard = ownCards[movingCardIndex];
 		            	movingCard.saveCurrentPosition();
 		            } else {
 		            	movingCard = null;
@@ -224,17 +222,17 @@ private static final int INVALID_POINTER_ID = -1;
 	            case 9: // real game is going on
 	            	movingCardIndex = -1;
 	            	movingCard = null;
-	            	if (gameInfo.cardsOnTable == 3 || cardMoveFromOwn.value != -1) // already made a move
+	            	if (gameInfo.cardsOnTable == 3 || cardMoveFromOwn.getValue() != -1) // already made a move
 	            		break;
 	            	for (int i = 0; i < 12; i++) {
-		            	PlayingCard card = cards[i];
-		            	if (card.value != -1) {
-		            		if (card.y <= y && (y <= card.y + card.height) && x >= card.x && (x <= card.x + card.width))
+		            	PlayingCard card = ownCards[i];
+		            	if (card.getValue() != -1) {
+		            		if (card.containtsPoint(x, y))
 		            			movingCardIndex = i;
 		            	}
 		            }
 	            	if (movingCardIndex != -1) {
-	            		int mySuit = gameInfo.getCardSuit(cards[movingCardIndex].value);
+	            		int mySuit = gameInfo.getCardSuit(ownCards[movingCardIndex].getValue());
 	            		// check if the move is correct
 	            		if (gameInfo.currentSuit != -1 && mySuit != gameInfo.currentSuit) {
 	            			if (gameInfo.ownPlayer.hasNoSuit == false) {
@@ -247,8 +245,9 @@ private static final int INVALID_POINTER_ID = -1;
 	            				break;
 	            			}
 	            		}	
-	            		movingCard = cards[movingCardIndex];
+	            		movingCard = ownCards[movingCardIndex];
 	            		movingCard.saveCurrentPosition();
+	            		movingCard.setFlipRectAndBehaviour(PrefApplication.screenHeight, 0, PrefApplication.screenHeight - 2 * movingCard.height, PrefApplication.screenWidth, SIDE.FRONT, SIDE.FRONT);
 	            	}
 	            	break;
 	            }
@@ -266,27 +265,14 @@ private static final int INVALID_POINTER_ID = -1;
             if (gameInfo.activePlayer == gameInfo.ownPlayer.number) {
             	// Only move if the ScaleGestureDetector isn't processing a gesture.
             	if (!mScaleDetector.isInProgress()) {
-            		final float dx = x - mLastTouchX;
-            		final float dy = y - mLastTouchY;
 
             		if (movingCard != null) {
-            			movingCard.x += dx;
-            			movingCard.y += dy;
+            			movingCard.translate(x - mLastTouchX, y - mLastTouchY);
 
             			switch (gameInfo.gameState) {
             			case 3:
-            				if (movingCard.savedY - movingCard.y > movingCard.height) {
-            					movingCard.setBackUp(); 
-            				} else { 
-            					movingCard.setFrontUp();
-            				}
             				break;
             			case 9:
-            				/*if (movingCard.savedY - movingCard.y > movingCard.height) {
-            					movingCard.setBackUp(); 
-            				} else { */
-            					movingCard.setFrontUp();
-            				//}
             				break;
             			}
             		} else { // else maybe user wants to see score table
@@ -304,21 +290,21 @@ private static final int INVALID_POINTER_ID = -1;
             switch (gameInfo.gameState) {
             case 3:
             	if (movingCard != null) {
-            		if (movingCard.y + 3 * movingCard.height + 10 < getHeight())
+            		if (movingCard.getY() + 3 * movingCard.height + 10 < getHeight())
             		{
             			int n = gameInfo.thrownCards.cardsNumber++;
-            			gameInfo.thrownCards.cards[n] = movingCard.value;
+            			gameInfo.thrownCards.cards[n] = movingCard.getValue();
             			PlayingCard temp = talonCards[n];
             			talonCards[n] =  movingCard;
-            			cards[movingCardIndex] = temp;
-            		    cards[movingCardIndex].value = -1;
-            		    cards[movingCardIndex].isVisible = false;
+            			ownCards[movingCardIndex] = temp;
+            		    ownCards[movingCardIndex].setValue(-1);
+            		    ownCards[movingCardIndex].setVisibility(false);
             		    gameInfo.ownPlayer.cardsNumber--;
             		    this.recountOwnCardsPositions();
             		    //postInvalidate();
             		    int dy = n * talonCards[0].height / 10;
             		    int dx = n * talonCards[0].width / 7;
-            		    talonCards[n].setMovingToDestination((getWidth() - talonCards[0].width + dx) / 2, 10 + dy, 15, -1);
+            		    talonCards[n].setMovingToDestination((getWidth() - talonCards[0].width + dx) / 2, 10 + dy, 15);
             			
             			if (n == 1) {
             				// send info about thrown cards to server
@@ -327,7 +313,7 @@ private static final int INVALID_POINTER_ID = -1;
             			}
             			
             		} else { // it goes back to user
-            			movingCard.setMovingToDestination(movingCard.savedX, movingCard.savedY, 15, movingCard.height);
+            			movingCard.setMovingToSavedPos(15);
             		}
         			movingCard = null;
         			movingCardIndex = -1;
@@ -335,14 +321,14 @@ private static final int INVALID_POINTER_ID = -1;
             	break;
             case 9:
             	if (movingCard != null) {
-            		if (movingCard.y + 3 * movingCard.height + 10 < getHeight())
+            		if (movingCard.getY() + 3 * movingCard.height + 10 < getHeight())
             		{
-            			gameInfo.ownPlayer.lastCardMove = movingCard.value;
+            			gameInfo.ownPlayer.lastCardMove = movingCard.getValue();
             			PlayingCard temp = cardMoveFromOwn;
             			cardMoveFromOwn = movingCard;
-            			cards[movingCardIndex] = temp;
-            		    cards[movingCardIndex].value = -1;
-            		    cards[movingCardIndex].isVisible = false;
+            			ownCards[movingCardIndex] = temp;
+            		    ownCards[movingCardIndex].setValue(-1);
+            		    ownCards[movingCardIndex].setVisibility(false);
             		    gameInfo.ownPlayer.cardsNumber--;
             		    movingCard = null;
             		    movingCardIndex = -1;
@@ -350,14 +336,14 @@ private static final int INVALID_POINTER_ID = -1;
             		    //postInvalidate();
             		    int dy = 40; // hardcode
             		    int dx = PrefApplication.screenWidth;
-            		    cardMoveFromOwn.setMovingToDestination((dx - cardMoveFromOwn.width) / 2, 10 + dy, 15, -1);
+            		    cardMoveFromOwn.setMovingToDestination((dx - cardMoveFromOwn.width) / 2, 10 + dy, 15);
             		    
             		    gameInfo.ownPlayer.moveIsDrawn = true;
             			threeCards[gameInfo.cardsOnTable] = cardMoveFromOwn;
             			
             			gameActivity.sendMyCardMoveToServer();           				           			
             		} else { // it goes back to user
-            			movingCard.setMovingToDestination(movingCard.savedX, movingCard.savedY, 15, -1);
+            			movingCard.setMovingToSavedPos(15);
             		}
         			movingCard = null;
         			movingCardIndex = -1;
@@ -397,40 +383,29 @@ private static final int INVALID_POINTER_ID = -1;
     
     @Override  
     public void onDraw(Canvas canvas) {
-        //super.onDraw(canvas);
         canvas.save();
-        //canvas.translate(temp++, 0);
         
         for (int i = 0; i < 12; i++)
         {
         	if (i != movingCardIndex)
         	{
-	        	if (cards[i].value != -1) 
-	        		cards[i].draw(canvas);
+	        	if (ownCards[i].getValue() != -1) 
+	        		ownCards[i].draw(canvas);
         	}
-        	if (prevCards[i].value != -1) 
+        	if (prevCards[i].getValue() != -1) 
         		prevCards[i].draw(canvas);
-        	if (nextCards[i].value != -1) 
+        	if (nextCards[i].getValue() != -1) 
         		nextCards[i].draw(canvas);
         	
         }
         for (int i = 0; i < 2; i++)
         {
-        	if (talonCards[i].value != -1)
+        	if (talonCards[i].getValue() != -1)
         		talonCards[i].draw(canvas);
         }
         
         if (movingCardIndex != -1) // to make it last drawn card
-        	cards[movingCardIndex].draw(canvas);
-       
-        /*if (gameInfo.firstHand == gameInfo.ownPlayer.number) {
-	        if (cardMoveFromOwn != null)
-	        	cardMoveFromOwn.draw(canvas);
-        	if (cardMoveFromNext != null)
-	        	cardMoveFromNext.draw(canvas);
-	        if (cardMoveFromPrev != null)
-	        	cardMoveFromPrev.draw(canvas);
-        } else if (gameInfo.firstHand == gameInfo.ownPlayer.number)*/
+        	ownCards[movingCardIndex].draw(canvas);
         
         for (int i = 0; i < 3; i++) {
         	if (threeCards[i] != null)
@@ -477,13 +452,13 @@ private static final int INVALID_POINTER_ID = -1;
     }
     
 	public void setNewCardsOnHand(int[] _cards) {
-		if (cards == null)
+		if (ownCards == null)
 			return;
 		int n = gameInfo.ownPlayer.cardsNumber;
 		for (int i = 0; i < n; i++) {
-			cards[i].changeBitmap(decodeCard(_cards[i]), SIDE.FRONT);
-			cards[i].value = _cards[i];
-			cards[i].isVisible = true;
+			ownCards[i].changeBitmap(decodeCard(_cards[i]), SIDE.FRONT);
+			ownCards[i].setValue(_cards[i]);
+			ownCards[i].setVisibility(true);
 		}
 		recountOwnCardsPositions();
 	}
@@ -494,17 +469,39 @@ private static final int INVALID_POINTER_ID = -1;
 			Bitmap cardBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.back);
 			for (int i = 0; i < n; i++) {
 				nextCards[i].changeBitmap(cardBitmap, SIDE.BACK);
-				nextCards[i].value = 0; // means that it's turned 
-				nextCards[i].isVisible = true;
+				nextCards[i].setValue(0); // means that it's turned 
+				nextCards[i].setVisibility(true);
 			}
 		} else {
 			for (int i = 0; i < n; i++) {
 				nextCards[i].changeBitmap(decodeCard(_cards[i]), SIDE.FRONT);
-				nextCards[i].value = _cards[i];
-				nextCards[i].isVisible = true;
+				nextCards[i].setValue(_cards[i]);
+				nextCards[i].setVisibility(true);
 			}
 		}
 		recountLeftCardsPositions();
+	}
+	
+	public void updateCardFlips() {
+		switch (gameInfo.gameState) {
+		case 3:
+			for (PlayingCard card : prevCards) 
+				card.setFlipRectAndBehaviour(PrefApplication.screenHeight, PrefApplication.screenWidth - 1.5f * card.width, 0, PrefApplication.screenWidth, SIDE.BACK, SIDE.BACK);
+			for (PlayingCard card : nextCards) 
+				card.setFlipRectAndBehaviour(PrefApplication.screenHeight, 0, 0, 1.5f * card.width, SIDE.BACK, SIDE.BACK);
+			for (PlayingCard card : ownCards) 
+				card.setFlipRectAndBehaviour(PrefApplication.screenHeight, 0, 2 * card.height, PrefApplication.screenWidth, SIDE.FRONT, SIDE.BACK);
+			break;
+		case 10:
+			for (PlayingCard card : prevCards) 
+				card.setFlipRectAndBehaviour(PrefApplication.screenHeight, PrefApplication.screenWidth - 1.5f * card.width, 0, PrefApplication.screenWidth, SIDE.BACK, SIDE.FRONT);
+			for (PlayingCard card : nextCards) 
+				card.setFlipRectAndBehaviour(PrefApplication.screenHeight, 0, 0, 1.5f * card.width, SIDE.BACK, SIDE.FRONT);
+			for (PlayingCard card : ownCards) 
+				card.setFlipRectAndBehaviour(PrefApplication.screenHeight, 0, 2 * card.height, PrefApplication.screenWidth, SIDE.FRONT, SIDE.FRONT);
+
+			break;
+		}
 	}
 	
 	public void rightCardsChanged(int[] _cards) {
@@ -513,14 +510,14 @@ private static final int INVALID_POINTER_ID = -1;
 			Bitmap cardBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.back);
 			for (int i = 0; i < n; i++) {
 				prevCards[i].changeBitmap(cardBitmap, SIDE.BACK);
-				prevCards[i].value = 0; // means that it's turned 
-				prevCards[i].isVisible = true;
+				prevCards[i].setValue(0); // means that it's turned 
+				prevCards[i].setVisibility(true);
 			}
 		} else {
 			for (int i = 0; i < n; i++) {
 				prevCards[i].changeBitmap(decodeCard(_cards[i]), SIDE.FRONT);
-				prevCards[i].value = _cards[i];
-				prevCards[i].isVisible = true;
+				prevCards[i].setValue(_cards[i]);
+				prevCards[i].setVisibility(true);
 			}
 		}
 		recountRightCardsPositions();
@@ -532,12 +529,12 @@ private static final int INVALID_POINTER_ID = -1;
 			if (_cards == null) {
 				Bitmap cardBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.back);
 				talonCards[i].changeBitmap(cardBitmap, SIDE.BACK);
-				talonCards[i].value = 0;
+				talonCards[i].setValue(0);
 			} else {
-				talonCards[i].value = _cards[i];
+				talonCards[i].setValue(_cards[i]);
 				talonCards[i].changeBitmap(decodeCard(_cards[i]), SIDE.FRONT);
 			}
-			talonCards[i].isVisible = true;
+			talonCards[i].setVisibility(true);
 		}
 		recountTalonCardsPositions();
 	}
@@ -560,8 +557,8 @@ private static final int INVALID_POINTER_ID = -1;
 		}
 		int x = 10; // 10 is start coord of first card
 		for (int i = 0; i < 12; i++) {
-			if (cards[i].value != -1) {
-				cards[i].setPosition(x, y);
+			if (ownCards[i].getValue() != -1) {
+				ownCards[i].setPosition(x, y);
 				x += dx;
 			}
 		}
@@ -618,16 +615,6 @@ private static final int INVALID_POINTER_ID = -1;
 			x += dx;
 		}
 	}
-
-
-	
-	private void popCard() {
-
-	}
-	
-	private void pushCard() {
-		
-	}
 	
 	private int findUnusedId() {
 		int id = 1;
@@ -642,7 +629,7 @@ private static final int INVALID_POINTER_ID = -1;
 		int flag = 0;
 		if (gameInfo.activePlayer == gameInfo.ownPlayer.number) {
 			flag = 1;
-			ref = cards;
+			ref = ownCards;
 			gameInfo.ownPlayer.cardsNumber = 12;
 		} else if (gameInfo.activePlayer == gameInfo.nextPlayer.number) {
 			ref = nextCards;
@@ -658,26 +645,29 @@ private static final int INVALID_POINTER_ID = -1;
 			PlayingCard temp = ref[i + 10];
 			movingCards[i] = ref[i + 10] = talonCards[i];
 			talonCards[i] = temp;
-			talonCards[i].value = -1;
-			talonCards[i].isVisible = false;
+			talonCards[i].setValue(-1);
+			talonCards[i].setVisibility(false);
 		}
 		
 		// now animation settings
 		for (int i = 10; i < 12; i++) {
 			ref[i].saveCurrentPosition();
 		}
+		
+		SIDE finishSide = SIDE.BACK;
 		switch (flag) {
 		case 1:
+			finishSide = SIDE.FRONT;
 			for (int i = 10; i < 12; i++) {
 				int j = 0;
-				while (cards[j].value < cards[i].value) {
+				while (ownCards[j].getValue() < ownCards[i].getValue()) {
 					j++;
 				}
 				if (j < i) {
 					for (int k = i; k > j; k--) {
-						PlayingCard temp = cards[k];
-						cards[k] = cards[k - 1];
-						cards[k - 1] = temp;
+						PlayingCard temp = ownCards[k];
+						ownCards[k] = ownCards[k - 1];
+						ownCards[k - 1] = temp;
 					}
 				}
 			}
@@ -690,16 +680,16 @@ private static final int INVALID_POINTER_ID = -1;
 			recountRightCardsPositions();
 			break;
 		}
+		
 		for (int i = 0; i < 2; i++) {
-			int tempX = movingCards[i].x;
-			int tempY = movingCards[i].y;
-			movingCards[i].x = movingCards[i].savedX;
-			movingCards[i].y = movingCards[i].savedY;
-			if (flag != 1)
-				movingCards[i].setMovingToDestination(tempX, tempY, 15, 2 * ref[i].width);
-			else
-				movingCards[i].setMovingToDestination(tempX, tempY, 15, -1);
+			int tempX = movingCards[i].getX();
+			int tempY = movingCards[i].getY();
+			movingCards[i].restorePosition();
+			
+			movingCards[i].setFlipRectAndBehaviour(PrefApplication.screenHeight, 1.5f * movingCards[i].width, 0, PrefApplication.screenWidth - 1.5f * movingCards[i].width, finishSide, SIDE.FRONT);
+			movingCards[i].setMovingToDestination(tempX, tempY, 15);
 		}
+		updateCardFlips();
 	}
 
 	public void setDrawState(DrawState state) {
@@ -713,11 +703,11 @@ private static final int INVALID_POINTER_ID = -1;
 				PlayingCard temp = talonCards[i];
 				talonCards[i] = prevCards[10 + i];
 				prevCards[i + 10] = temp;
-				prevCards[i + 10].value = -1;
-				prevCards[i + 10].isVisible = false;
+				prevCards[i + 10].setValue(-1);
+				prevCards[i + 10].setVisibility(false);
 				int dy = i * talonCards[0].height / 10;
     		    int dx = i * talonCards[0].width / 7;
-				talonCards[i].setMovingToDestination((getWidth() - talonCards[0].width + dx) / 2, 10 + dy, 15, -1);
+				talonCards[i].setMovingToDestination((getWidth() - talonCards[0].width + dx) / 2, 10 + dy, 15);
 				recountRightCardsPositions();
 			}
 		} else {
@@ -726,11 +716,11 @@ private static final int INVALID_POINTER_ID = -1;
 				PlayingCard temp = talonCards[i];
 				talonCards[i] = nextCards[10 + i];
 				nextCards[i + 10] = temp;
-				prevCards[i + 10].value = -1;
-				prevCards[i + 10].isVisible = false;
+				prevCards[i + 10].setValue(-1);
+				prevCards[i + 10].setVisibility(false);
 				int dy = i * talonCards[0].height / 10;
     		    int dx = i * talonCards[0].width / 7;
-				talonCards[i].setMovingToDestination((getWidth() - talonCards[0].width + dx) / 2, 10 + dy, 15, -1);
+				talonCards[i].setMovingToDestination((getWidth() - talonCards[0].width + dx) / 2, 10 + dy, 15);
 				recountLeftCardsPositions();
 			}
 		}
@@ -805,20 +795,20 @@ private static final int INVALID_POINTER_ID = -1;
 			gameInfo.nextPlayer.moveIsDrawn = true;
 			gameInfo.nextPlayer.cardsNumber--;
 			int i = 0;
-			while (i < gameInfo.nextPlayer.cardsNumber && nextCards[i].value != -1)
+			while (i < gameInfo.nextPlayer.cardsNumber && nextCards[i].getValue() != -1)
 				i++;
 			
 			PlayingCard temp = cardMoveFromNext;
 			cardMoveFromNext = nextCards[i];
 			nextCards[i] = temp;
-			temp.value = -1;
-			temp.isVisible = false;
+			temp.setValue(-1);
+			temp.setVisibility(false);
 			
-			cardMoveFromNext.value = gameInfo.nextPlayer.lastCardMove;
-			cardMoveFromNext.setFrontUp();
+			cardMoveFromNext.setValue(gameInfo.nextPlayer.lastCardMove);
+			cardMoveFromNext.setFlipRectAndBehaviour(PrefApplication.screenHeight, 0, 0, cardMoveFromNext.width, SIDE.BACK, SIDE.FRONT);
 			int lastX = PrefApplication.screenWidth / 2 - 4 * cardMoveFromNext.width / 6;
-			int lastY = 20; // hardcode
-			cardMoveFromNext.setMovingToDestination(lastX, lastY, 10, -1);
+			int lastY = 20; // TODO hardcode
+			cardMoveFromNext.setMovingToDestination(lastX, lastY, 10);
 			
 			for (i = 0; i < 3; i++) {
 				if (threeCards[i] == null) {
@@ -828,28 +818,28 @@ private static final int INVALID_POINTER_ID = -1;
 			}
 		} else if (gameInfo.nextPlayer.lastCardMove == -1) {
 			gameInfo.nextPlayer.moveIsDrawn = false;
-			cardMoveFromNext.value = -1;
-			cardMoveFromNext.isVisible = false;
+			cardMoveFromNext.setValue(-1);
+			cardMoveFromNext.setVisibility(false);
 		}
 		
 		if (gameInfo.prevPlayer.lastCardMove != -1 && gameInfo.prevPlayer.moveIsDrawn == false) {
 			gameInfo.prevPlayer.moveIsDrawn = true;
 			gameInfo.prevPlayer.cardsNumber--;
 			int i = 0;
-			while (i < gameInfo.prevPlayer.cardsNumber && prevCards[i].value != -1)
+			while (i < gameInfo.prevPlayer.cardsNumber && prevCards[i].getValue() != -1)
 				i++;
 			
 			PlayingCard temp = cardMoveFromPrev;
 			cardMoveFromPrev = prevCards[i];
 			prevCards[i] = temp;
-			temp.value = -1;
-			temp.isVisible = false;
+			temp.setValue(-1);
+			temp.setVisibility(false);
 			
-			cardMoveFromPrev.value = gameInfo.prevPlayer.lastCardMove;
-			cardMoveFromPrev.setFrontUp();
+			cardMoveFromPrev.setValue(gameInfo.prevPlayer.lastCardMove);
+			cardMoveFromNext.setFlipRectAndBehaviour(PrefApplication.screenHeight, 0, 0, cardMoveFromNext.width, SIDE.BACK, SIDE.FRONT);
 			int lastX = PrefApplication.screenWidth / 2  - 2 * cardMoveFromPrev.width / 6;
-			int lastY = 20; // hardcode
-			cardMoveFromPrev.setMovingToDestination(lastX, lastY, 10, -1);
+			int lastY = 20; // TODO hardcode
+			cardMoveFromPrev.setMovingToDestination(lastX, lastY, 10);
 			
 			for (i = 0; i < 3; i++) {
 				if (threeCards[i] == null) {
@@ -859,13 +849,13 @@ private static final int INVALID_POINTER_ID = -1;
 			}
 		} else if (gameInfo.prevPlayer.lastCardMove == -1) {
 			gameInfo.prevPlayer.moveIsDrawn = false;
-			cardMoveFromPrev.value = -1;
-			cardMoveFromPrev.isVisible = false;
+			cardMoveFromPrev.setValue(-1);
+			cardMoveFromPrev.setVisibility(false);
 		}
 		
 		if (gameInfo.ownPlayer.lastCardMove == -1) {
-			cardMoveFromOwn.value = -1;
-			cardMoveFromOwn.isVisible = false;
+			cardMoveFromOwn.setValue(-1);
+			cardMoveFromOwn.setVisibility(false);
 			gameInfo.ownPlayer.moveIsDrawn = false;
 		}
 	}
@@ -881,8 +871,8 @@ private static final int INVALID_POINTER_ID = -1;
 	
 	public void hideThrownCards() {
 		for (int i = 0; i < 2; i++) {
-			talonCards[i].isVisible = false;
-			talonCards[i].value = -1;
+			talonCards[i].setVisibility(false);
+			talonCards[i].setValue(-1);
 		}
 	}
 	
@@ -914,7 +904,7 @@ private static final int INVALID_POINTER_ID = -1;
 		gameInfo.ownPlayer.hasNoSuit = true;
 		gameInfo.ownPlayer.hasNoTrumps = true;
 		for (int i = 0; i < 12; i++) {
-			int suit = gameInfo.getCardSuit(cards[i].value);
+			int suit = gameInfo.getCardSuit(ownCards[i].getValue());
 			if (suit == gameInfo.currentSuit)
 				gameInfo.ownPlayer.hasNoSuit = false;
 			if (suit == gameInfo.currentTrump)
@@ -926,49 +916,6 @@ private static final int INVALID_POINTER_ID = -1;
 		for (int i = 0; i < 3; i++)
 			threeCards[i] = null;
 	}
-	
-	private class TableClickListener implements OnClickListener {
-		private int prevSelectedId = -1;
-
-		@Override
-		public void onClick(View v) {
-			/*BetCellView bv = (BetCellView)v;
-			int curId = v.getId();
-			int viewNumber = betTableIds.get(curId);
-			if (viewNumber != 29) {// not accept
-				if (bv.state != STATES.UNAVAILABLE)
-				{
-					if (prevSelectedId != -1) {
-						BetCellView prev = (BetCellView)findViewById(prevSelectedId);
-						prev.setAvailable();
-					}
-					bv.setSelected();
-					prevSelectedId = curId;
-					myCurrentBet = bv.myNumber;
-				}
-			} else {
-				if (myCurrentBet != -1) {
-					//... send data to server about our bet
-				}
-			}*/
-		}
-	}
-	/*
-	class LongAndComplicatedTask extends AsyncTask<Void, Void, String> {
-	    
-	    @Override
-	    protected String doInBackground() {
-	        return doLongAndComplicatedTask();
-	    }
-
-	    @Override
-	    protected void onPostExecute(String result) {
-	       // txtResult.setText(result);
-	    }
-	}*/
-
-	//LongAndComplicatedTask longTask = new LongAndComplicatedTask(); // Создаем экземпляр
-	//longTask.execute(); // запускаем
 	
 }
 

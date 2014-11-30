@@ -16,6 +16,7 @@ public class GameLoopThread extends Thread {
         this.playingTable = view;
         gameInfo = GameInfo.getInstance();
         playingTable.drawState = DrawState.WAITING_FOR_MORE_PLAYERS;
+        setName("Game loop thread");
 	}
 	
 	public void setRunning(boolean run) {

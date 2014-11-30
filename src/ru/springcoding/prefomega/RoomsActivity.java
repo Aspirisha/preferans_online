@@ -1,8 +1,6 @@
 package ru.springcoding.prefomega;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -15,7 +13,6 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -36,9 +33,10 @@ public class RoomsActivity extends Activity implements OnClickListener {
 	Button btnCreateNewRoom;
 	Button btnConnectToRoom;
 	RoomData[] rooms;
-	Map<Integer, Integer> rowIds;
 	TableClickListener tableClickListener;
 	private int prevSelectedId = -1;
+	long lastRefreshTime = System.currentTimeMillis();
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -52,13 +50,9 @@ public class RoomsActivity extends Activity implements OnClickListener {
 		btnCreateNewRoom.setOnClickListener(this);
 		btnConnectToRoom.setOnClickListener(this);
 		btnConnectToRoom.setEnabled(false);
-		
-		ScrollView lw = (ScrollView)findViewById(R.id.scrollview_rooms);
-		
-		ArrayList<String> cols = new ArrayList<String>();
+				
 		tableClickListener = new TableClickListener();
-		rowIds = new HashMap<Integer, Integer>();
-		refreshExistingRooms();
+		refreshExistingRooms(); // or it must be before super?
 	}
 	
 	private int findUnusedId() {
@@ -74,7 +68,6 @@ public class RoomsActivity extends Activity implements OnClickListener {
 		row.setClickable(true);
 		row.setFocusable(true);
 		row.setId(findUnusedId());
-		rowIds.put(row.getId(), currentRowNumber);
 		row.setOnClickListener(tableClickListener);
 		
 		android.widget.TableRow.LayoutParams params = new TableRow.LayoutParams();
@@ -102,6 +95,7 @@ public class RoomsActivity extends Activity implements OnClickListener {
 		nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
 		nameValuePairs.add(new BasicNameValuePair("request", "existing_rooms")); // 1 = money
 		PrefApplication.sendData(nameValuePairs, "RequestManager.php");
+		lastRefreshTime = System.currentTimeMillis();
 	}
 
 	@Override
@@ -122,14 +116,12 @@ public class RoomsActivity extends Activity implements OnClickListener {
 			startActivity(newRoomActivity);
 			break;
 		case R.id.buttonConnectToRoom:
-			int rowId = tableClickListener.getSelectedRowId();
 			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
 			nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
 			nameValuePairs.add(new BasicNameValuePair("request", "connect_to_existing")); 
 			TableRow row = (TableRow)findViewById(prevSelectedId);
 			TextView numberTextView = (TextView)row.getChildAt(0);
 			int number = Integer.parseInt(numberTextView.getText().toString()) - 1;
-			String s = rooms[number].id;
 			nameValuePairs.add(new BasicNameValuePair("room_id", rooms[number].id));
 			PrefApplication.sendData(nameValuePairs, "RequestManager.php");
 			break;
@@ -246,6 +238,8 @@ public class RoomsActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		//refreshExistingRooms(); // or it must be before super?
+		long curTime = System.currentTimeMillis();
+		if (curTime - lastRefreshTime > 30000) // TODO hardcoded
+			refreshExistingRooms();
 	}
 }

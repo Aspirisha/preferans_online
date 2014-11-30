@@ -16,6 +16,13 @@
     
   }
   
+  abstract class PlayerRole {
+    const NOT_CHOSEN = -1;
+    const PASSER = 0;
+    const WHISTER = 1;
+    const PLAYER = 2;
+  }
+  
   abstract class EntryActivityMessageTypes {
     const ONLINE_NOTIFICATION_ANSWER = 0;
   }

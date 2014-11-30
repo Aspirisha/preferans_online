@@ -5,6 +5,7 @@ import java.io.InputStream;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapFactory.Options;
 import android.graphics.BitmapRegionDecoder;
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -60,7 +61,8 @@ public class TalkClowd {
 	public void setBet(int bet) {
 		switch (bet) {
 		case 0:
-			setText("pass");
+			//setText("pass");
+			setSuitAsText(1); // TODO test
 			break;
 		case 16:
 			setText("misere");
@@ -80,17 +82,19 @@ public class TalkClowd {
 		else if (bet >= 22)
 			bet -= 2;
 		
+		
 		int rowNumber = (bet - 1) / 5;
 		int colNumber = (bet - 1) % 5;
 		InputStream is = playingTable.getResources().openRawResource(R.drawable.suits);
 		BitmapRegionDecoder decoder;
 		try {
-			decoder = BitmapRegionDecoder.newInstance(is, true);
+			decoder = BitmapRegionDecoder.newInstance(is, false);
 			int cellWidth = decoder.getWidth() / 5;
 			int cellHeight = decoder.getHeight() / 5;
 			Rect rect = new Rect(colNumber * cellWidth, rowNumber * cellHeight, (colNumber + 1) * cellWidth, (rowNumber + 1) * cellHeight);
 			textBitmap = decoder.decodeRegion(rect, null);
 			recountTextPosition();
+			is.close();
 		} catch (IOException e) {
 			Log.i("Exception: ", e.toString());
 		}

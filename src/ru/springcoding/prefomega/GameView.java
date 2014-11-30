@@ -7,9 +7,6 @@ import ru.springcoding.prefomega.BetCellView.SIZE;
 import android.content.Context;
 import android.graphics.BitmapRegionDecoder;
 import android.view.Gravity;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnTouchListener;
 import android.widget.FrameLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -249,7 +246,7 @@ public class GameView extends FrameLayout {
 		choiceTableBig.setVisibility(VISIBLE);
 	}
 
-	public void setGameHolder(GameHolder gameHolder) {
+	public void setGameHolder(GameLayout gameHolder) {
 		playingTable.gameHolder = gameHolder;
 	}	
 	

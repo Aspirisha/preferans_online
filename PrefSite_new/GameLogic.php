@@ -5,10 +5,16 @@
   include_once  'Enumerations.php';
   
   $link = openMysqlConnection();
-
    
   function getSuit($cardNumber) {
     return (floor(($cardNumber - 1) / 8) + 1);
+  }
+  
+  function getNextPlayer($playerId) {
+    $playerId++;
+    if ($playerId == 4)
+      return 1;
+    return $playerId;
   }
   
   function setNextActive($roomId) {
@@ -78,13 +84,12 @@
     }
     
     $shuffler = $row["shuffler"];
-    $active = $shuffler + 1;
-    if ($active == 4)
-      $active = 1;    
+    $active = getNextPlayer($shuffler);
+     
     mysql_query("UPDATE players SET cards = '".$cards1."', last_card_move = -1 WHERE id = ".$row["player1"]."", $link);
     mysql_query("UPDATE players SET cards = '".$cards2."', last_card_move = -1 WHERE id = ".$row["player2"]."", $link);
     mysql_query("UPDATE players SET cards = '".$cards3."', last_card_move = -1 WHERE id = ".$row["player3"]."", $link);
-    mysql_query("UPDATE rooms SET talon = '".$talon."', game_state = 1, active_player = ".$active.", current_first_hand = ".$active.", triplets_thrown = 0 WHERE id = '".$roomId."'", $link);  
+    mysql_query("UPDATE rooms SET talon = '".$talon."', game_state = 1, active_player = ".$active.", current_first_hand = ".$active.", triplets_thrown = 0, current_trump = 0 WHERE id = '".$roomId."'", $link);  
     // now we need to send all data about current cards to players
     sendCards($cards1, $row["player1"]);
     sendCards($cards2, $row["player2"]);
@@ -209,7 +214,7 @@
     $message = "";
     switch ($gameState) {
     case GameStates::TALON_TRADING:
-      $result = mysql_query("SELECT * FROM players WHERE room_id = ".$roomId, $link);
+     // $result = mysql_query("SELECT * FROM players WHERE room_id = ".$roomId, $link);
       $bet1 = $player1["current_trade_bet"];
       $bet2 = $player2["current_trade_bet"];
       $bet3 = $player3["current_trade_bet"];
@@ -230,8 +235,11 @@
         $message = $message."-1";
       } 
       break;
-    case 3: // show talon to everyone for some period of time and let active player choose what to throw         
-      $message = "3 ".$activePlayer." ".$roomRow["talon"];          
+    case 3: // show talon to everyone for some period of time and let active player choose what to throw       
+      $bet1 = $player1["current_trade_bet"];
+      $bet2 = $player2["current_trade_bet"];
+      $bet3 = $player3["current_trade_bet"];  
+      $message = "3 ".$activePlayer." ".$roomRow["talon"]." ".$bet1." ".$bet2." ".$bet3;          
       break; 
     case 4:
       $message = "4 ".$activePlayer." ".$roomRow["current_trade_bet"];
@@ -293,19 +301,20 @@
   }
   
   function playerMadeBet($regId, $roomId, $newBet) {
-    global $link;    
-    
-    file_put_contents("Test/playerMadeBet.txt", $newBet);
+    global $link;  
+      
+     appendLog("In player made bet.");
     $result = mysql_query("SELECT * FROM players WHERE reg_id = '".$regId."'", $link);
     $row = mysql_fetch_assoc($result);
     $playerNumber = $row["my_number"];
     $playerId = $row["id"];
-    $result = mysql_query("SELECT * FROM rooms WHERE id = '".$roomId."'", $link);
-    $row = mysql_fetch_assoc($result);
+    $result = mysql_query("SELECT * FROM rooms WHERE id = ".$roomId, $link);
+    $row = mysql_fetch_assoc($result);   
     
+    appendLog("Player number is ".$playerNumber." and id is ".$playerId);
     if (($row["active_player"] == $playerNumber) && ($row["game_state"] == 1)) { // it's really his move
       mysql_query("UPDATE players SET current_trade_bet = ".$newBet." WHERE id = '".$playerId."'", $link);
-      file_put_contents("Test/playerMadeBet1.txt", "regid = ".$regId." id = ".$playerId." Bet = ".$newBet);
+      
       if ($row["current_trade_bet"] < $newBet) {
          mysql_query("UPDATE rooms SET current_trade_bet = ".$newBet.", trade_winner = ".$playerNumber." WHERE id = '".$roomId."'", $link);
       }
@@ -313,15 +322,30 @@
         mysql_query("UPDATE players SET stopped_trading = 1 WHERE id = '".$playerId."'", $link);
       }
       
+      appendLog("Now we need to set next active player.");
       if (!isDebug()) {
         setNextPlayerActiveDuringTrading($roomId);
       } else { // DEBUG: both other players passed and current player passed or not - depends on his solution
-        mysql_query("UPDATE players SET stopped_trading = 1 WHERE id <> '".$playerId."' AND room_id = ".$roomId, $link);
+        mysql_query("UPDATE players SET stopped_trading = 0 WHERE id = ".$playerId, $link);
+        for ($i = 0; $i < 2; $i++) {
+          appendLog("In debug loop setting bots to pass");
+          $next = getNextPlayer($playerNumber);
+          mysql_query("UPDATE rooms SET active_player = ".$next." WHERE id = ".$roomId, $link);
+          sendGameState($roomId, $row["game_state"]);
+          mysql_query("UPDATE players SET stopped_trading = 1, current_trade_bet = 0 WHERE room_id =".$roomId." AND my_number = ".$next, $link);
+          $result = mysql_query("SELECT * FROM rooms WHERE id = '".$roomId."'", $link);
+          $row = mysql_fetch_assoc($result);
+          $playerNumber = $next;
+          
+          sendGameState($roomId, $row["game_state"]);
+          sleep(5);
+        }
         setNextPlayerActiveDuringTrading($roomId);
       }
       
-      $result = mysql_query("SELECT * FROM rooms WHERE id = '".$roomId."'", $link);
+      $result = mysql_query("SELECT * FROM rooms WHERE id = ".$roomId, $link);
       $row = mysql_fetch_assoc($result);
+      appendLog("Now gamestate is ".$row["game_state"]);
       sendGameState($roomId, $row["game_state"]);
     }
   }
@@ -340,14 +364,10 @@
       
       for ($i = 0; $i < 3; $i++) {
         if ($allPlayersStoppedtrading) {
-          $activePlayer++;
-          if ($activePlayer == 4)
-            $activePlayer = 1;
+          $activePlayer = getNextPlayer($activePlayer);
         }
         
-        $j++;
-        if ($j == 4)
-          $j = 1;
+        $j = getNextPlayer($j);
         
         $playerString = "player".$j;
         $playerId = $gameRow[$playerString];
@@ -361,9 +381,9 @@
       }
 
       // DEBUG VERSION: force assign. Delete this two rows later
-      if ($roomId == 14) {
+      if ($roomId == 14 && isDebug()) {
         $allPlayersStoppedTrading = 1;
-        $activePlayer = 2;
+        $activePlayer = 1;
         $passersNumber = 2;
       }
       
@@ -455,6 +475,7 @@
   function realBetIsChosen($id, $regId, $roomId, $newBet) {
     global $link;
     
+    appendLog("Bet is chosen by player with id ".$id);
     $result = mysql_query("SELECT * FROM rooms WHERE id = ".$roomId, $link);
     $roomRow = mysql_fetch_assoc($result);
     $result = mysql_query("SELECT * FROM players WHERE id = ".$id, $link);
@@ -468,28 +489,31 @@
         
       $trump = $temp % 5;
       
-      if (!isDebug()) {
-        mysql_query("UPDATE rooms SET game_state = 4, current_trade_bet = ".$newBet.", current_trump = ".$trump." WHERE id = ".$roomId, $link); 
-        sendGameState($roomId, 4);
-      }
+      mysql_query("UPDATE rooms SET game_state = 4, current_trade_bet = ".$newBet.", current_trump = ".$trump." WHERE id = ".$roomId, $link); 
+      sendGameState($roomId, 4);
+      
       $active = $roomRow["active_player"];
-      $active++;
-      if ($active == 4) 
-        $active = 1;
+      $active = getNextPlayer($active);
       
       mysql_query("UPDATE rooms SET game_state = 5, active_player = ".$active." WHERE id = ".$roomId, $link);
       if (!isDebug()) {
         sendGameState($roomId, 5); 
       } else { // DEBUG! Here both other players choose whist automatically
+        appendLog("Making both bots whisting.");
         mysql_query("UPDATE players SET my_current_role = 1 WHERE room_id = ".$roomId." AND my_number = ".$active, $link);
         sendGameState($roomId, 5);
         
-        $active++;
-        if ($active == 4) 
-          $active = 1;
+        $active = getNextPlayer($active);
         mysql_query("UPDATE rooms SET active_player = ".$active." WHERE id = ".$roomId, $link);  
         mysql_query("UPDATE players SET my_current_role = 1 WHERE room_id = ".$roomId." AND my_number = ".$active, $link);
         sendGameState($roomId, 5);
+        sleep(5);
+        
+        $active = getNextPlayer($active);
+        mysql_query("UPDATE rooms SET game_state = 9, whisters_number = 2, whister = 0, passer = 0, current_first_hand = ".$active.", active_player = ".$active." WHERE id = ".$roomId, $link);
+        sendGameState($roomId, 10);
+        sleep(5);
+        sendGameState($roomId, 9);
       }
     }
   }
@@ -559,14 +583,15 @@
               $newActive = 1;
             
             // DEBUG: set my phone to be active after trading. Delete next 4 rows then
-            $result = mysql_query("SELECT * FROM players WHERE name = 'Andy'", $link);
+            $result = mysql_query("SELECT * FROM players WHERE name = 'tester'", $link);
             $row = mysql_fetch_assoc($result);
             $newActive = $row["my_number"];
-            file_put_contents("Test/Log.txt", "newActive = ".$newActive, FILE_APPEND);
+            appendLog("newActive = ".$newActive);
               
               
             mysql_query("UPDATE rooms SET game_state = 9, whisters_number = 2, whister = 0, passer = 0, current_first_hand = ".$newActive.", active_player = ".$newActive." WHERE id = ".$roomId, $link);
             sendGameState($roomId, 10);
+            sleep(5);
             sendGameState($roomId, 9);
           }
         }
@@ -631,9 +656,9 @@
     $gameIsFinished = false;
     $newBullet1 = $player1["my_bullet"];
     $newBullet2 = $player2["my_bullet"];
-    
+        
     if ($newBullet > $roomRow["game_bullet"]) {
-      $delta_bullet = $newBullet - $roomRow["game_bullet"]; 
+      $delta_bullet = $newBullet - $roomRow["game_bullet"]; // this bullet part should be given to another player
       $whists1 = 0;  // how many whists will have player on player1 after we write to player 1 bullet instead of player
       $whists2 = 0;
       $delta_bullet1 = 0;
@@ -659,9 +684,7 @@
       $newBullet1 = $player1["my_bullet"] + $delta_bullet1;
       $newBullet2 = $player2["my_bullet"] + $delta_bullet2;  
       
-      $leftNumber = $player["my_number"] + 1;
-      if ($leftNumber == 4)
-        $leftNumber = 1;
+      $leftNumber = getNextPlayer($player["my_number"]);
       $rightNumber = $player["my_number"] - 1;
       if ($leftNumber == 0)
         $leftNumber = 3;
@@ -737,12 +760,10 @@
     $result = mysql_query("SELECT * FROM rooms WHERE id = ".$roomId, $link);
     $roomRow = mysql_fetch_assoc($result);
     $shuffler = $roomRow["shuffler"];
-    $shuffler++;
-    if ($shuffler == 4) {
-      $shuffler = 1;
-    }
+    $shuffler = getNextPlayer($shuffler);
+    
     mysql_query("UPDATE players SET my_current_role = -1, last_card_move = -1, current_trade_bet = -1, cards = ' ', stopped_trading = 0, my_tricks = 0 WHERE room_id = ".$roomId, $link);
-    mysql_query("UPDATE rooms SET game_state = 1, shuffler = ".$shuffler.", current_trade_bet = 0, passers_cards_are_sent = 0 WHERE id = ".$roomId, $link);
+    mysql_query("UPDATE rooms SET game_state = 1, shuffler = ".$shuffler.", whisters_number = 0, current_trade_bet = 0, passers_cards_are_sent = 0, current_suit = -1, current_trump = -1 cards_on_table = 0 WHERE id = ".$roomId, $link);
     newShuffle($roomId);
   }
   
@@ -771,10 +792,12 @@
     mysql_query("UPDATE rooms SET passers_cards_are_sent = 1 WHERE id = ".$roomId, $link);
   }
   
-  function playerMadeCardMove($id, $regId, $roomId, $cardMove) {
+  function playerMadeCardMove($id, $regId, $roomId, $cardMove, $debugCall = false) {
     global $link;
+    
     if (!userIsReallyActive($id, $roomId, 9)) { // then it can be not only 9'th gameState, but now it is
-      return;
+      appendLog("User with id ".$id." is not active but tries to make move.");
+      return false;
     }
     $result = mysql_query("SELECT * FROM rooms WHERE id = ".$roomId, $link);
     $roomRow = mysql_fetch_assoc($result);
@@ -783,11 +806,9 @@
     
     $active = $roomRow["active_player"];
     $firstHand = $roomRow["current_first_hand"];
-    $next = $active + 1;
+    $next = getNextPlayer($active);
     $currentSuit = $roomRow["current_suit"];
     $currentTrump = $roomRow["current_trump"];
-    if ($next == 4)
-      $next = 1;
       
     // first of all, understand whether the move is correct
     $cardsOnHand = explode(" ", $playerRow["cards"]);
@@ -816,8 +837,8 @@
     }
     
     if ($foundCards != 1) {    // user has cheated or some error during data transfer has occured
-      file_put_contents("Test/zzzz.txt", "this cards not found: ".$cardMove);
-       return;      
+       appendLog("this cards not found: ".$cardMove." at user with id ".$id);
+       return false;      
     }
     
     // ok, user really had such a card, but is his move correct according to rules?
@@ -832,13 +853,13 @@
     
     if ($active != $firstHand && $suit != $currentSuit)  {
       if ($hasCurrentSuit) {
-        file_put_contents("Test/zzzz.txt", "impossible move: player has the suit ".$cardMove);
-        return;
+        appendLog("impossible move: player has the suit ".$cardMove);
+        return false;
       }
       
       if ($suit != $currentTrump && $hasTrumps) {
-        file_put_contents("Test/zzzz.txt", "impossible move: player has the trumps ".$cardMove);
-        return;
+        appendLog("impossible move: player has the trumps ".$cardMove);
+        return false;
       }
     }
         
@@ -916,7 +937,33 @@
       sendGameState($roomId, 9);
     }
     
+    if (isDebug() && !$debugCall) {
+      appendLog("Random moves begin!");
+      $tester = $active;
+      $active = $next;
+      while ($active != $tester) {
+        sleep(5);
+        $cardMove = 1;
+        $moveTrial = false;
+        $activeId = $roomRow["player".$active];
+        appendLog("Active player number is ".$active." and id is ".$activeId);
+        while (!$moveTrial && $cardMove < 33) {
+          $moveTrial = playerMadeCardMove($activeId, 0, $roomId, $cardMove, true);
+          $cardMove++;
+          if (!$moveTrial)
+            appendLog("Failed to make random move with card ".($cardMove - 1)." by bot with number ".$active);
+        }
+        
+        if (!$moveTrial) {
+          appendLog("Bot couldn't make move. Something is wrong, man.");
+        }
+        $result = mysql_query("SELECT active_player from rooms WHERE id = ".$roomId, $link);
+        $row = mysql_fetch_assoc($result);
+        $active = $row["active_player"];
+      }
+    }
     
+    return true;
   }
   
   // all players reached needed bullet. End game. may be ask if they want to play again
@@ -929,6 +976,7 @@
   function realDistribFinished($roomId) { // count here score each user gained, set up new shuffle, test if the game hasn't finished...
     global $link;
     
+    appendLog("In real distribution finished.");
     $result = mysql_query("SELECT * FROM rooms WHERE id = ".$roomId, $link);
     $roomRow = mysql_fetch_assoc($result);
     
@@ -949,6 +997,9 @@
     $role1 = $playerRow1["my_current_role"];
     $role2 = $playerRow2["my_current_role"];
     $role3 = $playerRow3["my_current_role"];
+    appendLog("First player got ".$tricks1." tricks.");
+    appendLog("Second player got ".$tricks2." tricks.");
+    appendLog("Third player got ".$tricks3." tricks.");
     
     $delta_mount1 = 0;
     $delta_bullet1 = 0;
@@ -972,14 +1023,23 @@
   	else if ($temp >= 22)
     	$temp -= 2;
     
-    $player_must_take += (1 + ($temp - 1) / 5); 
+    $player_must_take += floor(1 + ($temp - 1) / 5); 
+    appendLog("Player should have taken ".$player_must_take." tricks.");
+    
     $costs = explode(" ", $gameRules["games_costs"]);
     $ind = $player_must_take - 6;
     $game_cost = $costs[$ind];
+    appendLog("Game cost is ".$game_cost." tricks.");
+    
     $untakenString = "untaken_game_cost_".$player_must_take;
     $untakenGameTrickCost = $gameRules[$untakenString]; 
+    appendLog("Each untaken trick for player costs ".$untakenGameTrickCost." whists.");
+    
     $whistCost = $gameRules["whist_cost_on_".$player_must_take];
+    appendLog("Whist trick cost is ".$whistCost." whists.");
+    
     $untakenWhistCost = $gameRules["untaken_whist_cost_on_".$player_must_take];
+    appendLog("Untaken whist trick cost is ".$untakenWhistCost." whists.");
     
     $whisters_must_take = 0;   // if whister takes such amount, we is guaranteed not to get mount
     $one_whister_must_take = 0;
@@ -996,7 +1056,7 @@
         $whisters_must_take = 1;
         $one_whister_must_take = 1;
       }
-    } else {
+    } else { // 2 whisters
       if ($player_must_take == 6) {
         $whisters_must_take = 4;
         $one_whister_must_take = 2;
@@ -1020,6 +1080,7 @@
     
     
     if ($role1 == 2) { // onside
+      appendLog("First player is onside.");
       if ($tricks1 >= $player_must_take) 
         $delta_bullet1 = $game_cost;
       else {
@@ -1059,9 +1120,9 @@
       }
     } else if ($role2 == 1) {
       if ($role1 == 2)
-        $delta_whists_right2 += $whistCost * $tricks1;
+        $delta_whists_right2 += $whistCost * $tricks2;
       else
-        $delta_whists_left2 += $whistCost * $tricks1;
+        $delta_whists_left2 += $whistCost * $tricks2;
         
       if ($tricks2 < $one_whister_must_take && (10 - $playerTricks) < $whisters_must_take) {
         $delta_mount2 = ($one_whister_must_take - $tricks2) * $untakenWhistCost;
@@ -1086,9 +1147,9 @@
       }
     } else if ($role3 == 1) {
       if ($role2 == 2)
-        $delta_whists_right3 += $whistCost * $tricks1;
+        $delta_whists_right3 += $whistCost * $tricks3;
       else
-        $delta_whists_left3 += $whistCost * $tricks1;
+        $delta_whists_left3 += $whistCost * $tricks3;
         
       if ($tricks3 < $one_whister_must_take && (10 - $playerTricks) < $whisters_must_take) {
         $delta_mount3 = ($one_whister_must_take - $tricks3) * $untakenWhistCost;
@@ -1119,14 +1180,15 @@
     mysql_query("UPDATE players SET my_mountain = ".$mount1.", my_whists_left = ".$whists_left1.", my_whists_right = ".$whists_right1." WHERE id = ".$roomRow["player1"], $link);
     mysql_query("UPDATE players SET my_mountain = ".$mount2.", my_whists_left = ".$whists_left2.", my_whists_right = ".$whists_right2." WHERE id = ".$roomRow["player2"], $link);
     mysql_query("UPDATE players SET my_mountain = ".$mount3.", my_whists_left = ".$whists_left3.", my_whists_right = ".$whists_right3." WHERE id = ".$roomRow["player3"], $link);
-  
-    $fameIsFinished = 0;
+    
+    
+    $gameIsFinished = 0;
     if ($delta_bullet1 > 0) {
-      $fameIsFinished = updatePlayerBullet($roomRow["player1"], $roomId, $bullet1);
+      $gameIsFinished = updatePlayerBullet($roomRow["player1"], $roomId, $bullet1);
     } else if ($delta_bullet2 > 0) {
-      $fameIsFinished = updatePlayerBullet($roomRow["player2"], $roomId, $bullet2);
+      $gameIsFinished = updatePlayerBullet($roomRow["player2"], $roomId, $bullet2);
     } else if ($delta_bullet3 > 0) {
-      $fameIsFinished = updatePlayerBullet($roomRow["player3"], $roomId, $bullet3);
+      $gameIsFinished = updatePlayerBullet($roomRow["player3"], $roomId, $bullet3);
     }
     
     sendGameState($roomId, 11);

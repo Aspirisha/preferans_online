@@ -9,7 +9,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.ViewFlipper;
 
-public class GameHolder extends LinearLayout implements OnTouchListener {
+public class GameLayout extends LinearLayout implements OnTouchListener {
 	ViewFlipper flipper;
 	GameView gameView;
     private ScoreView scoreView;
@@ -27,7 +27,7 @@ public class GameHolder extends LinearLayout implements OnTouchListener {
     }
     
     
-	public GameHolder(Context context) {
+	public GameLayout(Context context) {
 		super(context);
 		LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 		setLayoutParams(params);

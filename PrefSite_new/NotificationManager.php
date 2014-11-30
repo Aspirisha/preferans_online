@@ -6,7 +6,13 @@
   
 	$regId = $_POST["reg_id"]; // this will be empty if not online notificatiion
   $id = $_POST["id"];
+  
   $link = openMysqlConnection();
+  
+  $result = mysql_query("SELECT * FROM players WHERE reg_id = '".$regId."'", $link);
+  $row = mysql_fetch_assoc($result);
+  $id = $row["id"];
+  
   $notification = $_POST["notification"];
   
   if ($notification != "online") {
@@ -34,7 +40,6 @@
     if ($playerToNotifyId != $exitedPlayerId) // HACK just debug version not to notify myself. IRL it will be impossible
 		  $response = sendMessage($receiverRegId, $message, $m_type, $activityAddress);   
       
-    unlink("Test/Log.txt");
   }                  
   
   
@@ -53,8 +58,11 @@
     $activityAddress = ReceiverIds::ENTRY_ACTIVITY;
     $m_type = EntryActivityMessageTypes::ONLINE_NOTIFICATION_ANSWER;
     $response = sendMessage($regId, $message, $m_type, $activityAddress);
+   
+    clearLog();
     
     appendLog("New player is online. His id = ".$row["id"]);
+    
 	  break;
   
   case "keep_alive":
@@ -66,7 +74,7 @@
     
     //checkTimeExpiration($row["room_id"]);
     
-    appendLog("Keepalive message received. Sent reply. ".date(DATE_RFC822));
+    appendLog("Keepalive message received. Sent reply.");
     break;
   
   case "old_id":

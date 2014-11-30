@@ -7,15 +7,12 @@
   
 	$regId = $_POST["reg_id"];
 	$request = $_POST["request"];
-	       
-  $filename="Test/name.html";
-     // write (append) the data to the file
-  file_put_contents("Test/name.html", "STart2");  
-  $link = openMysqlConnection();
+	$link = openMysqlConnection();
   
-  $result = mysql_query("SELECT * FROM players WHERE reg_id = ".$regId, $link);
+  $result = mysql_query("SELECT * FROM players WHERE reg_id = '".$regId."'", $link);
   $row = mysql_fetch_assoc($result);
   $id = $row["id"];
+  appendLog("ID IS ".$id);
    
   function notifyNewPlayerAppeared($playerToNotifyId, $newPlayerId, $playersNumber, $newPlayerNumber)
   {
@@ -24,9 +21,7 @@
     $result = mysql_query("SELECT reg_id FROM players WHERE id = '".$playerToNotifyId."'", $link);
     $receiverRegId = "";
     if ($row = mysql_fetch_assoc($result))  
-       $receiverRegId = $row["reg_id"];
-    
-    file_put_contents("Test/aaa.txt", $receiverRegId); 
+       $receiverRegId = $row["reg_id"];    
     
     $activityAddress   = "3"; // game activity
 		$m_type = "1";            // new player appeared
@@ -83,8 +78,11 @@
     appendLog("User ".$id." asked for existing rooms"); 
     
     if (isDebug()) {
-      $result = mysql_query("UPDATE rooms SET player1 = NULL, player2 = 9, player3 = 10, players_number=2, game_state=0, current_trade_bet=0 WHERE id = 14", $link);
-      $result = mysql_query("UPDATE players SET current_trade_bet=-1 WHERE id = 18", $link);
+      $result = mysql_query("UPDATE rooms SET player1 = NULL, player2 = 9, player3 = 10, players_number=2, game_state=0, current_trade_bet=0, current_suit = -1 WHERE id = 14", $link);
+      $result = mysql_query("UPDATE players SET current_trade_bet=-1 WHERE room_id = ".$roomId, $link);
+      $result = mysql_query("UPDATE players SET my_number = 2 WHERE id = 9", $link);
+      $result = mysql_query("UPDATE players SET my_number = 3 WHERE id = 10", $link);
+      mysql_query("");
     }
     
 		$result = mysql_query("SELECT * FROM rooms", $link);
@@ -191,14 +189,14 @@
       
       
       if (isDebug()) {  
-        if ($roomId == 14) { // !!! DEBUG VERSION: shuffler is always 3 so 1 will be active player
-          appendLog("User ".$id." connected to 14th room so he is not the shuffler (DEBUG!)");
-          $shuffler = 1;
+        if ($roomId == 14) { // !!! DEBUG VERSION: shuffler is always 1 so 2 will be active player
+          appendLog("User ".$id." connected to 14th room so he is next player after the shuffler (DEBUG!)");
+          $shuffler = 3;
         }
       } else
-        appendLog("Not debug!");
+        appendLog("room Id is ".$roomId." and isDebug()=".isDebug()." so it's Not debug!");
       
-      $result = mysql_query("UPDATE rooms SET shuffler = ".$shuffler.", game_state = 1 WHERE id = '".$roomId."'", $link);
+      $result = mysql_query("UPDATE rooms SET shuffler = ".$shuffler.", game_state = 1, cards_on_table = 0 WHERE id = '".$roomId."'", $link);
       $result = mysql_query("UPDATE players SET my_bullet = 0, my_mountain = 0, my_whists_left = 0, my_whists_right = 0, my_current_role = -1, current_trade_bet = -1, stopped_trading = 0, my_tricks = 0 WHERE room_id = ".$roomId, $link);
       // change this then to just init new distribution function call
       newShuffle($roomId);

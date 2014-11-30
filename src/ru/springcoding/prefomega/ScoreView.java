@@ -419,7 +419,7 @@ public class ScoreView extends ImageView {
 			
 			if (rightWhistsNumberAmount < player.whists_right.size()) {
 				rightWhists += ".";
-				rightWhists += player.whists_right.get(leftWhistsNumberAmount);
+				rightWhists += player.whists_right.get(rightWhistsNumberAmount);
 				float wistWhidth = rightWhistsMetrics.right - rightWhistsMetrics.left;
 				if (paint.measureText(rightWhists) > wistWhidth) {
 					rightWhists = "0";

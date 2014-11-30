@@ -6,11 +6,12 @@ import java.util.Arrays;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
-import ru.springcoding.prefomega.GameHolder.REDRAW_TYPE;
+import ru.springcoding.prefomega.GameLayout.REDRAW_TYPE;
 import ru.springcoding.prefomega.PlayingTableView.DrawState;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.test.PerformanceTestCase;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,7 +21,7 @@ import android.widget.Button;
 public class GameActivity extends Activity implements OnClickListener {
 	Button exitFromGame; // returns us to rooms
 	GameView gameView;
-	GameHolder gameHolder;
+	GameLayout gameHolder;
 	PlayingTableView playingTable;
 	static GameInfo gameInfo;
 	
@@ -29,14 +30,18 @@ public class GameActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		PrefApplication.setVisibleWindow(3, this);
 		gameInfo = GameInfo.getInstance();
-		gameHolder = new GameHolder(this);
+		gameHolder = new GameLayout(this);
 		gameView = gameHolder.gameView;
 		playingTable = gameHolder.gameView.playingTable;
 		setContentView(gameHolder);
 		
 		Bundle b = getIntent().getExtras();
 		gameInfo.roomId = b.getString("room_id");
-		gameInfo.ownPlayer.number = Integer.parseInt(b.getString("own_number"));
+		try { // TODO why is it called when we get back to rooms activity from game?
+			gameInfo.ownPlayer.number = Integer.parseInt(b.getString("own_number"));
+		} catch (Exception e) {
+			Log.e("Exception", e.toString());
+		}
 		
 		gameInfo.prevPlayer.number = gameInfo.ownPlayer.number - 1;
 		if (gameInfo.prevPlayer.number == 0)
@@ -64,9 +69,10 @@ public class GameActivity extends Activity implements OnClickListener {
 	
 	@Override
 	public void onBackPressed() {
-		super.onBackPressed();
 		notifyUserExitedFromRoom();
+		super.onBackPressed();
 	}
+	
 	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
@@ -187,8 +193,9 @@ public class GameActivity extends Activity implements OnClickListener {
 	}
 	
 	private void notifyUserExitedFromRoom() {
-		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
 		nameValuePairs.add(new BasicNameValuePair("id", gameInfo.ownPlayer.id));
+		nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
 		nameValuePairs.add(new BasicNameValuePair("notification", "user_exited")); 
 		nameValuePairs.add(new BasicNameValuePair("room_id", gameInfo.roomId));
 		PrefApplication.sendData(nameValuePairs, "NotificationManager.php");
@@ -309,6 +316,7 @@ public class GameActivity extends Activity implements OnClickListener {
 		case 8:
 			if (gameInfo.activePlayer != gameInfo.ownPlayer.number) {
 				gameInfo.isOpenGame = (data[2] == "1");
+				playingTable.updateCardFlips();
 			}
 			break;
 		case 9:
@@ -335,6 +343,8 @@ public class GameActivity extends Activity implements OnClickListener {
 			playingTable.hideOwnClowd();
 			playingTable.hideLeftClowd();
 			playingTable.hideRightClowd();
+			
+			playingTable.updateCardFlips();
 			break;
 		}
 		
@@ -360,6 +370,7 @@ public class GameActivity extends Activity implements OnClickListener {
 			gameInfo.currentCardBet = gameInfo.ownPlayer.myNewBet;
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
 		nameValuePairs.add(new BasicNameValuePair("id", gameInfo.ownPlayer.id));
+		nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
 		if (gameInfo.gameState == 1) { // trading is going on
 			nameValuePairs.add(new BasicNameValuePair("notification", "bet_is_done")); 
 		} else if (gameInfo.gameState == 3) { // we send put chosen game
@@ -376,6 +387,7 @@ public class GameActivity extends Activity implements OnClickListener {
 		nameValuePairs.add(new BasicNameValuePair("id", gameInfo.ownPlayer.id));
 		nameValuePairs.add(new BasicNameValuePair("notification", "cards_are_thrown")); 
 		nameValuePairs.add(new BasicNameValuePair("room_id", gameInfo.roomId));
+		nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
 		String s = Integer.toString(PrefApplication.ServerToClientCards.get(gameInfo.thrownCards.cards[0])) + " " + Integer.toString(PrefApplication.ServerToClientCards.get(gameInfo.thrownCards.cards[1]));
 		nameValuePairs.add(new BasicNameValuePair("cards", s));
 		PrefApplication.sendData(nameValuePairs, "NotificationManager.php");
@@ -386,6 +398,7 @@ public class GameActivity extends Activity implements OnClickListener {
 		nameValuePairs.add(new BasicNameValuePair("id", gameInfo.ownPlayer.id));
 		nameValuePairs.add(new BasicNameValuePair("notification", "whist_choice")); 
 		nameValuePairs.add(new BasicNameValuePair("room_id", gameInfo.roomId));
+		nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
 		nameValuePairs.add(new BasicNameValuePair("chosen_role", Integer.toString(gameInfo.ownPlayer.myRole)));
 		PrefApplication.sendData(nameValuePairs, "NotificationManager.php");
 		gameView.hideChoiceTable();
@@ -396,6 +409,7 @@ public class GameActivity extends Activity implements OnClickListener {
 		nameValuePairs.add(new BasicNameValuePair("id", gameInfo.ownPlayer.id));
 		nameValuePairs.add(new BasicNameValuePair("notification", "open_close")); 
 		nameValuePairs.add(new BasicNameValuePair("room_id", gameInfo.roomId));
+		nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
 		nameValuePairs.add(new BasicNameValuePair("is_open_game", Boolean.toString(gameInfo.isOpenGame)));
 		PrefApplication.sendData(nameValuePairs, "NotificationManager.php");
 		gameView.hideChoiceTable();
@@ -406,6 +420,7 @@ public class GameActivity extends Activity implements OnClickListener {
 		nameValuePairs.add(new BasicNameValuePair("id", gameInfo.ownPlayer.id));
 		nameValuePairs.add(new BasicNameValuePair("notification", "card_move")); 
 		nameValuePairs.add(new BasicNameValuePair("room_id", gameInfo.roomId));
+		nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
 		nameValuePairs.add(new BasicNameValuePair("move", Integer.toString(PrefApplication.ServerToClientCards.get(gameInfo.ownPlayer.lastCardMove))));
 		PrefApplication.sendData(nameValuePairs, "NotificationManager.php");
 	}
@@ -422,4 +437,6 @@ public class GameActivity extends Activity implements OnClickListener {
 		
 		super.onDestroy();
 	}
+	
+	
 }

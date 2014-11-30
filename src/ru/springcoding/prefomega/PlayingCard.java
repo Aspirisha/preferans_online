@@ -11,27 +11,29 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 
 public class PlayingCard {
-	Bitmap cardBitmap;
-	int x;
-	int y;
-	int savedX;
-	int savedY;
-	int width;
-	int height;
-	int value;
-	int roundRadius;
+	Bitmap cardBitmap = null;
+	private int x = 0;
+	private int y = 0;
+	private int savedX;
+	private int savedY;
+	int width = 0;
+	int height = 0;
+	private int value = -1;
+	private int roundRadius = 0;
     private PlayingTableView playingTable;
-    int xSpeed;
-    int ySpeed;
+    private int xSpeed = 0;
+    private int ySpeed = 0;
     
-    int destinationX;
-    int destinationY;
-    int distToFlip;
-    boolean isFlipped;
-    boolean movingToDest;
-    boolean isVisible;
+    private int destinationX;
+    private int destinationY;
+    private boolean movingToDest = false;
+    private boolean isVisible = false;
     
-    SIDE side;
+    private RectF flipRectangle = null; // card changes side whe it has at least 1 point out of rect
+    private SIDE inFlipRectangleSide;
+    private SIDE outFlipRectangleSide;
+    
+    private SIDE side = SIDE.FRONT;
     
     enum SIDE {
     	BACK, 
@@ -39,30 +41,46 @@ public class PlayingCard {
     }
 
 	public PlayingCard(PlayingTableView table) {
+		flipRectangle = new RectF();
 		playingTable = table;
-		cardBitmap = null;
-		
-		width = 0;
-		height = 0;
-		roundRadius = 0;
-		side = SIDE.FRONT;
-		
-		xSpeed = 0;
-		ySpeed = 0;
-		value = -1;
-		x = y = 0;
-		isVisible = false;
-		movingToDest = false;
 	}
     
-    public void setMovingToDestination(int lastX, int lastY, int speed, int distanceToFlip) {
+	public int getY() {
+		return y;
+	}
+	
+	public int getX() {
+		return x;
+	}
+	
+	public void setX(int newX) {
+		x = newX;
+	}
+	
+	public void setY(int newY) {
+		y = newY;
+	}
+	
+	public void setPosition(int newX, int newY) {
+		x = newX;
+		y = newY;
+	}
+	
+	public int getValue() {
+		return value;
+	}
+	
+	public void setValue(int newValue) {
+		if (value > 32)
+			return;
+		value = newValue;
+	}
+	
+    public void setMovingToDestination(int lastX, int lastY, int speed) {
     	double dist = Math.sqrt((x - lastX) * (x - lastX) + (y - lastY) * (y - lastY));
     	double xs = speed * (lastX - x) / dist;
     	double ys = speed * (lastY - y) / dist;
     	
-    	distToFlip = distanceToFlip;
-    	if (distToFlip > 0)
-    		isFlipped = false;
     	xSpeed = (int)Math.round(xs);
     	ySpeed = (int)Math.round(ys);
     	if (xSpeed == 0) {
@@ -74,6 +92,33 @@ public class PlayingCard {
     	destinationX = lastX;
     	destinationY = lastY;
     	movingToDest = true;
+    }
+    
+    public void setMovingToSavedPos(int speed) {
+    	setMovingToDestination(savedX, savedY, speed);
+    }
+    
+    public void setFlipRectAndBehaviour(float bottom, float left, float top, float right, SIDE in, SIDE out) {
+    	flipRectangle.bottom = bottom;
+    	flipRectangle.left = left;
+    	flipRectangle.top = top;
+    	flipRectangle.right = right;
+    	
+    	inFlipRectangleSide = in;
+    	outFlipRectangleSide = out;
+    	
+    	if (needFlip())
+    		flip();
+    }
+    
+    private boolean needFlip() {
+    	SIDE newSide;
+    	if (y < flipRectangle.top || y + width > flipRectangle.bottom || x < flipRectangle.left || x + width > flipRectangle.right)
+    		newSide = outFlipRectangleSide;
+    	else
+    		newSide = inFlipRectangleSide;
+    	
+    	return (newSide != side);
     }
     
 	private void update() {
@@ -91,18 +136,15 @@ public class PlayingCard {
         	if (xSpeed == 0 && ySpeed == 0) {
         		movingToDest = false;
         	}
-        	int dist = (int)Math.sqrt((x - destinationX) * (x - destinationX) + (y - destinationY) * (y - destinationY));
-        	if (!isFlipped && dist <= distToFlip) {
+        	
+        	if (needFlip())
         		flip();
-        		isFlipped = true;
-        	}
         }
 	}
 	
 	public static Bitmap getRoundedCornerBitmap(Bitmap bitmap, int radius) {
 
-		Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap
-		.getHeight(), Config.ARGB_8888);
+		Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Config.ARGB_8888);
 		Canvas canvas = new Canvas(output);
 
 		final int color = 0xff424242;
@@ -125,12 +167,11 @@ public class PlayingCard {
     public void draw(Canvas canvas) {
     	if (isVisible) {
 	        update();
-	
 	        canvas.drawBitmap(cardBitmap, x, y, null);
     	}
     }
     
-    public void setBackUp() {
+    private void setBackUp() {
     	if (side == SIDE.FRONT) {
 	    	cardBitmap = BitmapFactory.decodeResource(playingTable.getResources(), R.drawable.back);
 	    	if (cardBitmap != null) {
@@ -143,7 +184,7 @@ public class PlayingCard {
     	}
     }
     
-    public void setFrontUp() {
+    private void setFrontUp() {
     	if (value > 0 && value < 33 && side == SIDE.BACK) {
     		String name = "card".concat(Integer.toString(value));
     		int resourceId = playingTable.getResources().getIdentifier(name, "drawable", PrefApplication.getInstance().getPackageName());
@@ -158,7 +199,7 @@ public class PlayingCard {
     	}
     }
     
-    public void flip() {
+    private void flip() {
     	if (side == SIDE.BACK)
     		setFrontUp();
     	else
@@ -166,9 +207,18 @@ public class PlayingCard {
     	
     }
     
+    void setVisibility(boolean visibilitiy) {
+    	isVisible = visibilitiy;
+    }
+    
     public void saveCurrentPosition() {
     	savedX = x;
     	savedY = y;
+    }
+    
+    public void restorePosition() {
+    	x = savedX;
+    	y = savedY;
     }
     
     public void changeBitmap(Bitmap bmp, SIDE _side) {
@@ -181,16 +231,26 @@ public class PlayingCard {
 	    	cardBitmap = getRoundedCornerBitmap(cardBitmap, roundRadius);
     	}
     }
-    
-    public void setPosition(int newX, int newY) {
-    	x = newX;
-    	y = newY;
-    }
-    
+
     public void destroy() {
     	if (cardBitmap != null) {
     		cardBitmap.recycle();
     		cardBitmap = null;
     	}
+    }
+    
+    public boolean containtsPoint(int pointX, int pointY) {
+    	return (y <= pointY && (pointY <= y + height) && pointX >= x && (pointX <= x + width));
+    }
+    
+    public boolean containtsPoint(float pointX, float pointY) {
+    	return (y <= pointY && (pointY <= y + height) && pointX >= x && (pointX <= x + width));
+    }
+    
+    public void translate(float dx, float dy) {
+    	x += dx;
+    	y += dy;
+    	if (needFlip())
+    		flip();
     }
 }
