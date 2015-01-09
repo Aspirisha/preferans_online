@@ -64,21 +64,20 @@ public class WhistCellView extends TextView {
 		if (prevSelected != null && myNumber != 3) { // if it's not ok also!
 			prevSelected.setUnselected();
 		} else if (myNumber == 3 && prevSelected != null) {
-			GameInfo gameInfo = GameInfo.getInstance();
 			GameActivity gameActivity = (GameActivity)this.getContext();
-			switch (gameInfo.gameState) {
+			switch (GameInfo.gameState) {
 			case 5:
 				if (prevSelected.myNumber == 1)
-					gameInfo.ownPlayer.myRole = 1;
+					GameInfo.ownPlayer.myRole = 1;
 				else
-					gameInfo.ownPlayer.myRole = 0;
+					GameInfo.ownPlayer.myRole = 0;
 				gameActivity.sendMyWhistingChoiceToServer();
 				break;
 			case 7:
 				if (prevSelected.myNumber == 1)
-					gameInfo.isOpenGame = true;
+					GameInfo.isOpenGame = true;
 				else
-					gameInfo.isOpenGame = false;
+					GameInfo.isOpenGame = false;
 				gameActivity.sendMyOpenCloseChoiceToServer();
 				break;
 			}

@@ -19,11 +19,13 @@ public class GameView extends FrameLayout {
     
     TableLayout choiceTableSmall;
     TableLayout choiceTableBig;
-    
-    GameInfo gameInfo;
+
     private Context context;
     private WhistCellView leftChoice;
     private WhistCellView rightChoice;
+    private NameView myName;
+    private NameView leftName;
+    private NameView rightName;
     
     enum CHOICE_TABLE_STATE {
     	EMPTY,
@@ -41,12 +43,12 @@ public class GameView extends FrameLayout {
         betTableBig = new TableLayout(context);
         choiceTableSmall = new TableLayout(context);
         choiceTableBig = new TableLayout(context);
-        gameInfo = GameInfo.getInstance();
         choiceTableState = CHOICE_TABLE_STATE.EMPTY;
         
         playingTable = new PlayingTableView(_context);
-        this.addView(playingTable);
         
+        this.addView(playingTable);
+
 		try {
 			InputStream is = getResources().openRawResource(R.drawable.small_cells);
 	        BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(is, true);
@@ -156,12 +158,62 @@ public class GameView extends FrameLayout {
 		params.leftMargin = (PrefApplication.screenWidth - choiceTableBig.getWidth()) / 2;
 		this.addView(choiceTableBig, params);
 		
+		initNames(_context);
+        
 		hideBetTable();
 		hideChoiceTable();
 	}
 	
+	private void initNames(Context _context) {
+		// own name
+		myName = new NameView(_context);
+        myName.setText(GameInfo.ownPlayer.name);
+        LayoutParams params = new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT); 
+		params.gravity = Gravity.TOP;
+		params.topMargin = PrefApplication.screenHeight - GameInfo.myCardsPaddingBottom - GameInfo.cardDimens.y;
+		params.leftMargin = GameInfo.myNamePaddingLeft; // TODO  hardcode
+		
+        this.addView(myName, params); // TODO make own params
+        myName.setVisibility(INVISIBLE);
+        
+        // left name
+		leftName = new NameView(_context);
+		leftName.setText(GameInfo.nextPlayer.name);
+        params = new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT); 
+		params.gravity = Gravity.TOP;
+		params.topMargin = GameInfo.otherNamesPaddingTop;
+		params.leftMargin = GameInfo.otherNamesPaddingLeft; // TODO  hardcode
+		
+        this.addView(leftName, params); // TODO make own params
+        leftName.setVisibility(INVISIBLE);
+        
+        // right name
+		rightName = new NameView(_context);
+		rightName.setText(GameInfo.prevPlayer.name);
+        params = new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT); 
+		params.gravity = Gravity.TOP | Gravity.RIGHT;
+		params.topMargin = GameInfo.otherNamesPaddingTop;
+		params.rightMargin = GameInfo.otherNamesPaddingRight; // TODO  hardcode
+		
+        this.addView(rightName, params); // TODO make own params
+        rightName.setVisibility(INVISIBLE);
+	}
+	
+	public void countPaddings() {
+		GameInfo.myNameWidth = myName.getMeasuredWidth();
+		GameInfo.myNameHeight = myName.getMeasuredHeight();
+		GameInfo.leftNameWidth = leftName.getMeasuredWidth();
+		GameInfo.leftNameHeight = leftName.getMeasuredHeight();
+		GameInfo.rightNameWidth = rightName.getMeasuredWidth();
+		GameInfo.rightNameHeight = rightName.getMeasuredHeight();
+		playingTable.recountOwnCardsPositions();
+		playingTable.recountLeftCardsPositions();
+		playingTable.recountRightCardsPositions();
+		GameInfo.paddingsAreCounted = true;
+	}
+	
 	private void setBetTableCells(TableLayout tbl) {
-		int bet = gameInfo.currentCardBet;
+		int bet = GameInfo.currentCardBet;
 		int tableChildNumber = tbl.getChildCount();
 		for (int i = 0; i < tableChildNumber; i++) {
 			TableRow tr = (TableRow)tbl.getChildAt(i);
@@ -174,7 +226,7 @@ public class GameView extends FrameLayout {
 					bv.setUnavailable();
 				}
 				if (bv.myNumber == 16 || bv.myNumber == 22 || bv.myNumber == 28) { // misere or misere with no talon or pass are unavailable
-					if (gameInfo.gameState == 3) 
+					if (GameInfo.gameState == 3) 
 						bv.setUnavailable();
 				}
 				if (bv.myNumber == 29)
@@ -250,4 +302,19 @@ public class GameView extends FrameLayout {
 		playingTable.gameHolder = gameHolder;
 	}	
 	
+	public void updateRoomInfo() {
+		leftName.setText(GameInfo.nextPlayer.name);
+		if (!GameInfo.nextPlayer.name.isEmpty())
+			leftName.setVisibility(VISIBLE);
+		rightName.setText(GameInfo.prevPlayer.name);
+		if (!GameInfo.prevPlayer.name.isEmpty())
+			rightName.setVisibility(VISIBLE);
+		myName.setText(GameInfo.ownPlayer.name);
+		if (!GameInfo.ownPlayer.name.isEmpty())
+			myName.setVisibility(VISIBLE);
+		rightName.bringToFront();
+		myName.bringToFront();
+		leftName.bringToFront();
+		countPaddings();
+	}
 }

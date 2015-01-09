@@ -12,6 +12,7 @@ import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
+
 /**
  * This {@code IntentService} does the actual handling of the GCM message.
  * {@code GcmBroadcastReceiver} (a {@code WakefulBroadcastReceiver}) holds a
@@ -79,7 +80,6 @@ public class GCMIntentService extends IntentService {
 
         PendingIntent contentIntent = null;
         String msg = "";
-        GameInfo gameInfo = GameInfo.getInstance();
         
         if (receiver != PrefApplication.getVisibleWindow() && receiver < 100) // message is not fresh
         	return; 
@@ -105,8 +105,8 @@ public class GCMIntentService extends IntentService {
         		break;
         	case 777: // it's keepalive message 
         		msg = intent.getStringExtra("message");
-        		gameInfo.previous_server_keepalive_time = gameInfo.current_server_keepalive_time;
-        		gameInfo.current_server_keepalive_time = Long.parseLong(msg);
+        		GameInfo.previous_server_keepalive_time = GameInfo.current_server_keepalive_time;
+        		GameInfo.current_server_keepalive_time = Long.parseLong(msg);
         		break;
             default: // no activity has such address => it's error
             	return;

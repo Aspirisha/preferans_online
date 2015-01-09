@@ -1,78 +1,70 @@
 package ru.springcoding.prefomega;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
+import android.graphics.Point;
 
 public class GameInfo {
-	private static GameInfo singleton = null;
+	private static Long timeToShowClouds = Long.valueOf(0);
+	private static Long timeToShowTalon = Long.valueOf(0);
 	
-	public String roomId;
-	public String roomName;
+	// dynamic dimens
+	public static Point cardDimens = null;
+	public static int myCardsPaddingBottom = 0;
+	public static int myNameWidth = 0;
+	public static int myNameHeight = 0;
+	public static int myCardsPaddingLeft = 10;
+	public static int myCardsPaddingRight = 10;
+	public static int myNamePaddingLeft = 5;
+	public static int otherNamesPaddingTop = 5;
+	public static int otherNamesPaddingLeft = 5;
+	public static int otherNamesPaddingRight = 5;
+	public static int leftNameWidth = 0;
+	public static int leftNameHeight = 0;
+	public static int rightNameWidth = 0;
+	public static int rightNameHeight = 0;
+	public static boolean paddingsAreCounted = false;
 	
-	public Player nextPlayer;
-	public Player prevPlayer;
-	public Player ownPlayer;
+	public static String roomId;
+	public static String roomName;
 	
-	boolean isStalingrad;
-	int gameMoneyBet;
-	int gameBullet;
-	int currentCardBet;
-	String gameType;
-	int playersNumber;
-	int activePlayer;
-	int gameState;
-	int onside; // who is onside (1..3) or -1 if it's raspasy or trading
-	boolean isOpenGame;
-	int currentSuit;
-	int currentTrump; // kozyr
-	int cardsOnTable; // 1..3
-	int firstHand;
+	public static Player nextPlayer = new Player();
+	public static Player prevPlayer = new Player();
+	public static Player ownPlayer = new Player();
 	
-	long previous_server_keepalive_time;
-	long current_server_keepalive_time;
+	public static boolean isStalingrad;
+	public static int gameMoneyBet;
+	public static int gameBullet;
+	public static int currentCardBet;
+	public static String gameType;
+	public static int playersNumber = 0;
+	public static int activePlayer;
+	public static Integer gameState = -1;
+	public static int onside = -1; // who is onside (1..3) or -1 if it's raspasy or trading
+	public static boolean isOpenGame = false;
+	public static int currentSuit;
+	public static int currentTrump; 
+	public static int cardsOnTable; // 1..3
+	public static int firstHand;
 	
-	Talon talon;
-	Talon thrownCards; // after trading
+	public static long previous_server_keepalive_time = -1;
+	public static long current_server_keepalive_time = -1;
 	
-	private GameInfo () {
-		playersNumber = 0;
-		nextPlayer = new Player();
-		prevPlayer = new Player();
-		ownPlayer = new Player();
-		
-		talon = new Talon();
-		thrownCards = new Talon();
-		gameState = -1;		
-		onside = -1;
-		isOpenGame = false;
-		
-		previous_server_keepalive_time = -1;
-		current_server_keepalive_time = -1;
-	}
+	public static Talon talon = new Talon();
+	public static Talon thrownCards = new Talon(); // after trading
+
 	
-	public static GameInfo getInstance() {
-		if (singleton == null)
-			synchronized (GameInfo.class) {
-				if (singleton == null) {
-					singleton = new GameInfo();
-				}
-				
-			}
-		return singleton;
-	}
-	
-	public class Player {
-		int number;
+	public static class Player {
+		private int myNumber;
+		private int nextNumber;
+		private int prevNumber;
 		String name;
 		String id;   // id in database
 		int cardsNumber;
 		ArrayList<Integer> cards;
 		boolean cardsAreVisible; 
 		boolean moveIsDrawn;
-		int myNewBet;
+		private Integer myBet;
 		int myRole; // true if I'm whisting or if other player asked me to help him whisting (closed whisting)
 		int lastCardMove;
 		boolean hasNoTrumps;
@@ -85,7 +77,7 @@ public class GameInfo {
 		public Player() {
 			cards = new ArrayList<Integer>(12);
 			this.cardsNumber = 0;
-			myNewBet = -1;
+			myBet = -1;
 			myRole = -1;
 			bullet = new ArrayList<Integer>();
 			mountain = new ArrayList<Integer>();
@@ -100,7 +92,7 @@ public class GameInfo {
 			cardsNumber = 10;
 			cardsAreVisible = false;
 			myRole = -1;
-			myNewBet = -1;
+			myBet = -1;
 			cards.clear();
 			lastCardMove = -1;
 			moveIsDrawn = false;
@@ -113,10 +105,43 @@ public class GameInfo {
 			mountain.clear();
 			whists_left.clear();
 			whists_right.clear();
+			
+		}
+		
+		public void setNewBet(int bet) {
+			myBet = bet;
+		}
+		
+		public int getNewBet() {
+			return myBet;
+		}
+		
+		public void setMyNumber(int n) {
+			if (n > 3 || n < 1)
+				return;
+			myNumber = n;
+			nextNumber = n + 1;
+			prevNumber = n - 1;
+			if (prevNumber == 0)
+				prevNumber = 3; 
+			if (nextNumber == 4)
+				nextNumber = 1;
+		}
+		
+		public int getMyNumber() {
+			return myNumber;
+		}
+		
+		public int getNextNumber() {
+			return nextNumber;
+		}
+		
+		public int getPrevNumber() {
+			return prevNumber;
 		}
 	}
 	
-	public class Talon {
+	public static class Talon {
 		int cardsNumber;
 		int[] cards;
 		Talon() {
@@ -126,7 +151,7 @@ public class GameInfo {
 		}
 	}
 	
-	public void initNewDistribution() {
+	public static void initNewDistribution() {
 		currentCardBet = 0;
 		ownPlayer.initBeforeNewParty();
 		prevPlayer.initBeforeNewParty();
@@ -140,17 +165,41 @@ public class GameInfo {
 		cardsOnTable = 0;
 	}
 	
-	public void initNewGame() {
+	public static void initNewGame() {
 		ownPlayer.initBeforeNewGame();
 		prevPlayer.initBeforeNewGame();
 		nextPlayer.initBeforeNewGame();
 	}
 	
-	public int getCardSuit(int clientCard) {
+	public static int getCardSuit(final int clientCard) {
 		int serverCard = PrefApplication.ServerToClientCards.get(clientCard);
 		
 		if (serverCard == -1)
 			return -1;
 		return ((serverCard - 1) / 8 + 1);	//1..4
+	}
+	
+	public static void setTimeToShowClouds(long time) {
+		synchronized (timeToShowClouds) {
+			timeToShowClouds = time;
+		}
+	}
+	
+	public static long getTimeToShowClouds() {
+		synchronized (timeToShowClouds) {
+			return timeToShowClouds;
+		}
+	}
+	
+	public static void setTimeToShowTalon(long time) {
+		synchronized (timeToShowTalon) {
+			timeToShowTalon = time;
+		}
+	}
+	
+	public static long getTimeToShowTalon() {
+		synchronized (timeToShowTalon) {
+			return timeToShowTalon;
+		}
 	}
 }

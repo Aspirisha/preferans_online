@@ -32,13 +32,13 @@ public class SettingsActivity extends Activity implements OnClickListener {
         btnSettingsBack.setOnClickListener(this);
         btnApply.setOnClickListener(this);
         
-        if (GameInfo.getInstance().ownPlayer.name.isEmpty()) {
+        if (GameInfo.ownPlayer.name.isEmpty()) {
 	        ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 			nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
 			nameValuePairs.add(new BasicNameValuePair("request", "current_name"));
 			PrefApplication.sendData(nameValuePairs, "RequestManager.php");
         } else {
-        	etUserName.setText(GameInfo.getInstance().ownPlayer.name);
+        	etUserName.setText(GameInfo.ownPlayer.name);
         }
 	}
 	
@@ -55,7 +55,7 @@ public class SettingsActivity extends Activity implements OnClickListener {
 			nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
 	        nameValuePairs.add(new BasicNameValuePair("new_name", newName));
 			PrefApplication.sendData(nameValuePairs, "updatesettings.php");
-			GameInfo.getInstance().ownPlayer.name = newName;
+			GameInfo.ownPlayer.name = newName;
 			break;
 		}
 	}
@@ -77,7 +77,7 @@ public class SettingsActivity extends Activity implements OnClickListener {
 		{
 		case 0: // our current name (in future may be another current data)
 			etUserName.setText(msg);
-			GameInfo.getInstance().ownPlayer.name = msg;
+			GameInfo.ownPlayer.name = msg;
 			break;
 		default:
 			return;

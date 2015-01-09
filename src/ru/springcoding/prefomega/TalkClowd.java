@@ -5,24 +5,28 @@ import java.io.InputStream;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.BitmapFactory.Options;
 import android.graphics.BitmapRegionDecoder;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff.Mode;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.util.Log;
 
 public class TalkClowd {
-	Bitmap clowdBitmap;
-	Bitmap textBitmap;
+	Bitmap clowdBitmap = null;
+	Bitmap textBitmap = null;
 	
 	private int xClowd;
 	private int yClowd;
-	private int xText;
-	private int yText;
+	private int xText = 0;
+	private int yText = 0;
 	private int width;
 	private int height;
-	private boolean isVisible;
+	private boolean isVisible = false;
 	private PlayingTableView playingTable;
+	private Paint paint = null;
 	
 	public TalkClowd(PlayingTableView table, boolean arrowOnLeft, int _x, int _y) {
 		playingTable = table;
@@ -33,12 +37,11 @@ public class TalkClowd {
 		
 		height = clowdBitmap.getHeight();
 		width = clowdBitmap.getWidth();
-		isVisible = false;
 		xClowd = _x;
 		yClowd = _y;
-		xText = 0;
-		yText = 0;
-		textBitmap = null;
+		//paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	  //  paint.setXfermode(new PorterDuffXfermode(Mode.SRC_OUT));
+	  //  paint.setColor(Color.TRANSPARENT);
 	}
 	
 	public void setVisible(boolean vis) {
@@ -61,8 +64,8 @@ public class TalkClowd {
 	public void setBet(int bet) {
 		switch (bet) {
 		case 0:
-			//setText("pass");
-			setSuitAsText(1); // TODO test
+			setText("pass");
+			//setSuitAsText(1); // TODO test
 			break;
 		case 16:
 			setText("misere");
@@ -76,7 +79,10 @@ public class TalkClowd {
 		}
 	}
 	
-	public void setSuitAsText(int bet) {
+	private void setSuitAsText(int bet) {
+		if (bet == -1)
+			return;
+		
 		if (bet >= 16 && bet <= 21)
 			bet--;
 		else if (bet >= 22)
@@ -133,15 +139,16 @@ public class TalkClowd {
 		return xClowd + width;
 	}
 	
-	boolean getVisible() {
+	public boolean getVisible() {
 		return isVisible;
 	}
 	
 	
 	public void draw(Canvas canvas) {
     	if (isVisible) {
-	        canvas.drawBitmap(clowdBitmap, xClowd, yClowd, null);
-	        canvas.drawBitmap(textBitmap, xText, yText, null);
+	        canvas.drawBitmap(clowdBitmap, xClowd, yClowd, paint);
+	        if (textBitmap != null)
+	        	canvas.drawBitmap(textBitmap, xText, yText, paint);
     	}
     }
 	

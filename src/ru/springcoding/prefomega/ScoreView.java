@@ -45,7 +45,6 @@ public class ScoreView extends ImageView {
 	float paperHeight;
 	float paperWidth;
 	boolean recounted;
-	private GameInfo gameInfo;
 	private Typeface bulletTypeFace;
 	private Typeface scoreTypeFace;
 	private int bulletFontSize;
@@ -66,7 +65,6 @@ public class ScoreView extends ImageView {
 		setBackgroundResource(R.drawable.score_table);
 		width = PrefApplication.screenWidth;
 		height = PrefApplication.screenHeight;
-		gameInfo = GameInfo.getInstance();
 		bulletTypeFace = Typeface.create("Helvetica",Typeface.BOLD);
 		scoreTypeFace = Typeface.create("Helvetica", Typeface.ITALIC);
 		
@@ -114,7 +112,7 @@ public class ScoreView extends ImageView {
 		
 		lineCentreTop = new RectF(bulletX, bulletY - bulletRadius, bulletX, paperList.top);
 	    
-		String str = Integer.toString(gameInfo.gameBullet);
+		String str = Integer.toString(GameInfo.gameBullet);
 		bulletFontSize = 0;
 		do {
 	        paint.setTextSize(++bulletFontSize);
@@ -237,9 +235,9 @@ public class ScoreView extends ImageView {
 	}
 	
 	public void updateScoreTable() {
-		ownScoreStrings.update(gameInfo.ownPlayer);
-		leftScoreStrings.update(gameInfo.nextPlayer);
-		rightScoreStrings.update(gameInfo.prevPlayer);
+		ownScoreStrings.update(GameInfo.ownPlayer);
+		leftScoreStrings.update(GameInfo.nextPlayer);
+		rightScoreStrings.update(GameInfo.prevPlayer);
 	}
 	
 	public void clearScoreTable() {
@@ -276,7 +274,7 @@ public class ScoreView extends ImageView {
 		paint.setColor(Color.BLACK);
 		paint.setTypeface(bulletTypeFace);
 		paint.setTextSize(bulletFontSize);
-		canvas.drawText(Integer.toString(gameInfo.gameBullet), bulletX - bulletRadius / 2, bulletY, paint);
+		canvas.drawText(Integer.toString(GameInfo.gameBullet), bulletX - bulletRadius / 2, bulletY, paint);
 		
 		paint.setTypeface(scoreTypeFace);
 		paint.setTextSize(scoreFontSize);

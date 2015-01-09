@@ -82,7 +82,7 @@
       $result = mysql_query("UPDATE players SET current_trade_bet=-1 WHERE room_id = ".$roomId, $link);
       $result = mysql_query("UPDATE players SET my_number = 2 WHERE id = 9", $link);
       $result = mysql_query("UPDATE players SET my_number = 3 WHERE id = 10", $link);
-      mysql_query("");
+     // mysql_query("");
     }
     
 		$result = mysql_query("SELECT * FROM rooms", $link);

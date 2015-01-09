@@ -135,7 +135,7 @@ public class EntryActivity extends Activity implements OnClickListener {
 		switch (msgType)
 		{
 		case 0: 
-			GameInfo.getInstance().ownPlayer.id = msg;
+			GameInfo.ownPlayer.id = msg;
 		}
 	}
 	/*

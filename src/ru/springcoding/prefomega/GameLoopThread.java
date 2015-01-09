@@ -8,13 +8,11 @@ import android.util.Log;
 public class GameLoopThread extends Thread {
 	private PlayingTableView playingTable;
 	private boolean isRunning = false;
-	private GameInfo gameInfo;
 	static final long FPS = 20;
 
 	
 	public GameLoopThread(PlayingTableView view) {
         this.playingTable = view;
-        gameInfo = GameInfo.getInstance();
         playingTable.drawState = DrawState.WAITING_FOR_MORE_PLAYERS;
         setName("Game loop thread");
 	}
@@ -28,13 +26,30 @@ public class GameLoopThread extends Thread {
 	@Override
      public void run() {
 		 long ticksPS = 1000 / FPS;
-         long startTime;
+         long startTime = System.currentTimeMillis();
+         long prevTime;
          long sleepTime;
-         int timer;
          
          while (isRunning) {
         	 Canvas c = null;
+        	 prevTime = startTime;
         	 startTime = System.currentTimeMillis();
+        	 long delta_t = startTime - prevTime;
+        	 
+        	 switch (GameInfo.gameState) {
+        	 case 3: {
+        		 long time = GameInfo.getTimeToShowClouds();
+        		 if (time > 0)
+        			 GameInfo.setTimeToShowClouds(time - delta_t);
+        		 else {
+        			 playingTable.hideLeftClowd();
+        			 playingTable.hideRightClowd();
+        			 playingTable.hideOwnClowd();
+        		 }
+        		 break;
+        	 	}
+        	 }
+        	 
         	 switch (playingTable.drawState) {
         	 case TALON_SHOW:
         		 if (playingTable.talonShowTimer > 0) {
@@ -42,7 +57,6 @@ public class GameLoopThread extends Thread {
         			 if (playingTable.talonShowTimer == 0) {
         				 playingTable.talonShowTimer = -1;
         				 playingTable.addTalonCardsToPlayer();
-        				 timer = 50;
         				 playingTable.drawState = DrawState.THROW_EXTRA_CARDS;
         			 }
         		 }
