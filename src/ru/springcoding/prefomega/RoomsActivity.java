@@ -75,7 +75,7 @@ public class RoomsActivity extends Activity implements OnClickListener {
 		
 		for (String s : cols) {
 			//TextView col1 = new TextView(context);
-			TextView col1 = (TextView)getLayoutInflater().inflate(R.layout.celltemplate, null);
+			TextView col1 = (TextView)getLayoutInflater().inflate(R.layout.celltemplate, row);// TODO check if here null should be
 			col1.setText(s);
 
 			col1.setLayoutParams(params);
@@ -94,7 +94,8 @@ public class RoomsActivity extends Activity implements OnClickListener {
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 		nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
 		nameValuePairs.add(new BasicNameValuePair("request", "existing_rooms")); // 1 = money
-		PrefApplication.sendData(nameValuePairs, "RequestManager.php");
+		nameValuePairs.add(new BasicNameValuePair("request_type", "request"));
+		PrefApplication.sendData(nameValuePairs);
 		lastRefreshTime = System.currentTimeMillis();
 	}
 
@@ -123,7 +124,8 @@ public class RoomsActivity extends Activity implements OnClickListener {
 			TextView numberTextView = (TextView)row.getChildAt(0);
 			int number = Integer.parseInt(numberTextView.getText().toString()) - 1;
 			nameValuePairs.add(new BasicNameValuePair("room_id", rooms[number].id));
-			PrefApplication.sendData(nameValuePairs, "RequestManager.php");
+			nameValuePairs.add(new BasicNameValuePair("request_type", "request"));
+			PrefApplication.sendData(nameValuePairs);
 			break;
 		}
 	}

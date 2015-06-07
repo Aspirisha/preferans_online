@@ -1,4 +1,8 @@
 package ru.springcoding.prefomega;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -78,24 +82,61 @@ public class PrefApplication extends Application {
 		}
 	}
 	
-	public static void sendData(final ArrayList<NameValuePair> data, final String fileName) {
+	public static void sendData(final ArrayList<NameValuePair> data) {
          // 1) Connect via HTTP. 2) Encode data. 3) Send data.
-		new Thread(new Runnable() {
-			public void run() {
+		new AsyncTask<Void, Void, HttpResponse>() {
+
+			@Override
+			protected HttpResponse doInBackground(Void... params) {
 		        try {
 		            HttpClient httpclient = new DefaultHttpClient();
-		            HttpPost httppost = new HttpPost("http://preferance.freevar.com/" + fileName);
+		            HttpPost httppost = new HttpPost("http://192.168.1.35:8080/PrefServer/Dispatcher");
 		            httppost.setEntity(new UrlEncodedFormEntity(data));
 		            HttpResponse response = httpclient.execute(httppost);
 		            Log.i("postData", response.getStatusLine().toString());
+		            return response;
 		        }
 		        catch(Exception e) {
 		            Log.e("log_tag", "Error:  " + e.toString());
 		        }  
+				return null;
 			}
-		}).start();
+			
+			@Override
+			protected void onPostExecute(HttpResponse response) {
+				InputStream inputstream;
+				try {
+					inputstream = response.getEntity().getContent();
+					String line = PrefApplication.convertStreamToString(inputstream);
+					Log.i("log_tag", "Response:  " + line);
+				} catch (IllegalStateException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				super.onPostExecute(response);
+			}
+			
+		}.execute(null, null, null);
         
     }
+	
+	public static String convertStreamToString(InputStream is) {
+	    String line = "";
+	    StringBuilder total = new StringBuilder();
+	    BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+	    try {
+	        while ((line = rd.readLine()) != null) {
+	            total.append(line);
+	        }
+	    } catch (Exception e) {
+	        Log.e("Stream2String", "Stream exception");
+	    }
+	    return total.toString();
+	}
 	
 	public static void setVisibleWindow(int i, Context c) {
 		synchronized (singleton.lock) {
@@ -233,7 +274,7 @@ public class PrefApplication extends Application {
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
 		nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
 		
-		PrefApplication.sendData(nameValuePairs, "updatesettings.php");
+		PrefApplication.sendData(nameValuePairs);
 	}
 
 	/**

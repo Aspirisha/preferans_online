@@ -203,6 +203,7 @@ containing a value of this type.
          */
         public static final int activity_horizontal_margin=0x7f090000;
         public static final int activity_vertical_margin=0x7f090001;
+        public static final int reg_form_margins_left_right=0x7f090004;
         public static final int rooms_scroll_height=0x7f090003;
         public static final int table_text_size=0x7f090002;
     }
@@ -302,34 +303,38 @@ containing a value of this type.
     public static final class id {
         public static final int RelativeLayout1=0x7f0c000a;
         public static final int RelativeRooms=0x7f0c0009;
-        public static final int action_settings=0x7f0c001e;
+        public static final int action_settings=0x7f0c0022;
+        public static final int button1=0x7f0c0017;
         public static final int buttonAboutGame=0x7f0c0008;
-        public static final int buttonApply=0x7f0c001d;
-        public static final int buttonConnectToRoom=0x7f0c001a;
-        public static final int buttonCreateRoom=0x7f0c0019;
+        public static final int buttonApply=0x7f0c0021;
+        public static final int buttonConnectToRoom=0x7f0c001e;
+        public static final int buttonCreateRoom=0x7f0c001d;
         public static final int buttonExit=0x7f0c0007;
         public static final int buttonNewRoomBack=0x7f0c000c;
         public static final int buttonOkNewRoom=0x7f0c000b;
-        public static final int buttonRoomsBack=0x7f0c0018;
+        public static final int buttonRoomsBack=0x7f0c001c;
         public static final int buttonSettings=0x7f0c0006;
-        public static final int buttonSettingsBack=0x7f0c001b;
+        public static final int buttonSettingsBack=0x7f0c001f;
         public static final int buttonStart=0x7f0c0005;
         public static final int checkStalingrad=0x7f0c000d;
-        public static final int content_table=0x7f0c0017;
+        public static final int content_table=0x7f0c001b;
         public static final int editBet=0x7f0c0013;
-        public static final int editTextUserName=0x7f0c001c;
+        public static final int editText1=0x7f0c0015;
+        public static final int editText2=0x7f0c0016;
+        public static final int editTextUserName=0x7f0c0020;
         public static final int hybrid=0x7f0c0000;
-        public static final int linearLayout1=0x7f0c0015;
+        public static final int linearLayout1=0x7f0c0019;
         public static final int none=0x7f0c0001;
         public static final int normal=0x7f0c0002;
         public static final int satellite=0x7f0c0003;
-        public static final int scrollview_rooms=0x7f0c0016;
+        public static final int scrollview_rooms=0x7f0c001a;
         public static final int spinnerBullet=0x7f0c0011;
         public static final int spinnerGameType=0x7f0c000e;
         public static final int terrain=0x7f0c0004;
         public static final int textInsertBet=0x7f0c0012;
         public static final int textView1=0x7f0c000f;
         public static final int textView2=0x7f0c0010;
+        public static final int textView3=0x7f0c0018;
         public static final int yourMoneyOnNewRoom=0x7f0c0014;
     }
     public static final class integer {
@@ -340,8 +345,9 @@ containing a value of this type.
         public static final int entry=0x7f030001;
         public static final int game=0x7f030002;
         public static final int new_room=0x7f030003;
-        public static final int rooms=0x7f030004;
-        public static final int settings=0x7f030005;
+        public static final int registerlayout=0x7f030004;
+        public static final int rooms=0x7f030005;
+        public static final int settings=0x7f030006;
     }
     public static final class menu {
         public static final int entry=0x7f0b0000;
@@ -378,6 +384,8 @@ containing a value of this type.
         public static final int back=0x7f060029;
         public static final int cancel=0x7f06002b;
         public static final int chooseBullet=0x7f06002e;
+        public static final int choose_login=0x7f060034;
+        public static final int choose_password=0x7f060035;
         /**  Button in confirmation dialog to enable Google Play services.  Clicking it
         will direct user to application settings of Google Play services where they
         can enable it [CHAR LIMIT=40] 
@@ -459,7 +467,11 @@ containing a value of this type.
         public static final int exist_rooms=0x7f06001c;
         public static final int gameType=0x7f06002f;
         public static final int get_regid=0x7f060031;
+        public static final int login=0x7f060036;
+        public static final int password=0x7f060037;
         public static final int player_name=0x7f060022;
+        public static final int register=0x7f060032;
+        public static final int registration_step=0x7f060033;
         public static final int save_settings=0x7f060023;
         public static final int set_bet=0x7f060028;
         public static final int settings_back_button=0x7f060021;

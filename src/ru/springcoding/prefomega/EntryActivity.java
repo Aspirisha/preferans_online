@@ -1,9 +1,18 @@
 package ru.springcoding.prefomega;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
@@ -49,20 +58,20 @@ public class EntryActivity extends Activity implements OnClickListener {
 
 		// Check device for Play Services APK. If check succeeds, proceed with
 		// GCM registration.
-		if (PrefApplication.checkPlayServices()) {
+		/*if (PrefApplication.checkPlayServices()) {
 			PrefApplication.getInstance().getRegistrationId();
 
 			if (PrefApplication.regid.isEmpty()) {
 				PrefApplication.getInstance().registerInBackground();
-			} 
+			} */
 		/*else {
 				PrefApplication.getInstance().pingServer();
 			}*/
 			
-		} else {
+		/*} else {
 			Log.i(TAG, "No valid Google Play Services APK found.");
 			Toast.makeText(this, "CheckPlayServices: No valid Google Play Services APK found.", 0).show();
-		}
+		}*/
 
 		String service = Context.WIFI_SERVICE;
 		wifi = (WifiManager) getSystemService(service);
@@ -75,11 +84,33 @@ public class EntryActivity extends Activity implements OnClickListener {
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
 		nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
 		nameValuePairs.add(new BasicNameValuePair("notification", "online"));
-		PrefApplication.sendData(nameValuePairs, "NotificationManager.php");
+		nameValuePairs.add(new BasicNameValuePair("request_type", "notification"));
+		PrefApplication.sendData(nameValuePairs);
 		
 		PrefApplication.runKeepAlive(true);
+		
+		 HttpClient httpclient = new DefaultHttpClient();
+		
+		 HttpGet httpget = new HttpGet("http://192.168.1.35:8080/PrefServer/Dispatcher");
+		 try {
+		     HttpResponse response = httpclient.execute(httpget);
+		     if(response != null) {
+		         String line = "";
+		         InputStream inputstream = response.getEntity().getContent();
+		         line = PrefApplication.convertStreamToString(inputstream);
+		         Toast.makeText(this, line, Toast.LENGTH_SHORT).show();
+		     } else {
+		         Toast.makeText(this, "Unable to complete your request", Toast.LENGTH_LONG).show();
+		     }
+		 } catch (ClientProtocolException e) {
+		     Toast.makeText(this, "Caught ClientProtocolException", Toast.LENGTH_SHORT).show();
+		 } catch (IOException e) {
+		     Toast.makeText(this, "Caught IOException", Toast.LENGTH_SHORT).show();
+		 } catch (Exception e) {
+		     Toast.makeText(this, "Caught Exception", Toast.LENGTH_SHORT).show();
+		 }
 	}
-
+	
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {

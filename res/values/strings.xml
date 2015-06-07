@@ -25,4 +25,10 @@
     <string name="gameType">Game type</string>
     <string name="your_money">Your money: </string>
 	<string name="get_regid">Get new registration id</string>
+	<string name="register">Register!</string>
+	<string name="registration_step">Simple registration step</string>
+	<string name="choose_login">Choose login</string>
+	<string name="choose_password">Choose password</string>
+	<string name="login">login</string>
+	<string name="password">password</string>
 </resources>

@@ -55,7 +55,8 @@ public class RegistrationTestThread extends Thread {
 		 ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 		 nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
 		 nameValuePairs.add(new BasicNameValuePair("request", "ping"));
-		 PrefApplication.sendData(nameValuePairs, "RequestManager.php"); 
+		 nameValuePairs.add(new BasicNameValuePair("request_type", "request"));
+		 PrefApplication.sendData(nameValuePairs); 
 	 }
 	 
 	 private void sendServerOldId(String id) {
@@ -63,6 +64,7 @@ public class RegistrationTestThread extends Thread {
 		 nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
 		 nameValuePairs.add(new BasicNameValuePair("notification", "old_id"));
 		 nameValuePairs.add(new BasicNameValuePair("old_id", id));
-		 PrefApplication.sendData(nameValuePairs, "NotificationManager.php");  
+		 nameValuePairs.add(new BasicNameValuePair("request_type", "notification"));
+		 PrefApplication.sendData(nameValuePairs);  
 	 }
 }

@@ -36,7 +36,8 @@ public class SettingsActivity extends Activity implements OnClickListener {
 	        ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 			nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
 			nameValuePairs.add(new BasicNameValuePair("request", "current_name"));
-			PrefApplication.sendData(nameValuePairs, "RequestManager.php");
+			nameValuePairs.add(new BasicNameValuePair("request_type", "request"));
+			PrefApplication.sendData(nameValuePairs);
         } else {
         	etUserName.setText(GameInfo.ownPlayer.name);
         }
@@ -54,7 +55,8 @@ public class SettingsActivity extends Activity implements OnClickListener {
 			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 			nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
 	        nameValuePairs.add(new BasicNameValuePair("new_name", newName));
-			PrefApplication.sendData(nameValuePairs, "updatesettings.php");
+	        nameValuePairs.add(new BasicNameValuePair("request_type", "request"));
+			PrefApplication.sendData(nameValuePairs);
 			GameInfo.ownPlayer.name = newName;
 			break;
 		}
