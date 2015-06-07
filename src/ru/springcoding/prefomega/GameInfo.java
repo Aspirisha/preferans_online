@@ -1,6 +1,8 @@
 package ru.springcoding.prefomega;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.graphics.Point;
 
@@ -24,6 +26,7 @@ public class GameInfo {
 	public static int rightNameWidth = 0;
 	public static int rightNameHeight = 0;
 	public static boolean paddingsAreCounted = false;
+	public static Map<Integer, Integer> ServerToClientCards;
 	
 	public static String roomId;
 	public static String roomName;
@@ -46,6 +49,7 @@ public class GameInfo {
 	public static int currentTrump; 
 	public static int cardsOnTable; // 1..3
 	public static int firstHand;
+	public static int currentTalonCardRaspasy = -1;
 	
 	public static long previous_server_keepalive_time = -1;
 	public static long current_server_keepalive_time = -1;
@@ -53,22 +57,47 @@ public class GameInfo {
 	public static Talon talon = new Talon();
 	public static Talon thrownCards = new Talon(); // after trading
 
+	static {
+		ServerToClientCards = new HashMap<Integer, Integer>();
+		for (int i = 1; i <= 8; i++)
+			ServerToClientCards.put(i, 9 - i);
+		for (int i = 1; i <= 8; i++)
+			ServerToClientCards.put(i + 8, 25 - i);
+		for (int i = 1; i <= 8; i++)
+			ServerToClientCards.put(i + 16, 17 - i);
+		for (int i = 1; i <= 8; i++)
+			ServerToClientCards.put(i + 24, 33 - i);		
+		ServerToClientCards.put(-1, -1);
+	}
+	
+	public enum GameState {
+		TALON_TRADING,
+		RASPASY,
+		PLAYER_THROWS,
+		PLAYER_GAME_CHICE_INFO,
+		WHIST_OR_PASS_CHOICE,
+		OPEN_OR_CLOSE_CHOICE,
+		WHO_CHECKS_MISERE_CHOICE,
+		NORMAL_GAME,
+		MISERE
+	}
 	
 	public static class Player {
 		private int myNumber;
 		private int nextNumber;
 		private int prevNumber;
-		String name;
+		String name = "";
 		String id;   // id in database
-		int cardsNumber;
+		int cardsNumber = 0;
 		ArrayList<Integer> cards;
 		boolean cardsAreVisible; 
 		boolean moveIsDrawn;
-		private Integer myBet;
-		int myRole; // true if I'm whisting or if other player asked me to help him whisting (closed whisting)
+		private Integer myBet = -1;
+		int myRole = -1; // true if I'm whisting or if other player asked me to help him whisting (closed whisting)
 		int lastCardMove;
-		boolean hasNoTrumps;
-		boolean hasNoSuit;
+		boolean hasNoTrumps = true;
+		boolean hasNoSuit = true;
+		int timeLeft = 0;
 		ArrayList<Integer> bullet;
 		ArrayList<Integer> mountain;
 		ArrayList<Integer> whists_left;
@@ -76,16 +105,10 @@ public class GameInfo {
 		
 		public Player() {
 			cards = new ArrayList<Integer>(12);
-			this.cardsNumber = 0;
-			myBet = -1;
-			myRole = -1;
 			bullet = new ArrayList<Integer>();
 			mountain = new ArrayList<Integer>();
 			whists_left = new ArrayList<Integer>();
 			whists_right = new ArrayList<Integer>();
-			name = "";
-			hasNoTrumps = false;
-			hasNoSuit = false;
 		}
 		
 		public void initBeforeNewParty() {
@@ -171,13 +194,19 @@ public class GameInfo {
 		nextPlayer.initBeforeNewGame();
 	}
 	
-	public static int getCardSuit(final int clientCard) {
-		int serverCard = PrefApplication.ServerToClientCards.get(clientCard);
-		
+	public static int getClientCardSuit(final int clientCard) {		
+		int serverCard = ServerToClientCards.get(clientCard);
 		if (serverCard == -1)
 			return -1;
 		return ((serverCard - 1) / 8 + 1);	//1..4
 	}
+	
+	public static int getServerCardSuit(final int serverCard) {
+		if (serverCard == -1)
+			return -1;
+		return ((serverCard - 1) / 8 + 1);	//1..4
+	}
+	
 	
 	public static void setTimeToShowClouds(long time) {
 		synchronized (timeToShowClouds) {

@@ -185,6 +185,32 @@ private static final int INVALID_POINTER_ID = -1;
             // define if some card was touched
             if (GameInfo.activePlayer == GameInfo.ownPlayer.getMyNumber()) {
 	            switch (GameInfo.gameState) {
+	            case 2:
+	              	movingCardIndex = -1;
+	            	movingCard = null;
+	            	if (GameInfo.cardsOnTable == 3 || cardMoveFromOwn.getValue() != -1) // already made a move
+	            		break;
+	            	for (int i = 0; i < 12; i++) {
+		            	PlayingCard card = ownCards[i];
+		            	if (card.getValue() != -1) {
+		            		if (card.containtsPoint(x, y))
+		            			movingCardIndex = i;
+		            	}
+		            }
+	            	if (movingCardIndex != -1) {
+	            		int mySuit = GameInfo.getClientCardSuit(ownCards[movingCardIndex].getValue());
+	            		// check if the move is correct
+	            		if (GameInfo.currentSuit != -1 && mySuit != GameInfo.currentSuit) {
+	            			if (GameInfo.ownPlayer.hasNoSuit == false) {
+	            				movingCardIndex = -1;
+	            				break;
+	            			}
+	            		}	
+	            		movingCard = ownCards[movingCardIndex];
+	            		movingCard.saveCurrentPosition();
+	            		movingCard.setFlipRectAndBehaviour(PrefApplication.screenHeight, 0, PrefApplication.screenHeight - 2 * movingCard.height, PrefApplication.screenWidth, SIDE.FRONT, SIDE.FRONT);
+	            	}
+	            	break;
 	            case 3:
 	            	if (GameInfo.thrownCards.cardsNumber == 2) 
 	            		break;
@@ -216,7 +242,7 @@ private static final int INVALID_POINTER_ID = -1;
 		            	}
 		            }
 	            	if (movingCardIndex != -1) {
-	            		int mySuit = GameInfo.getCardSuit(ownCards[movingCardIndex].getValue());
+	            		int mySuit = GameInfo.getClientCardSuit(ownCards[movingCardIndex].getValue());
 	            		// check if the move is correct
 	            		if (GameInfo.currentSuit != -1 && mySuit != GameInfo.currentSuit) {
 	            			if (GameInfo.ownPlayer.hasNoSuit == false) {
@@ -272,6 +298,36 @@ private static final int INVALID_POINTER_ID = -1;
         case MotionEvent.ACTION_UP: {
             mActivePointerId = INVALID_POINTER_ID;
             switch (GameInfo.gameState) {
+            case 2:
+            	if (movingCard != null) {
+            		if (movingCard.getY() + 3 * movingCard.height + 10 < getHeight()) {
+            			GameInfo.ownPlayer.lastCardMove = movingCard.getValue();
+            			PlayingCard temp = cardMoveFromOwn;
+            			cardMoveFromOwn = movingCard;
+            			ownCards[movingCardIndex] = temp;
+            		    ownCards[movingCardIndex].setValue(-1);
+            		    ownCards[movingCardIndex].setVisibility(false);
+            		    GameInfo.ownPlayer.cardsNumber--;
+            		    movingCard = null;
+            		    movingCardIndex = -1;
+            		    this.recountOwnCardsPositions();
+            		    //postInvalidate();
+            		    int dy = 40; // hardcode
+            		    int dx = PrefApplication.screenWidth;
+            		    cardMoveFromOwn.setMovingToDestination((dx - cardMoveFromOwn.width) / 2, 10 + dy, 15);
+            		    
+            		    GameInfo.ownPlayer.moveIsDrawn = true;
+            			threeCards[GameInfo.cardsOnTable] = cardMoveFromOwn;
+            			
+            			gameActivity.sendMyCardMoveToServer();           				           			
+            		} else { // it goes back to user
+            			movingCard.setMovingToSavedPos(15);
+            		}
+        			movingCard = null;
+        			movingCardIndex = -1;
+            	}
+            	break;
+            	
             case 3:
             	if (movingCard != null) {
             		if (movingCard.getY() + 3 * movingCard.height + 10 < getHeight())
@@ -305,8 +361,7 @@ private static final int INVALID_POINTER_ID = -1;
             	break;
             case 9:
             	if (movingCard != null) {
-            		if (movingCard.getY() + 3 * movingCard.height + 10 < getHeight())
-            		{
+            		if (movingCard.getY() + 3 * movingCard.height + 10 < getHeight()) {
             			GameInfo.ownPlayer.lastCardMove = movingCard.getValue();
             			PlayingCard temp = cardMoveFromOwn;
             			cardMoveFromOwn = movingCard;
@@ -864,7 +919,7 @@ private static final int INVALID_POINTER_ID = -1;
 		GameInfo.ownPlayer.hasNoSuit = true;
 		GameInfo.ownPlayer.hasNoTrumps = true;
 		for (int i = 0; i < 12; i++) {
-			int suit = GameInfo.getCardSuit(ownCards[i].getValue());
+			int suit = GameInfo.getClientCardSuit(ownCards[i].getValue());
 			if (suit == GameInfo.currentSuit)
 				GameInfo.ownPlayer.hasNoSuit = false;
 			if (suit == GameInfo.currentTrump)
@@ -875,6 +930,20 @@ private static final int INVALID_POINTER_ID = -1;
 	public void initNewThreeCards() {
 		for (int i = 0; i < 3; i++)
 			threeCards[i] = null;
+	}
+	
+	void showNextTalonCardForRaspasy() {
+		if (talonCards[1].getValue() == 0) {
+			talonCards[1].setValue(GameInfo.currentTalonCardRaspasy);
+			talonCards[1].flip();
+		} else if (talonCards[0].getValue() == 0) { 
+			talonCards[1].setValue(-1);
+			talonCards[1].setVisibility(false);
+			talonCards[0].setValue(GameInfo.currentTalonCardRaspasy);
+			talonCards[0].flip();
+		} else {
+			Log.i("Playing table", "Cannot open more cards from talon");
+		}
 	}
 	
 }

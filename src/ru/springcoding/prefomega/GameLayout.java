@@ -1,6 +1,5 @@
 package ru.springcoding.prefomega;
 
-import ru.springcoding.prefomega.PlayingTableView.DrawState;
 import android.content.Context;
 import android.view.MotionEvent;
 import android.view.View;
@@ -114,23 +113,7 @@ public class GameLayout extends LinearLayout implements OnTouchListener {
 	    }
 		return false;
 	}
-	
-	public void updateTalonOnPlayingTable(int[] cards) {
-		gameView.playingTable.talonChanged(cards);
-	}
-	
-	public void updateCardsOnPlayingTable(int[] ownCards, int[] leftCards, int[] rightCards) {
-		gameView.playingTable.showCardsOnTable(ownCards, leftCards, rightCards);
-	}
-	
-	public void setTalonShowTimer(int time) {
-		gameView.playingTable.talonShowTimer = time;
-	}
-	
-	public void setPlayingTableState(DrawState state) {
-		gameView.playingTable.setDrawState(state);
-	}
-	
+
 	public void updateScores() {
 		scoreView.updateScoreTable();
 	}

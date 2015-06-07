@@ -7,16 +7,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapRegionDecoder;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PorterDuff.Mode;
-import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.util.Log;
 
 public class TalkClowd {
-	Bitmap clowdBitmap = null;
-	Bitmap textBitmap = null;
+	private Bitmap clowdBitmap = null;
+	private Bitmap textBitmap = null;
 	
 	private int xClowd;
 	private int yClowd;

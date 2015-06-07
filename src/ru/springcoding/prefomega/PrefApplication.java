@@ -34,7 +34,6 @@ public class PrefApplication extends Application {
 	
 	public static String regid;
 	public static String message;
-	public static Map<Integer, Integer> ServerToClientCards;
 	public static int screenWidth;
 	public static int screenHeight;
 	private static int currentVisibleWindow; // this variable will be checked each time 
@@ -69,17 +68,6 @@ public class PrefApplication extends Application {
 		screenHeight = metrics.heightPixels;
 		regTestThread = new RegistrationTestThread();
 		keepAliveThread = new KeepAliveThread();
-		
-		ServerToClientCards = new HashMap<Integer, Integer>();
-		for (int i = 1; i <= 8; i++)
-			ServerToClientCards.put(i, 9 - i);
-		for (int i = 1; i <= 8; i++)
-			ServerToClientCards.put(i + 8, 25 - i);
-		for (int i = 1; i <= 8; i++)
-			ServerToClientCards.put(i + 16, 17 - i);
-		for (int i = 1; i <= 8; i++)
-			ServerToClientCards.put(i + 24, 33 - i);		
-		ServerToClientCards.put(-1, -1);
 	}
 	
 	public static void setVisibleAreaSize(int height, int width) {

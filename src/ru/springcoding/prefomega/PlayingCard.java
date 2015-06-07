@@ -199,7 +199,7 @@ public class PlayingCard {
     	}
     }
     
-    private void flip() {
+     void flip() {
     	if (side == SIDE.BACK)
     		setFrontUp();
     	else

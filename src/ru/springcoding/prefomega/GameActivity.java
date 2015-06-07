@@ -8,6 +8,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import ru.springcoding.prefomega.PlayingTableView.DrawState;
 import android.app.Activity;
+import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,12 +23,26 @@ public class GameActivity extends Activity implements OnClickListener {
 	GameLayout gameHolder;
 	PlayingTableView playingTable;
 	
+	// different message types
+	static final int ROOM_INFO = 0;
+	static final int NEW_PLAYER_APPEARED = 1;
+	static final int CARDS_ARE_SENT = 2;
+	static final int ACTIVE_PLAYER_INFO = 3;
+	static final int PLAYER_EXITED = 4;
+	static final int GAME_STATE_INFO = 5;
+	static final int PLAYER_THREW_CARDS = 6;
+	static final int ROLES_INFO = 7;
+	static final int WHISTERS_VISIBLE_CARDS = 8;
+	static final int BETS_INFO = 9;
+	// game states codes
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		gameHolder = new GameLayout(this);
 		gameView = gameHolder.gameView;
-		playingTable = gameHolder.gameView.playingTable;
+		playingTable = gameView.getPlayingTable();
 		setContentView(gameHolder);
 		
 		Bundle b = getIntent().getExtras();
@@ -74,7 +89,7 @@ public class GameActivity extends Activity implements OnClickListener {
 		String[] data;
 		switch (msgType)
 		{
-		case 0: // all data about room has come
+		case ROOM_INFO: // all data about room has come
 			try {
 				data = msg.split(" ");
 				GameInfo.roomName = data[0];
@@ -98,7 +113,7 @@ public class GameActivity extends Activity implements OnClickListener {
 				Log.i("GameAct", "Exception: " + e.toString());     
 			}
 			break;
-		case 1:  // new player appeared
+		case NEW_PLAYER_APPEARED:  // new player appeared
 			data = msg.split(" ");
 			GameInfo.playersNumber = Integer.parseInt(data[1]);
 			int newPlayerNumber = Integer.parseInt(data[2]);
@@ -110,18 +125,18 @@ public class GameActivity extends Activity implements OnClickListener {
 				GameInfo.prevPlayer.id = newPlayerId;
 			
 			break;
-		case 2: // cards are sent
+		case CARDS_ARE_SENT: // cards are sent
 			manageSentCards(msg);
 			break;
-		case 3:  // active player info
+		case ACTIVE_PLAYER_INFO:  // active player info
 			GameInfo.activePlayer = Integer.parseInt(msg);
 			break;
-		case 4:  // player exited
+		case PLAYER_EXITED:  // player exited
 			break;
-		case 5: // server has sent us current game state
+		case GAME_STATE_INFO: // server has sent us current game state
 			manageNewState(msg);
 			break;
-		case 6: // we are notified that player has thrown cards. So draw them on table
+		case PLAYER_THREW_CARDS: // we are notified that player has thrown cards. So draw them on table
 			if (GameInfo.activePlayer != GameInfo.ownPlayer.getMyNumber()) { // for else we already know that we have thrown cards
 				playingTable.drawThrownCards();
 			} else { // if we are active, we need to choose real game
@@ -130,14 +145,25 @@ public class GameActivity extends Activity implements OnClickListener {
 					gameView.showBetTable();
 			}
 			break;
-		case 7: // all the roles are sent
+		case ROLES_INFO: // all the roles are sent
 			data = msg.split(" ");
 			// our own role is definitely known for us
 			GameInfo.prevPlayer.myRole = Integer.parseInt(data[GameInfo.prevPlayer.getMyNumber() - 1]);
 			GameInfo.nextPlayer.myRole = Integer.parseInt(data[GameInfo.nextPlayer.getMyNumber() - 1]);
 			break;
-		case 8: // server has sent us visible cards of whisters
+		case WHISTERS_VISIBLE_CARDS: // server has sent us visible cards of whisters
 			manageWhistersCards(msg);
+			break;
+		case BETS_INFO: // current bets
+			data = msg.split(" ");
+			GameInfo.prevPlayer.setNewBet(Integer.parseInt(data[GameInfo.prevPlayer.getMyNumber() - 1]));
+			GameInfo.nextPlayer.setNewBet(Integer.parseInt(data[GameInfo.nextPlayer.getMyNumber() - 1]));
+			playingTable.rightClowd.setBet(GameInfo.prevPlayer.getNewBet());
+			playingTable.ownClowd.setBet(GameInfo.ownPlayer.getNewBet());
+			playingTable.leftClowd.setBet(GameInfo.nextPlayer.getNewBet());
+			playingTable.showMyClowd();
+			playingTable.showRightClowd();
+			playingTable.showLeftClowd();
 			break;
 		default:
 			return;
@@ -152,7 +178,7 @@ public class GameActivity extends Activity implements OnClickListener {
 			int startIndex = 10 * (GameInfo.prevPlayer.myRole - 1);
 			int endIndex = startIndex + 10;
 			for (int i = startIndex; i < endIndex; i++)
-				prevCards[i - startIndex] = PrefApplication.ServerToClientCards.get(Integer.parseInt(data[i])); 
+				prevCards[i - startIndex] = GameInfo.ServerToClientCards.get(Integer.parseInt(data[i])); 
 			Arrays.sort(prevCards);
 			GameInfo.prevPlayer.cardsAreVisible = true;
 			playingTable.rightCardsChanged(prevCards);
@@ -163,7 +189,7 @@ public class GameActivity extends Activity implements OnClickListener {
 			int startIndex = 10 * (GameInfo.nextPlayer.myRole - 1);
 			int endIndex = startIndex + 10;
 			for (int i = startIndex; i < endIndex; i++)
-				nextCards[i - startIndex] = PrefApplication.ServerToClientCards.get(Integer.parseInt(data[i])); 
+				nextCards[i - startIndex] = GameInfo.ServerToClientCards.get(Integer.parseInt(data[i])); 
 			Arrays.sort(nextCards);
 			GameInfo.nextPlayer.cardsAreVisible = true;
 			playingTable.leftCardsChanged(nextCards);
@@ -214,7 +240,19 @@ public class GameActivity extends Activity implements OnClickListener {
 			playingTable.showRightClowd();
 			playingTable.showLeftClowd();
 			break;
-		case 2: // raspasy
+		case 2:{ // raspasy
+			GameInfo.currentTalonCardRaspasy = Integer.parseInt(data[2]);
+			GameInfo.currentSuit = Integer.parseInt(data[3]);
+			Log.i("Card suit on raspasy", String.valueOf(GameInfo.currentSuit));
+			if (GameInfo.currentTalonCardRaspasy != -1) {
+				playingTable.hideOwnClowd();
+				playingTable.hideRightClowd();
+				playingTable.hideLeftClowd();
+				playingTable.showNextTalonCardForRaspasy();
+			} else {
+				playingTable.hideThrownCards();
+			}
+		}
 			break;
 		case 3: // active thinks what to throw; others watch talon and admire
 			GameInfo.nextPlayer.setNewBet(Integer.parseInt(data[2 + GameInfo.nextPlayer.getMyNumber()]));
@@ -239,8 +277,8 @@ public class GameActivity extends Activity implements OnClickListener {
 			GameInfo.talon.cardsNumber = 2;
 			int cards[] = new int[2];
 			for (int i = 0; i < 2; i++) {
-				cards[i] = PrefApplication.ServerToClientCards.get(Integer.parseInt(data[i + 2]));
-				gameHolder.updateTalonOnPlayingTable(cards);
+				cards[i] = GameInfo.ServerToClientCards.get(Integer.parseInt(data[i + 2]));
+				playingTable.talonChanged(cards);
 			}
 			if (GameInfo.activePlayer == GameInfo.ownPlayer.getMyNumber()) {
 				// for 10 seconds we show talon, then it goes to us. If user taps, talon goes immediately
@@ -309,9 +347,9 @@ public class GameActivity extends Activity implements OnClickListener {
 			break;
 		case 9:
 			GameInfo.currentSuit = Integer.parseInt(data[2]);
-			GameInfo.prevPlayer.lastCardMove = PrefApplication.ServerToClientCards.get(Integer.parseInt(data[2 + GameInfo.prevPlayer.getMyNumber()]));
-			GameInfo.nextPlayer.lastCardMove = PrefApplication.ServerToClientCards.get(Integer.parseInt(data[2 + GameInfo.nextPlayer.getMyNumber()]));
-			GameInfo.ownPlayer.lastCardMove = PrefApplication.ServerToClientCards.get(Integer.parseInt(data[2 + GameInfo.ownPlayer.getMyNumber()]));
+			GameInfo.prevPlayer.lastCardMove = GameInfo.ServerToClientCards.get(Integer.parseInt(data[2 + GameInfo.prevPlayer.getMyNumber()]));
+			GameInfo.nextPlayer.lastCardMove = GameInfo.ServerToClientCards.get(Integer.parseInt(data[2 + GameInfo.nextPlayer.getMyNumber()]));
+			GameInfo.ownPlayer.lastCardMove = GameInfo.ServerToClientCards.get(Integer.parseInt(data[2 + GameInfo.ownPlayer.getMyNumber()]));
 			GameInfo.cardsOnTable = Integer.parseInt(data[6]);
 			
 			if (GameInfo.cardsOnTable == 1) {
@@ -338,18 +376,17 @@ public class GameActivity extends Activity implements OnClickListener {
 		
 	}
 	
-	
 	private void manageSentCards(String msg) {
 		String[] data = msg.split(" ");
 		if (data.length != 10) // smth is wrong!
 			return;
 		int cards[] = new int[10];
 		for (int i = 0; i < 10; i++)
-			cards[i] = PrefApplication.ServerToClientCards.get(Integer.parseInt(data[i]));
+			cards[i] = GameInfo.ServerToClientCards.get(Integer.parseInt(data[i]));
 		Arrays.sort(cards);
 		GameInfo.initNewDistribution();
 
-		gameHolder.updateCardsOnPlayingTable(cards, null, null);
+		playingTable.showCardsOnTable(cards, null, null);
 		// show cards on table!
 	}
 	
@@ -360,7 +397,6 @@ public class GameActivity extends Activity implements OnClickListener {
 		nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
 		nameValuePairs.add(new BasicNameValuePair("id", GameInfo.ownPlayer.id));
 
-		nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
 		if (GameInfo.gameState == 1) { // trading is going on
 			nameValuePairs.add(new BasicNameValuePair("notification", "bet_is_done")); 
 		} else if (GameInfo.gameState == 3) { // we send put chosen game
@@ -378,7 +414,8 @@ public class GameActivity extends Activity implements OnClickListener {
 		nameValuePairs.add(new BasicNameValuePair("notification", "cards_are_thrown")); 
 		nameValuePairs.add(new BasicNameValuePair("room_id", GameInfo.roomId));
 		nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
-		String s = Integer.toString(PrefApplication.ServerToClientCards.get(GameInfo.thrownCards.cards[0])) + " " + Integer.toString(PrefApplication.ServerToClientCards.get(GameInfo.thrownCards.cards[1]));
+		String s = Integer.toString(GameInfo.ServerToClientCards.get(GameInfo.thrownCards.cards[0])) + " " 
+				+ Integer.toString(GameInfo.ServerToClientCards.get(GameInfo.thrownCards.cards[1]));
 		nameValuePairs.add(new BasicNameValuePair("cards", s));
 		PrefApplication.sendData(nameValuePairs, "NotificationManager.php");
 	}
@@ -411,7 +448,7 @@ public class GameActivity extends Activity implements OnClickListener {
 		nameValuePairs.add(new BasicNameValuePair("notification", "card_move")); 
 		nameValuePairs.add(new BasicNameValuePair("room_id", GameInfo.roomId));
 		nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
-		nameValuePairs.add(new BasicNameValuePair("move", Integer.toString(PrefApplication.ServerToClientCards.get(GameInfo.ownPlayer.lastCardMove))));
+		nameValuePairs.add(new BasicNameValuePair("move", Integer.toString(GameInfo.ServerToClientCards.get(GameInfo.ownPlayer.lastCardMove))));
 		PrefApplication.sendData(nameValuePairs, "NotificationManager.php");
 	}
 	

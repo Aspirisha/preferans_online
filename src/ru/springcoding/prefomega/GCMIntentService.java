@@ -26,6 +26,14 @@ public class GCMIntentService extends IntentService {
     private NotificationManager mNotificationManager;
     NotificationCompat.Builder builder;
 
+    // Message receivers codes
+    static final int ENTRY_ACTIVITY = 0;
+    static final int NEW_ROOM_ACTIVITY = 1;
+    static final int EXISTING_ROOMS_ACTIVITY = 2;
+    static final int GAME_ACTIVITY = 3;
+    static final int SETTINGS_ACTIVITY = 4;
+    static final int KEEPALIVE_MANAGER = 777;
+    
     public GCMIntentService() {
         super("GcmIntentService");
     }
@@ -79,34 +87,36 @@ public class GCMIntentService extends IntentService {
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
 
         PendingIntent contentIntent = null;
-        String msg = "";
         
         if (receiver != PrefApplication.getVisibleWindow() && receiver < 100) // message is not fresh
         	return; 
         
         switch (receiver) {
-        	case 0: 
+        	case ENTRY_ACTIVITY: 
         		intent.setClass(this, EntryActivity.class);
         		break;
-        	case 1:
+        	case NEW_ROOM_ACTIVITY:
         		intent.setClass(this, NewRoomActivity.class);
                 break;
-        	case 2:
+        	case EXISTING_ROOMS_ACTIVITY:
         		intent.setClass(this, RoomsActivity.class);
         		break;
-        	case 3:
+        	case GAME_ACTIVITY:
         		intent.setClass(this, GameActivity.class);
         		break;
-        	case 4:
+        	case SETTINGS_ACTIVITY:
         		intent.setClass(this, SettingsActivity.class);
         		break;
         	case 100: // it's ping info 
         		PrefApplication.pingStatus = true;
         		break;
-        	case 777: // it's keepalive message 
-        		msg = intent.getStringExtra("message");
+        	case KEEPALIVE_MANAGER: // it's keepalive message 
+        		String msg[] = intent.getStringExtra("message").split(" ");
         		GameInfo.previous_server_keepalive_time = GameInfo.current_server_keepalive_time;
-        		GameInfo.current_server_keepalive_time = Long.parseLong(msg);
+        		GameInfo.current_server_keepalive_time = Long.parseLong(msg[0]);
+        		GameInfo.ownPlayer.timeLeft = Integer.parseInt(msg[GameInfo.ownPlayer.getMyNumber()]);
+        		GameInfo.prevPlayer.timeLeft = Integer.parseInt(msg[GameInfo.prevPlayer.getMyNumber()]);
+        		GameInfo.nextPlayer.timeLeft = Integer.parseInt(msg[GameInfo.nextPlayer.getMyNumber()]);
         		break;
             default: // no activity has such address => it's error
             	return;
