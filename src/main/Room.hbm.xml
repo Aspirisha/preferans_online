@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
+
+<hibernate-mapping>
+   <class name="Room" table="rooms">
+      <meta attribute="class-description">
+         This class contains the Room detail. 
+      </meta>
+      <id name="id" type="long" column="id">
+         <generator class="native"/>
+      </id>
+      <property name="name" column="name" type="string"/>
+      <property name="password" column="password" type="string"/>
+      <property name="playersNumber" column="players_number" type="byte"/>
+      <property name="gameType" column="game_type" type="byte"/>
+   </class>
+</hibernate-mapping>
