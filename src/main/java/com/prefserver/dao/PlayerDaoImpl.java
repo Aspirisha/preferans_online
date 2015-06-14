@@ -15,13 +15,14 @@ import com.prefserver.model.Player;
 
 public class PlayerDaoImpl implements PlayerDao{
 	private static SessionFactory factory; 
-	private static Configuration configuration = new Configuration();
+	private static Configuration configuration;
 	private static ServiceRegistry serviceRegistry; 
 	private static final Logger log = Logger.getLogger(SessionFactory.class);
 
 	public static void createSessionFactory() {
 	    Configuration configuration = new Configuration();
 	    configuration.configure();
+	    configuration.addClass(Player.class);
 	    serviceRegistry = new StandardServiceRegistryBuilder().applySettings(
 	            configuration.getProperties()).build();
 	    factory = configuration.buildSessionFactory(serviceRegistry);
@@ -31,13 +32,13 @@ public class PlayerDaoImpl implements PlayerDao{
         createSessionFactory();
     }
 	
-	public Long addNewPlayer(String name, String password, int coins) {
+	public Long addNewPlayer(String name, String password, int coins, String regID) {
 		Session session = factory.openSession();
 		Transaction tx = null;
 		Long playerID = null;
 		try{
 			tx = session.beginTransaction();
-			Player player = new Player(name, password, coins);
+			Player player = new Player(name, password, coins, regID);
 			playerID = (Long) session.save(player); 
 			tx.commit();
 		}catch (HibernateException e) {

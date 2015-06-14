@@ -21,9 +21,11 @@
    <property name="hibernate.connection.password">
       1234
    </property>
-
+	 <property name="mappingLocations">classpath:**/*.hbm.xml</property>
+	 
    <!-- List of XML mapping files -->
-	 <property name="mappingLocations">classpath:hbm/Player.hbm.xml"</property>
-	 <property name="mappingLocations">classpath:hbm/Room.hbm.xml</property>
+	 <mapping class="com.prefserver.model.Player"/>
+	 <mapping class="com.prefserver.model.Room"/>
+	 
 </session-factory>
 </hibernate-configuration>

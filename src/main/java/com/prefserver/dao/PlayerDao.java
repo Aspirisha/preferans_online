@@ -6,7 +6,7 @@ import com.prefserver.model.Player;
 
 public interface PlayerDao {
 
-	Long addNewPlayer(String name, String password, int coins);
+	Long addNewPlayer(String name, String password, int coins, String regID);
 	
 	void deletePlayerById(Long id);
 	

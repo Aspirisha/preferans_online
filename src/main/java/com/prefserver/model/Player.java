@@ -2,26 +2,25 @@ package com.prefserver.model;
 
 import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
-@Entity
-@Table(name="PLAYER")
 public class Player {
 
 	private long id;
 	private long roomId;
-	private String name;
-	private String password;
+	private String name = "";
+	private String password = "";
 	private Date joiningDate;
 	private int coins;
-
+	private String regId = "";
+	private boolean isOnline = false;
+	private String cards = "";
+	
 	public Player() { }
-	public Player(String _name, String _password, int _coins) {
+	public Player(String _name, String _password, int _coins, String _regID) {
 		name = _name;
 		password = _password;
 		coins = _coins;
 		joiningDate = new Date();
+		regId = _regID;
 	}
 	
 	public long getId() {
@@ -99,6 +98,24 @@ public class Player {
 
 	public String getPassword() {
 		return password;
+	}
+	public void setRegId(String regID) {
+		this.regId = regID;
+	}
+	public String getRegId() {
+		return regId;
+	}
+	public void setIsOnline(boolean isOnline) {
+		this.isOnline = isOnline;
+	}
+	public boolean getIsOnline() {
+		return isOnline;
+	}
+	public void setCards(String cards) {
+		this.cards = cards;
+	}
+	public String getCards() {
+		return cards;
 	}
 	
 	

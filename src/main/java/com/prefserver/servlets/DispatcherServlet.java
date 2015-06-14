@@ -114,7 +114,7 @@ public class DispatcherServlet extends HttpServlet {
 			
             httppost.setEntity(new UrlEncodedFormEntity(data));
             HttpResponse resp = httpclient.execute(httppost);
-            
+            System.out.println(resp.getStatusLine());
 		}
 	}
 	
@@ -138,6 +138,7 @@ public class DispatcherServlet extends HttpServlet {
 	void processRegisterRequest(HttpServletRequest request, HttpServletResponse response) {
 		String login = request.getParameter("login");
 		String password = request.getParameter("password");
+		String reg_id = request.getParameter("reg_id");
 		
 		PrintWriter out = null;
 		try {
@@ -163,7 +164,7 @@ public class DispatcherServlet extends HttpServlet {
 			break;
 		case OK:
 			System.out.println("OK");
-			Long id = playerDao.addNewPlayer(login, password, DEFAULT_COINS);
+			Long id = playerDao.addNewPlayer(login, password, DEFAULT_COINS, reg_id);
 			if (id == null)
 				out.println("Error while registering");
 			else

@@ -117,10 +117,10 @@
 						<webResources>
 							<resource>
 								<!-- this is relative to the pom.xml directory -->
-								<directory>src/main/hbm</directory>
-								<targetPath>WEB-INF/classes/hbm</targetPath>
+								<directory>src/main/java</directory>
+								<targetPath>WEB-INF/classes</targetPath>
 								<includes>
-					                <include>*.xml</include>
+					                <include>**/*.hbm.xml</include>
 					            </includes>
 							</resource>
 						</webResources>
