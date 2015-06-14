@@ -82,16 +82,16 @@ public class DispatcherServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String req = request.getParameter("request_type");
 		String reg_id = request.getParameter("reg_id");
-		
 	   //is client behind something?
 	   String ipAddress = request.getHeader("X-FORWARDED-FOR");  
 	   if (ipAddress == null) {  
 		   ipAddress = request.getRemoteAddr();  
 	   }
-	   
-		if (req == "request")
+
+		if (req.equals("request")) {
 			processRequest(request, response);
-		else if (req == "notification")
+		} // TODO fix this shit
+		else if (req.equals("notification"))
 			processNotification(request, response);
 		
 		PrintWriter out = response.getWriter();
@@ -101,30 +101,31 @@ public class DispatcherServlet extends HttpServlet {
 			out.println(ipAddress);
 		//Player p = playerDao.findPlayerByID(1);
 		if (reg_id != null) {
-		/*	HttpClient httpclient = HttpClients.custom().build();
-
+			HttpClient httpclient = HttpClients.custom().build();
 			
 			ArrayList<NameValuePair> data = new ArrayList<NameValuePair>();
 			data.add(new BasicNameValuePair("message", "Hello bitch!"));
-			data.add(new BasicNameValuePair("registration_ids", "[" + reg_id + "]"));
+			data.add(new BasicNameValuePair("registration_ids[]", reg_id));
 			
 			HttpPost httppost = new HttpPost("https://android.googleapis.com/gcm/send");
 			httppost.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
 			httppost.setHeader(HttpHeaders.AUTHORIZATION, "key=AIzaSyAhL2EX96bgmKQSgvwKCrCZjTAwsGzrHNM");
 			
 			
-           // httppost.setEntity(new UrlEncodedFormEntity(data));
-            HttpResponse resp = httpclient.execute(httppost);*/
+            httppost.setEntity(new UrlEncodedFormEntity(data));
+            HttpResponse resp = httpclient.execute(httppost);
             
 		}
 	}
 	
 	void processRequest(HttpServletRequest request, HttpServletResponse response) {
 		String req = request.getParameter("request");
+		
 		if (req == null) {
 			return;
-		}
-		
+		} else 
+			System.out.println("null");
+		System.out.println(req);
 		switch (requestsHash.get(req)) {
 		case 1:
 			processRegisterRequest(request, response);
@@ -146,17 +147,22 @@ public class DispatcherServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		
+		System.out.println(login);
 		switch (regChecker.canBeRegistered(login, password)) {
 		case NAME_EXISTS:
 			out.println("Name already exists");
+			System.out.println("Name already exists");
 			break;
 		case NAME_WRONG_FORMAT:
 			out.println("Name wrong format");
+			System.out.println("Name wrong format");
 			break;
 		case PASSWORD_WRONG_FORMAT:
 			out.println("Password wrong format");
+			System.out.println("Password wrong format");
 			break;
 		case OK:
+			System.out.println("OK");
 			Long id = playerDao.addNewPlayer(login, password, DEFAULT_COINS);
 			if (id == null)
 				out.println("Error while registering");

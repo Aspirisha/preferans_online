@@ -23,7 +23,7 @@
    </property>
 
    <!-- List of XML mapping files -->
-   <mapping resource="src/main/Player.hbm.xml"/>
-   <mapping resource="src/main/Room.hbm.xml"/>
+	 <property name="mappingLocations">classpath:hbm/Player.hbm.xml"</property>
+	 <property name="mappingLocations">classpath:hbm/Room.hbm.xml</property>
 </session-factory>
 </hibernate-configuration>

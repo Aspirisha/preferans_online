@@ -6,11 +6,30 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
+import org.jboss.logging.Logger;
 
 import com.prefserver.model.Player;
 
 public class PlayerDaoImpl implements PlayerDao{
 	private static SessionFactory factory; 
+	private static Configuration configuration = new Configuration();
+	private static ServiceRegistry serviceRegistry; 
+	private static final Logger log = Logger.getLogger(SessionFactory.class);
+
+	public static void createSessionFactory() {
+	    Configuration configuration = new Configuration();
+	    configuration.configure();
+	    serviceRegistry = new StandardServiceRegistryBuilder().applySettings(
+	            configuration.getProperties()).build();
+	    factory = configuration.buildSessionFactory(serviceRegistry);
+	}
+	
+	static {
+        createSessionFactory();
+    }
 	
 	public Long addNewPlayer(String name, String password, int coins) {
 		Session session = factory.openSession();
