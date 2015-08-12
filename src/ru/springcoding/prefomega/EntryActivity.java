@@ -1,26 +1,21 @@
 package ru.springcoding.prefomega;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
-import android.app.Activity;
+import ru.springcoding.common.CommonEnums.MessageTypes;
+import ru.springcoding.common.CommonEnums.RecieverID;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -28,7 +23,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class EntryActivity extends Activity implements OnClickListener {
+public class EntryActivity extends FragmentActivity implements OnClickListener {
 	public static final String EXTRA_MESSAGE = "message";
 	public static final String PROPERTY_REG_ID = "registration_id";
 
@@ -45,33 +40,37 @@ public class EntryActivity extends Activity implements OnClickListener {
 	Button btnExit;
 
 	WifiManager wifi;
-
+	RegisterDialog dlg;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.entry);
 		
-		PrefApplication.setVisibleWindow(0, this);
+		PrefApplication.setVisibleWindow(RecieverID.ENTRY_ACTIVITY, this);
+		
+		if (!PrefApplication.getInstance().getLoginAndPassword())
+			showRegistrationPopup();
 		
 		findViews();
 		context = getApplicationContext();
 
 		// Check device for Play Services APK. If check succeeds, proceed with
 		// GCM registration.
-		/*if (PrefApplication.checkPlayServices()) {
+		if (PrefApplication.checkPlayServices()) {
 			PrefApplication.getInstance().getRegistrationId();
 
 			if (PrefApplication.regid.isEmpty()) {
 				PrefApplication.getInstance().registerInBackground();
-			} */
+			} 
 		/*else {
 				PrefApplication.getInstance().pingServer();
 			}*/
 			
-		/*} else {
+		} else {
 			Log.i(TAG, "No valid Google Play Services APK found.");
 			Toast.makeText(this, "CheckPlayServices: No valid Google Play Services APK found.", 0).show();
-		}*/
+		}
 
 		String service = Context.WIFI_SERVICE;
 		wifi = (WifiManager) getSystemService(service);
@@ -79,6 +78,10 @@ public class EntryActivity extends Activity implements OnClickListener {
 		btnStartNewGame.setOnClickListener(this);
 		btnSettings.setOnClickListener(this);
 		btnExit.setOnClickListener(this);
+		
+		if (!isOnline()) {
+			Toast.makeText(this, "Internet connection not available.", 0).show();
+		}
 		
 		// tell the server we are online now
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
@@ -88,27 +91,13 @@ public class EntryActivity extends Activity implements OnClickListener {
 		PrefApplication.sendData(nameValuePairs);
 		
 		PrefApplication.runKeepAlive(true);
-		
-		 HttpClient httpclient = new DefaultHttpClient();
-		
-		 HttpGet httpget = new HttpGet("http://192.168.1.35:8080/PrefServer/Dispatcher");
-		 try {
-		     HttpResponse response = httpclient.execute(httpget);
-		     if(response != null) {
-		         String line = "";
-		         InputStream inputstream = response.getEntity().getContent();
-		         line = PrefApplication.convertStreamToString(inputstream);
-		         Toast.makeText(this, line, Toast.LENGTH_SHORT).show();
-		     } else {
-		         Toast.makeText(this, "Unable to complete your request", Toast.LENGTH_LONG).show();
-		     }
-		 } catch (ClientProtocolException e) {
-		     Toast.makeText(this, "Caught ClientProtocolException", Toast.LENGTH_SHORT).show();
-		 } catch (IOException e) {
-		     Toast.makeText(this, "Caught IOException", Toast.LENGTH_SHORT).show();
-		 } catch (Exception e) {
-		     Toast.makeText(this, "Caught Exception", Toast.LENGTH_SHORT).show();
-		 }
+	}
+	
+	public boolean isOnline() {
+	    ConnectivityManager cm =
+	        (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo netInfo = cm.getActiveNetworkInfo();
+	    return netInfo != null && netInfo.isConnectedOrConnecting();
 	}
 	
 	@Override
@@ -118,13 +107,11 @@ public class EntryActivity extends Activity implements OnClickListener {
 			// send notification to server that we have exited
 			finish();
 			break;
-		case R.id.buttonStart:
-			if (!wifi.isWifiEnabled()) {
-				Toast.makeText(this, "Internet connection not available. Turn on wi-fi or mobile network to start playong online.", 0).show();
-				//wifi.setWifiEnabled(true);
+		case R.id.buttonStart:		
+			if (!GameInfo.isRegistered) {
+				showRegistrationPopup();
 				break;
 			}
-			
 			Intent roomsAct = new Intent(this, RoomsActivity.class);
 			startActivity(roomsAct);
 			break;
@@ -155,20 +142,46 @@ public class EntryActivity extends Activity implements OnClickListener {
 		getMenuInflater().inflate(R.menu.entry, menu);
 		return true;
 	}
-
-
 	
 	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
 		String msg = intent.getStringExtra("message");
-		int msgType = Integer.parseInt(intent.getStringExtra("messageType"));
+		MessageTypes msgType = MessageTypes.valueOf(intent.getStringExtra("messageType"));
 		switch (msgType)
 		{
-		case 0: 
-			GameInfo.ownPlayer.id = msg;
+		case ENTRY_ONLINE_NOTIFICATION_ANSWER:
+			break;
+		case ENTRY_REGISTRATION_RESULT:
+			try {
+				String data[] = msg.split(" ");
+				
+				int id = Integer.parseInt(data[0]);
+				GameInfo.ownPlayer.id = data[0];
+				
+				GameInfo.ownPlayer.name = data[1];
+				GameInfo.password = data[2];
+				GameInfo.isRegistered = true;
+				PrefApplication.getInstance().storeLoginAndPassword();
+				
+				dlg.dismiss();
+				dlg = null;
+			} catch (NumberFormatException e) {
+				
+			}
+				
+			break;
+		default:
+			break;
+			
 		}
 	}
+	
+	private void showRegistrationPopup() {		
+		dlg = new RegisterDialog();
+		dlg.show(getSupportFragmentManager(), "dlg");
+	}
+	
 	/*
 	@Override
 	public void onBackPressed() {

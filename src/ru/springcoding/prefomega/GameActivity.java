@@ -6,6 +6,7 @@ import java.util.Arrays;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import ru.springcoding.common.CommonEnums.RecieverID;
 import ru.springcoding.prefomega.PlayingTableView.DrawState;
 import android.app.Activity;
 import android.app.Application;
@@ -58,7 +59,7 @@ public class GameActivity extends Activity implements OnClickListener {
 		GameInfo.nextPlayer.setMyNumber(GameInfo.ownPlayer.getNextNumber());
 		
 		getInfoAboutRoom();
-		PrefApplication.setVisibleWindow(3, this);
+		PrefApplication.setVisibleWindow(RecieverID.GAME_ACTIVITY, this);
 	}
 
 	private void getInfoAboutRoom() {

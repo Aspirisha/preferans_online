@@ -4,9 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -16,10 +13,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.gcm.GoogleCloudMessaging;
-
+import ru.springcoding.common.CommonEnums.RecieverID;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
@@ -32,24 +26,33 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+
 
 public class PrefApplication extends Application {
 	private static PrefApplication singleton = null;
 	
+	private static String serverIp = null;
 	public static String regid;
 	public static String message;
 	public static int screenWidth;
 	public static int screenHeight;
-	private static int currentVisibleWindow; // this variable will be checked each time 
+	private static RecieverID currentVisibleWindow; // this variable will be checked each time 
 										     // when server sends us smth. For, if the data is old,
 											 // we don't need it anymore and just skip.
 	private static boolean metricsSet = false;
 	public static boolean pingStatus = false;
 	
-	private static String SENDER_ID = "841120567778";
+	private static String SENDER_ID = "264728257590";
 	static final String TAG = "GCMDemo";
 	public static final String EXTRA_MESSAGE = "message";
 	public static final String PROPERTY_REG_ID = "registration_id";
+	private static final String PROPERTY_LOGIN = "login";
+	private static final String PROPERTY_PASSWORD = "password";
+	private static final String PROPERTY_ID = "id";
+	
 	private static final String PROPERTY_APP_VERSION = "appVersion";
 	private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 	private static Context context;
@@ -72,6 +75,7 @@ public class PrefApplication extends Application {
 		screenHeight = metrics.heightPixels;
 		regTestThread = new RegistrationTestThread();
 		keepAliveThread = new KeepAliveThread();
+		serverIp = getResources().getString(R.string.server_ip);
 	}
 	
 	public static void setVisibleAreaSize(int height, int width) {
@@ -82,6 +86,16 @@ public class PrefApplication extends Application {
 		}
 	}
 	
+	public void tryRegister(String login, String password) {
+		ArrayList<NameValuePair> loginAndPassword = new ArrayList<NameValuePair>();
+		loginAndPassword.add(new BasicNameValuePair("request_type", "request"));
+		loginAndPassword.add(new BasicNameValuePair("request", "register"));
+		loginAndPassword.add(new BasicNameValuePair("login", login));
+		loginAndPassword.add(new BasicNameValuePair("password", password));
+		loginAndPassword.add(new BasicNameValuePair("reg_id", regid));
+		sendData(loginAndPassword);
+	}
+	
 	public static void sendData(final ArrayList<NameValuePair> data) {
          // 1) Connect via HTTP. 2) Encode data. 3) Send data.
 		new AsyncTask<Void, Void, HttpResponse>() {
@@ -90,7 +104,7 @@ public class PrefApplication extends Application {
 			protected HttpResponse doInBackground(Void... params) {
 		        try {
 		            HttpClient httpclient = new DefaultHttpClient();
-		            HttpPost httppost = new HttpPost("http://192.168.1.35:8080/PrefServer/Dispatcher");
+		            HttpPost httppost = new HttpPost("http://"+ serverIp +":8080/PrefServer/Dispatcher");
 		            httppost.setEntity(new UrlEncodedFormEntity(data));
 		            HttpResponse response = httpclient.execute(httppost);
 		            Log.i("postData", response.getStatusLine().toString());
@@ -106,9 +120,11 @@ public class PrefApplication extends Application {
 			protected void onPostExecute(HttpResponse response) {
 				InputStream inputstream;
 				try {
-					inputstream = response.getEntity().getContent();
-					String line = PrefApplication.convertStreamToString(inputstream);
-					Log.i("log_tag", "Response:  " + line);
+					if (response != null) {
+						inputstream = response.getEntity().getContent();
+						String line = PrefApplication.convertStreamToString(inputstream);
+						Log.i("log_tag", "Response:  " + line);
+					}
 				} catch (IllegalStateException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -138,14 +154,14 @@ public class PrefApplication extends Application {
 	    return total.toString();
 	}
 	
-	public static void setVisibleWindow(int i, Context c) {
+	public static void setVisibleWindow(RecieverID i, Context c) {
 		synchronized (singleton.lock) {
 			currentVisibleWindow = i;
 			context = c;
 		}
 	}
 	
-	public static int getVisibleWindow() {
+	public static RecieverID getVisibleWindow() {
 		synchronized (singleton.lock) {
 			return currentVisibleWindow;
 		}
@@ -182,7 +198,7 @@ public class PrefApplication extends Application {
 	 *         registration ID.
 	 */
 	public String getRegistrationId() {
-		final SharedPreferences prefs = getGCMPreferences();
+		final SharedPreferences prefs = getPreferences();
 		
 		regid = prefs.getString(PROPERTY_REG_ID, "");
 		if (regid.isEmpty()) {
@@ -200,14 +216,30 @@ public class PrefApplication extends Application {
 		}
 		return regid;
 	}
+	
+	public boolean getLoginAndPassword() {
+		final SharedPreferences prefs = getPreferences();
+		GameInfo.ownPlayer.name = prefs.getString(PROPERTY_LOGIN, "");
+		GameInfo.password = prefs.getString(PROPERTY_PASSWORD, "");
+		GameInfo.isRegistered = !GameInfo.ownPlayer.name.isEmpty() && !GameInfo.password.isEmpty();
+		return GameInfo.isRegistered;
+	}
 
+	public void storeLoginAndPassword() {
+		final SharedPreferences prefs = getPreferences();
+		int appVersion = getAppVersion();
+		Log.i(TAG, "Saving login and password " + appVersion);
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.putString(PROPERTY_LOGIN, GameInfo.ownPlayer.name);
+		editor.putString(PROPERTY_PASSWORD, GameInfo.password);
+		editor.putString(PROPERTY_ID, GameInfo.ownPlayer.id);
+		editor.commit();
+	}
+	
 	/**
 	 * @return Application's {@code SharedPreferences}.
 	 */
-	private SharedPreferences getGCMPreferences() {
-		// This sample app persists the registration ID in shared preferences,
-		// but
-		// how you store the regID in your app is up to you.
+	private SharedPreferences getPreferences() {
 		return getSharedPreferences(EntryActivity.class.getSimpleName(), Context.MODE_PRIVATE);
 	}
 
@@ -271,9 +303,10 @@ public class PrefApplication extends Application {
 	 * message using the 'from' address in the message.
 	 */
 	private static void sendRegistrationIdToBackend() {
-		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 		nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
-		
+		nameValuePairs.add(new BasicNameValuePair("request_type", "request"));
+		Log.i("regID", "reg_id = " + PrefApplication.regid);
 		PrefApplication.sendData(nameValuePairs);
 	}
 
@@ -287,7 +320,7 @@ public class PrefApplication extends Application {
 	 *            registration ID
 	 */
 	private void storeRegistrationId(Context context, String regId) {
-		final SharedPreferences prefs = getGCMPreferences();
+		final SharedPreferences prefs = getPreferences();
 		int appVersion = getAppVersion();
 		Log.i(TAG, "Saving regId on app version " + appVersion);
 		SharedPreferences.Editor editor = prefs.edit();

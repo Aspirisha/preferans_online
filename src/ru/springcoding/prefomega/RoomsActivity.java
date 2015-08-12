@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import ru.springcoding.common.CommonEnums.GameType;
+import ru.springcoding.common.CommonEnums.RecieverID;
+import ru.springcoding.common.RoomInfo;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -18,21 +21,11 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 public class RoomsActivity extends Activity implements OnClickListener {
-	
-	class RoomData {
-		public String id;
-		public String playersNumber;
-		public String gameBet;
-		public String roomName;
-		public boolean isStalingrad;
-		public String gameType;
-		public String gameBullet;
-	}
-	
+
 	Button btnBack;
 	Button btnCreateNewRoom;
 	Button btnConnectToRoom;
-	RoomData[] rooms;
+	RoomInfo[] rooms;
 	TableClickListener tableClickListener;
 	private int prevSelectedId = -1;
 	long lastRefreshTime = System.currentTimeMillis();
@@ -40,7 +33,7 @@ public class RoomsActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		PrefApplication.setVisibleWindow(2, this);
+		PrefApplication.setVisibleWindow(RecieverID.ROOMS_ACTIVITY, this);
 		setContentView(R.layout.rooms);
 		
 		btnBack = (Button)findViewById(R.id.buttonRoomsBack);
@@ -91,8 +84,9 @@ public class RoomsActivity extends Activity implements OnClickListener {
 	}
 	
 	protected void refreshExistingRooms() {
-		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-		nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
+		nameValuePairs.add(new BasicNameValuePair("id", GameInfo.ownPlayer.id));
+		nameValuePairs.add(new BasicNameValuePair("password", GameInfo.password));
 		nameValuePairs.add(new BasicNameValuePair("request", "existing_rooms")); // 1 = money
 		nameValuePairs.add(new BasicNameValuePair("request_type", "request"));
 		PrefApplication.sendData(nameValuePairs);
@@ -123,7 +117,7 @@ public class RoomsActivity extends Activity implements OnClickListener {
 			TableRow row = (TableRow)findViewById(prevSelectedId);
 			TextView numberTextView = (TextView)row.getChildAt(0);
 			int number = Integer.parseInt(numberTextView.getText().toString()) - 1;
-			nameValuePairs.add(new BasicNameValuePair("room_id", rooms[number].id));
+			nameValuePairs.add(new BasicNameValuePair("room_id", Integer.toString(rooms[number].id)));
 			nameValuePairs.add(new BasicNameValuePair("request_type", "request"));
 			PrefApplication.sendData(nameValuePairs);
 			break;
@@ -136,20 +130,26 @@ public class RoomsActivity extends Activity implements OnClickListener {
 		contentTable.removeAllViews();
 		
 		ArrayList<String> cols = new ArrayList<String>();
-		cols.add("Number");
-		cols.add("Players");
-		cols.add("Bet");
+		cols.add("Room ID"); // TODO remove hardcode
+		cols.add("Bullet"); // TODO remove hardcode
+		cols.add("Whist cost"); // TODO remove hardcode
+		cols.add("Players"); // TODO remove hardcode
 		contentTable = addRowToContentTable(contentTable, cols, -1);
 		
 		for (int i = 0; i < roomsNumber; ++i) {
 			cols.clear();
-			cols.add(Integer.toString(i + 1));
-			cols.add(rooms[i].playersNumber);
-			cols.add(rooms[i].gameBet);
+			cols.add(Integer.toString(rooms[i].id));
+			cols.add(Integer.toString(rooms[i].bullet));
+			cols.add(Float.toString(rooms[i].whistCost));
+			cols.add(Integer.toString(rooms[i].playersNumber));
 			contentTable = addRowToContentTable(contentTable, cols, 0);
-			lengthRow = rooms[i].id.length() + rooms[i].playersNumber.length() + rooms[i].gameBet.length();
+			lengthRow = 0;
+			for (String c : cols)
+				lengthRow += c.length();
+			
 			if (longestRow.isEmpty() || lengthRow > (longestRow.length() - 1)) //Include -1 for subtracting the space occupied by "-"
-				longestRow = rooms[i].id + "-" + rooms[i].playersNumber + "-" + rooms[i].gameBet;
+				longestRow = rooms[i].id + "-" + rooms[i].bullet + "-" 
+			+ rooms[i].whistCost + "-" + rooms[i].playersNumber;
 		}
 	}
 	
@@ -164,13 +164,32 @@ public class RoomsActivity extends Activity implements OnClickListener {
 		case 0: // roomsData is got
 			String[] roomsData = msg.split(" ");
 			int roomsNumber = Integer.parseInt(roomsData[0]);
-			rooms = new RoomData[roomsNumber];
+			rooms = new RoomInfo[roomsNumber];
 			for (int i = 0; i < roomsNumber; ++i)
-				rooms[i] = new RoomData();
+				rooms[i] = new RoomInfo();
 			for (int i = 0; i < roomsNumber; ++i) {
-				rooms[i].id = roomsData[3 * i + 1];
-				rooms[i].playersNumber = roomsData[3 * i + 2];
-				rooms[i].gameBet = roomsData[3 * i + 3];
+				rooms[i].id = Integer.parseInt(roomsData[RoomInfo.roomInfoFields * i + 1]);
+				rooms[i].name = roomsData[RoomInfo.roomInfoFields  * i + 2];
+				rooms[i].bullet = Integer.parseInt(roomsData[RoomInfo.roomInfoFields  * i + 3]);
+				rooms[i].whistCost = Float.parseFloat(roomsData[RoomInfo.roomInfoFields  * i + 4]);
+				rooms[i].gameType = GameType.valueOf(roomsData[RoomInfo.roomInfoFields  * i + 5]);
+				rooms[i].gameType = GameType.valueOf(roomsData[RoomInfo.roomInfoFields  * i + 6]);
+				rooms[i].raspExit = new int[3];
+				String ar[] = roomsData[RoomInfo.roomInfoFields  * i + 7].split(",");
+				for (int j = 0; j < 3; j++) 
+					rooms[i].raspExit[j] = Integer.parseInt(ar[j]);
+				
+				rooms[i].raspProgression = new int[3];
+				ar = roomsData[RoomInfo.roomInfoFields  * i + 8].split(",");
+				for (int j = 0; j < 3; j++) 
+					rooms[i].raspProgression[j] = Integer.parseInt(ar[j]);
+				
+				rooms[i].withoutThree = Boolean.parseBoolean(roomsData[RoomInfo.roomInfoFields  * i + 9]);
+				rooms[i].noWhistRaspasyExit = Boolean.parseBoolean(roomsData[RoomInfo.roomInfoFields  * i + 10]);
+				rooms[i].stalingrad = Boolean.parseBoolean(roomsData[RoomInfo.roomInfoFields  * i + 11]);
+				rooms[i].tenWhist = Boolean.parseBoolean(roomsData[RoomInfo.roomInfoFields  * i + 12]);
+				rooms[i].hasPassword = Boolean.parseBoolean(roomsData[RoomInfo.roomInfoFields  * i + 13]);
+				rooms[i].playersNumber = Integer.parseInt(roomsData[RoomInfo.roomInfoFields  * i + 14]);
 			}
 			redrawTable(roomsNumber);
 			break;

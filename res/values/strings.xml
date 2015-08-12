@@ -15,7 +15,7 @@
     <string name="create_room">Create new room</string>
     <string name="start_back">back</string>
     <string name="accept_room">accept</string>
-    <string name="set_bet">Set game bet</string>
+    <string name="set_vist_cost">Set vist cost</string>
     <string name="back">Back</string>
     <string name="enable_stalingrad">Enable &quot;stalingrad&quot;</string>
     <string name="cancel">Cancel</string>
@@ -31,4 +31,5 @@
 	<string name="choose_password">Choose password</string>
 	<string name="login">login</string>
 	<string name="password">password</string>
+	<string name="server_ip">192.168.1.35</string>
 </resources>

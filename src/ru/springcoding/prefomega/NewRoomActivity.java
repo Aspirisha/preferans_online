@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import ru.springcoding.common.CommonEnums.RecieverID;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,7 +34,7 @@ public class NewRoomActivity extends Activity implements OnClickListener, OnTouc
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		PrefApplication.setVisibleWindow(1, this);
+		PrefApplication.setVisibleWindow(RecieverID.NEW_ROOM_ACTIVITY, this);
 		setContentView(R.layout.new_room);
 		
 		buttonCancel = (Button)findViewById(R.id.buttonNewRoomBack);

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import ru.springcoding.common.CommonEnums.RecieverID;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,7 +23,7 @@ public class SettingsActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		PrefApplication.setVisibleWindow(4, this);
+		PrefApplication.setVisibleWindow(RecieverID.SETTINGS_ACTIVITY, this);
 		setContentView(R.layout.settings);
 		
         btnSettingsBack = (Button)findViewById(R.id.buttonSettingsBack);

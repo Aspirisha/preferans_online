@@ -6,4 +6,5 @@
 	<dimen name="table_text_size">16dp</dimen>
 	<dimen name="rooms_scroll_height">140dp</dimen>
 	<dimen name="reg_form_margins_left_right">10dp</dimen>
+	<dimen name="reg_form_top_margin">5dp</dimen>
 </resources>
