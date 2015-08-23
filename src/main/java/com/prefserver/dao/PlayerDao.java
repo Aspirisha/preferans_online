@@ -14,5 +14,5 @@ public interface PlayerDao {
 	
 	Player findPlayerByName(String name);
 	
-	List<Player> findPlayerByRoomId(int roomId);
+	List<Player> findPlayerByRoomId(long roomId);
 }

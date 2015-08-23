@@ -8,6 +8,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.service.ServiceRegistry;
 import org.jboss.logging.Logger;
 
@@ -72,7 +73,7 @@ public class PlayerDaoImpl implements PlayerDao{
 		Player player = null;
 		try{
 			tx = session.beginTransaction();
-			player = (Player) session.get(Player.class, id);
+			player = (Player) session.get(Player.class, (long) id);
 			tx.commit();
 		}catch (HibernateException e) {
 			if (tx!=null) tx.rollback();
@@ -84,13 +85,22 @@ public class PlayerDaoImpl implements PlayerDao{
 	}
 
 	public Player findPlayerByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		Session session = factory.openSession();
+		List players = session.createCriteria(Player.class)
+	    .add(Restrictions.eq("name", name))
+	    .list();
+		System.out.println(name);
+		if (players.size() != 1)
+			return null;
+		return (Player) players.get(0);
 	}
 
-	public List<Player> findPlayerByRoomId(int roomId) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Player> findPlayerByRoomId(long roomId) {
+		Session session = factory.openSession();
+		List players = session.createCriteria(Player.class)
+	    .add(Restrictions.eq("roomId", roomId))
+	    .list();
+		return players;
 	}
 
 	

@@ -19,5 +19,7 @@
       <property name="cards" column="cards" type="string"/>
       <property name="roomId" column="room_id" type="long"/>
       <property name="regId" column="reg_id" type="string"/>
+      <property name="timeLeft" column="time_left" type="int"/>
+      <property name="myNumber" column="my_number" type="int"/>
    </class>
 </hibernate-mapping>

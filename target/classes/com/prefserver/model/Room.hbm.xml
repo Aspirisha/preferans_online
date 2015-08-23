@@ -13,8 +13,15 @@
       </id>
       <property name="name" column="name" type="string"/>
       <property name="password" column="password" type="string"/>
-      <property name="bet" column="bet" type="int"/> 
+      <property name="bullet" column="bullet" type="int"/> 
       <property name="playersNumber" column="players_number" type="byte"/>
       <property name="gameType" column="game_type" type="byte"/>
+      <property name="whistCost" column="whist_cost" type="float"/> 
+      <property name="raspExit" column="rasp_exit" type="string"/> 
+      <property name="raspProgression" column="rasp_progression" type="string"/> 
+      <property name="withoutThree" column="without_three" type="boolean"/> 
+      <property name="noWhistRaspExit" column="no_whist_rasp_exit" type="boolean"/> 
+      <property name="stalingrad" column="stalingrad" type="boolean"/> 
+      <property name="tenWhist" column="ten_whist" type="boolean"/> 
    </class>
 </hibernate-mapping>

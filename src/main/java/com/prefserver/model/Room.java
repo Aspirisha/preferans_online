@@ -6,9 +6,16 @@ public class Room {
 	private long id;
 	private String name;
 	private String password;
-	private int bet;
+	private int bullet;
 	private byte gameType;
 	private byte playersNumber;
+	private float whistCost;
+	private String raspExit;
+	private String raspProgression;
+	private boolean withoutThree;
+	private boolean noWhistRaspExit;
+	private boolean stalingrad;
+	private boolean tenWhist;
 	
 	public long getId() {
 		return id;
@@ -34,12 +41,12 @@ public class Room {
 		this.password = password;
 	}
 
-	public int getBet() {
-		return bet;
+	public int getBullet() {
+		return bullet;
 	}
 
-	public void setBet(int bet) {
-		this.bet = bet;
+	public void setBullet(int bullet) {
+		this.bullet = bullet;
 	}
 	
 	public byte getGameType() {
@@ -82,7 +89,7 @@ public class Room {
 	@Override
 	public String toString() {
 		return "Room [id=" + id + ", name=" + name + ", password="
-				+ password + ", bet=" + bet + ", game_type=" +gameType + "]";
+				+ password + ", bullet=" + bullet + ", game_type=" +gameType + "]";
 	}
 
 	public void setPlayersNumber(byte playersNumber) {
@@ -91,6 +98,62 @@ public class Room {
 
 	public byte getPlayersNumber() {
 		return playersNumber;
+	}
+
+	public void setWhistCost(float whistCost) {
+		this.whistCost = whistCost;
+	}
+
+	public float getWhistCost() {
+		return whistCost;
+	}
+
+	public void setRaspExit(String raspExit) {
+		this.raspExit = raspExit;
+	}
+
+	public String getRaspExit() {
+		return raspExit;
+	}
+
+	public void setRaspProgression(String raspProgression) {
+		this.raspProgression = raspProgression;
+	}
+
+	public String getRaspProgression() {
+		return raspProgression;
+	}
+
+	public void setWithoutThree(boolean withoutThree) {
+		this.withoutThree = withoutThree;
+	}
+
+	public boolean isWithoutThree() {
+		return withoutThree;
+	}
+
+	public void setNoWhistRaspExit(boolean noWhistRaspExit) {
+		this.noWhistRaspExit = noWhistRaspExit;
+	}
+
+	public boolean isNoWhistRaspExit() {
+		return noWhistRaspExit;
+	}
+
+	public void setStalingrad(boolean stalingrad) {
+		this.stalingrad = stalingrad;
+	}
+
+	public boolean isStalingrad() {
+		return stalingrad;
+	}
+
+	public void setTenWhist(boolean tenWhist) {
+		this.tenWhist = tenWhist;
+	}
+
+	public boolean isTenWhist() {
+		return tenWhist;
 	}
 	
 	
