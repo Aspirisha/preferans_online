@@ -97,7 +97,7 @@ public class FullRoomInfoDialog extends DialogFragment implements OnClickListene
 		
 		String raspProgArray = Integer.toString(ri.raspProgression[0]);
 		for (int i = 1; i < 3; i++)
-			raspExitArray += ", " + Integer.toString(ri.raspProgression[i]);
+			raspProgArray += ", " + Integer.toString(ri.raspProgression[i]);
 		tv_raspProg.setText(raspProgArray.substring(1, raspProgArray.length() - 1));
 		
 		tv_whistCost.setText(Float.toString(ri.whistCost));
