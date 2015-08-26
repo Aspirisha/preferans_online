@@ -1,6 +1,7 @@
 package ru.springcoding.prefomega;
 
 import ru.springcoding.common.CommonEnums.RecieverID;
+import ru.springcoding.prefomega.rooms.RoomsActivity;
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -91,7 +92,9 @@ public class GCMIntentService extends IntentService {
 
         PendingIntent contentIntent = null;
         
-        if (receiver != PrefApplication.getVisibleWindow()) // message is not fresh
+        if (receiver != PrefApplication.getVisibleWindow() 
+        		&& receiver != RecieverID.PING_ANSWER &&
+        		receiver != RecieverID.KEEP_ALIVE) // message is not fresh
         	return; 
         
         switch (receiver) {
@@ -112,11 +115,17 @@ public class GCMIntentService extends IntentService {
         		break;
         	case KEEP_ALIVE: // it's keepalive message 
         		String msg[] = intent.getStringExtra("message").split(" ");
-        		GameInfo.previous_server_keepalive_time = GameInfo.current_server_keepalive_time;
+        		
+        		/*GameInfo.previous_server_keepalive_time = GameInfo.current_server_keepalive_time;
         		GameInfo.current_server_keepalive_time = Long.parseLong(msg[0]);
         		GameInfo.ownPlayer.timeLeft = Integer.parseInt(msg[GameInfo.ownPlayer.getMyNumber()]);
         		GameInfo.prevPlayer.timeLeft = Integer.parseInt(msg[GameInfo.prevPlayer.getMyNumber()]);
         		GameInfo.nextPlayer.timeLeft = Integer.parseInt(msg[GameInfo.nextPlayer.getMyNumber()]);
+        		*/
+        		break;
+        	case PING_ANSWER:
+        		PrefApplication.pingStatus = true;
+        		Log.i("Ping", "Got ping answer!");
         		break;
             default: // no activity has such address => it's error
             	return;

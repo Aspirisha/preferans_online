@@ -68,7 +68,7 @@ public class NewRoomActivity extends Activity implements OnClickListener, OnTouc
 		nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
 		nameValuePairs.add(new BasicNameValuePair("request", "my_money")); // 1 = money
 		nameValuePairs.add(new BasicNameValuePair("request_type", "request"));
-		PrefApplication.sendData(nameValuePairs);
+		PrefApplication.sendData(nameValuePairs, false);
 		
 	}
 	@Override
@@ -96,7 +96,7 @@ public class NewRoomActivity extends Activity implements OnClickListener, OnTouc
 	        nameValuePairs.add(new BasicNameValuePair("enable_stalingrad", stalingrad));
 	        nameValuePairs.add(new BasicNameValuePair("is_private", "0"));
 	        nameValuePairs.add(new BasicNameValuePair("request_type", "request"));
-			PrefApplication.sendData(nameValuePairs);
+			PrefApplication.sendData(nameValuePairs, false);
 			break;
 		case R.id.buttonNewRoomBack:
 			finish();

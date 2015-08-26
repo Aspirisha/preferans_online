@@ -14,6 +14,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
 import ru.springcoding.common.CommonEnums.RecieverID;
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
@@ -35,7 +36,7 @@ public class PrefApplication extends Application {
 	private static PrefApplication singleton = null;
 	
 	private static String serverIp = null;
-	public static String regid;
+	public static volatile String regid;
 	public static String message;
 	public static int screenWidth;
 	public static int screenHeight;
@@ -43,7 +44,7 @@ public class PrefApplication extends Application {
 										     // when server sends us smth. For, if the data is old,
 											 // we don't need it anymore and just skip.
 	private static boolean metricsSet = false;
-	public static boolean pingStatus = false;
+	public static volatile boolean pingStatus = false;
 	
 	private static String SENDER_ID = "264728257590";
 	static final String TAG = "GCMDemo";
@@ -93,16 +94,25 @@ public class PrefApplication extends Application {
 		loginAndPassword.add(new BasicNameValuePair("login", login));
 		loginAndPassword.add(new BasicNameValuePair("password", password));
 		loginAndPassword.add(new BasicNameValuePair("reg_id", regid));
-		sendData(loginAndPassword);
+		sendData(loginAndPassword, true);
 	}
 	
-	public static void sendData(final ArrayList<NameValuePair> data) {
+	public static void sendData(final ArrayList<NameValuePair> data, 
+			final boolean hasLoginAndPassword) {
          // 1) Connect via HTTP. 2) Encode data. 3) Send data.
 		new AsyncTask<Void, Void, HttpResponse>() {
 
 			@Override
 			protected HttpResponse doInBackground(Void... params) {
 		        try {
+		        	if (!hasLoginAndPassword) {
+		        		data.add(new BasicNameValuePair("id", 
+		        				GameInfo.ownPlayer.id));
+		        		data.add(new BasicNameValuePair("login", 
+		        				GameInfo.ownPlayer.name));
+		        		data.add(new BasicNameValuePair("password", 
+		        				GameInfo.password));		        		
+		        	}
 		            HttpClient httpclient = new DefaultHttpClient();
 		            HttpPost httppost = new HttpPost("http://"+ serverIp +":8080/PrefServer/Dispatcher");
 		            httppost.setEntity(new UrlEncodedFormEntity(data));
@@ -177,7 +187,7 @@ public class PrefApplication extends Application {
 				.isGooglePlayServicesAvailable(context);
 		if (resultCode != ConnectionResult.SUCCESS) {
 			if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-				GooglePlayServicesUtil.getErrorDialog(resultCode, null,
+				GooglePlayServicesUtil.getErrorDialog(resultCode, (Activity)context,
 						PLAY_SERVICES_RESOLUTION_REQUEST).show();
 			} else {
 				Log.i(TAG, "This device is not supported.");
@@ -220,8 +230,10 @@ public class PrefApplication extends Application {
 	public boolean getLoginAndPassword() {
 		final SharedPreferences prefs = getPreferences();
 		GameInfo.ownPlayer.name = prefs.getString(PROPERTY_LOGIN, "");
+		GameInfo.ownPlayer.id = prefs.getString(PROPERTY_ID, "");
 		GameInfo.password = prefs.getString(PROPERTY_PASSWORD, "");
-		GameInfo.isRegistered = !GameInfo.ownPlayer.name.isEmpty() && !GameInfo.password.isEmpty();
+		GameInfo.isRegistered = !GameInfo.ownPlayer.name.isEmpty() 
+				&& !GameInfo.password.isEmpty() && !GameInfo.ownPlayer.id.isEmpty();
 		return GameInfo.isRegistered;
 	}
 
@@ -307,7 +319,7 @@ public class PrefApplication extends Application {
 		nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
 		nameValuePairs.add(new BasicNameValuePair("request_type", "request"));
 		Log.i("regID", "reg_id = " + PrefApplication.regid);
-		PrefApplication.sendData(nameValuePairs);
+		PrefApplication.sendData(nameValuePairs, false);
 	}
 
 	/**
@@ -339,6 +351,7 @@ public class PrefApplication extends Application {
 	
 	public void pingServer() {
 		regTestThread.setRunning(true);
+		regTestThread.start();
 	}
 	
 	public static void runKeepAlive(boolean run) {

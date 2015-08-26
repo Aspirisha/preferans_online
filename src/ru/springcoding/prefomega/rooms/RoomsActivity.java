@@ -1,17 +1,28 @@
-package ru.springcoding.prefomega;
+package ru.springcoding.prefomega.rooms;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
-import ru.springcoding.common.CommonEnums.GameType;
+import ru.springcoding.common.CommonEnums;
 import ru.springcoding.common.CommonEnums.RecieverID;
 import ru.springcoding.common.RoomInfo;
-import android.app.Activity;
+import ru.springcoding.prefomega.GameActivity;
+import ru.springcoding.prefomega.NewRoomActivity;
+import ru.springcoding.prefomega.PrefApplication;
+import ru.springcoding.prefomega.R;
+import ru.springcoding.prefomega.RegisterDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,15 +31,20 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-public class RoomsActivity extends Activity implements OnClickListener {
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+public class RoomsActivity extends FragmentActivity implements OnClickListener {
 
 	Button btnBack;
 	Button btnCreateNewRoom;
 	Button btnConnectToRoom;
-	RoomInfo[] rooms;
+	LinkedList<RoomInfo> rooms;
 	TableClickListener tableClickListener;
 	private int prevSelectedId = -1;
 	long lastRefreshTime = System.currentTimeMillis();
+	private int selectedRoomId = -1;
+	private FullRoomInfoDialog fullRoomInfoDlg = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +59,7 @@ public class RoomsActivity extends Activity implements OnClickListener {
 		btnCreateNewRoom.setOnClickListener(this);
 		btnConnectToRoom.setOnClickListener(this);
 		btnConnectToRoom.setEnabled(false);
-				
+		
 		tableClickListener = new TableClickListener();
 		refreshExistingRooms(); // or it must be before super?
 	}
@@ -68,7 +84,7 @@ public class RoomsActivity extends Activity implements OnClickListener {
 		
 		for (String s : cols) {
 			//TextView col1 = new TextView(context);
-			TextView col1 = (TextView)getLayoutInflater().inflate(R.layout.celltemplate, row);// TODO check if here null should be
+			TextView col1 = (TextView)getLayoutInflater().inflate(R.layout.celltemplate, null);// TODO check if here null should be
 			col1.setText(s);
 
 			col1.setLayoutParams(params);
@@ -85,11 +101,9 @@ public class RoomsActivity extends Activity implements OnClickListener {
 	
 	protected void refreshExistingRooms() {
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
-		nameValuePairs.add(new BasicNameValuePair("id", GameInfo.ownPlayer.id));
-		nameValuePairs.add(new BasicNameValuePair("password", GameInfo.password));
 		nameValuePairs.add(new BasicNameValuePair("request", "existing_rooms")); // 1 = money
 		nameValuePairs.add(new BasicNameValuePair("request_type", "request"));
-		PrefApplication.sendData(nameValuePairs);
+		PrefApplication.sendData(nameValuePairs, false);
 		lastRefreshTime = System.currentTimeMillis();
 	}
 
@@ -117,13 +131,14 @@ public class RoomsActivity extends Activity implements OnClickListener {
 			TableRow row = (TableRow)findViewById(prevSelectedId);
 			TextView numberTextView = (TextView)row.getChildAt(0);
 			int number = Integer.parseInt(numberTextView.getText().toString()) - 1;
-			nameValuePairs.add(new BasicNameValuePair("room_id", Integer.toString(rooms[number].id)));
+			nameValuePairs.add(new BasicNameValuePair("room_id", 
+					Integer.toString(rooms.get(number).id)));
 			nameValuePairs.add(new BasicNameValuePair("request_type", "request"));
-			PrefApplication.sendData(nameValuePairs);
+			PrefApplication.sendData(nameValuePairs, false);
 			break;
 		}
 	}
-	private void redrawTable(int roomsNumber) {
+	private void redrawTable() {
 		String longestRow = "";
 		int lengthRow = 0;
 		TableLayout contentTable = (TableLayout)findViewById(R.id.content_table);
@@ -136,20 +151,20 @@ public class RoomsActivity extends Activity implements OnClickListener {
 		cols.add("Players"); // TODO remove hardcode
 		contentTable = addRowToContentTable(contentTable, cols, -1);
 		
-		for (int i = 0; i < roomsNumber; ++i) {
+		for (RoomInfo r : rooms) {
 			cols.clear();
-			cols.add(Integer.toString(rooms[i].id));
-			cols.add(Integer.toString(rooms[i].bullet));
-			cols.add(Float.toString(rooms[i].whistCost));
-			cols.add(Integer.toString(rooms[i].playersNumber));
+			cols.add(Integer.toString(r.id));
+			cols.add(Integer.toString(r.bullet));
+			cols.add(Float.toString(r.whistCost));
+			cols.add(Integer.toString(r.playersNumber));
 			contentTable = addRowToContentTable(contentTable, cols, 0);
 			lengthRow = 0;
 			for (String c : cols)
 				lengthRow += c.length();
 			
 			if (longestRow.isEmpty() || lengthRow > (longestRow.length() - 1)) //Include -1 for subtracting the space occupied by "-"
-				longestRow = rooms[i].id + "-" + rooms[i].bullet + "-" 
-			+ rooms[i].whistCost + "-" + rooms[i].playersNumber;
+				longestRow = r.id + "-" + r.bullet + "-" 
+			+ r.whistCost + "-" + r.playersNumber;
 		}
 	}
 	
@@ -158,43 +173,26 @@ public class RoomsActivity extends Activity implements OnClickListener {
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
 		String msg = intent.getStringExtra("message");
-		int msgType = Integer.parseInt(intent.getStringExtra("messageType"));
+		CommonEnums.MessageTypes msgType = CommonEnums.MessageTypes.
+				valueOf(intent.getStringExtra("messageType"));
 		switch (msgType)
 		{
-		case 0: // roomsData is got
-			String[] roomsData = msg.split(" ");
-			int roomsNumber = Integer.parseInt(roomsData[0]);
-			rooms = new RoomInfo[roomsNumber];
-			for (int i = 0; i < roomsNumber; ++i)
-				rooms[i] = new RoomInfo();
-			for (int i = 0; i < roomsNumber; ++i) {
-				rooms[i].id = Integer.parseInt(roomsData[RoomInfo.roomInfoFields * i + 1]);
-				rooms[i].name = roomsData[RoomInfo.roomInfoFields  * i + 2];
-				rooms[i].bullet = Integer.parseInt(roomsData[RoomInfo.roomInfoFields  * i + 3]);
-				rooms[i].whistCost = Float.parseFloat(roomsData[RoomInfo.roomInfoFields  * i + 4]);
-				rooms[i].gameType = GameType.valueOf(roomsData[RoomInfo.roomInfoFields  * i + 5]);
-				rooms[i].gameType = GameType.valueOf(roomsData[RoomInfo.roomInfoFields  * i + 6]);
-				rooms[i].raspExit = new int[3];
-				String ar[] = roomsData[RoomInfo.roomInfoFields  * i + 7].split(",");
-				for (int j = 0; j < 3; j++) 
-					rooms[i].raspExit[j] = Integer.parseInt(ar[j]);
-				
-				rooms[i].raspProgression = new int[3];
-				ar = roomsData[RoomInfo.roomInfoFields  * i + 8].split(",");
-				for (int j = 0; j < 3; j++) 
-					rooms[i].raspProgression[j] = Integer.parseInt(ar[j]);
-				
-				rooms[i].withoutThree = Boolean.parseBoolean(roomsData[RoomInfo.roomInfoFields  * i + 9]);
-				rooms[i].noWhistRaspasyExit = Boolean.parseBoolean(roomsData[RoomInfo.roomInfoFields  * i + 10]);
-				rooms[i].stalingrad = Boolean.parseBoolean(roomsData[RoomInfo.roomInfoFields  * i + 11]);
-				rooms[i].tenWhist = Boolean.parseBoolean(roomsData[RoomInfo.roomInfoFields  * i + 12]);
-				rooms[i].hasPassword = Boolean.parseBoolean(roomsData[RoomInfo.roomInfoFields  * i + 13]);
-				rooms[i].playersNumber = Integer.parseInt(roomsData[RoomInfo.roomInfoFields  * i + 14]);
+		case ROOMS_EXISTING_ROOMS: // roomsData is got
+			Log.i("ROOMS_EXISTING_ROOMS", msg);
+			
+			Gson gson = new Gson();
+			try {
+				Type collectionType = new TypeToken<LinkedList<RoomInfo>>(){}.getType();
+				rooms = gson.fromJson(msg, collectionType);
+			} catch (Exception e) { // meaning "ERROR" was sent
+				Log.e("ROOMS_EXISTING_ROOMS", "Error sending rooms");
+				rooms = null;
 			}
-			redrawTable(roomsNumber);
+			
+			redrawTable();
 			break;
 			
-		case 1: // answer for connection request
+		case ROOMS_CONNECTION_RESULT: // answer for connection request
 			String[] data = msg.split(" ");
 			int status = Integer.parseInt(data[0]);
 			switch (status) {
@@ -214,6 +212,9 @@ public class RoomsActivity extends Activity implements OnClickListener {
 				break;
 			}
 			break;
+		case ROOMS_NEW_ROOM_CREATION_RESULT:
+			
+			break;
 		default: // unknown msg_type
 			return;
 		}
@@ -230,6 +231,9 @@ public class RoomsActivity extends Activity implements OnClickListener {
 				if (contentTable.getChildAt(0) == tRow)
 					return;
 				int childNumber = tRow.getChildCount();
+				selectedRoomId = Integer.parseInt((String) ((TextView) 
+						tRow.getChildAt(0)).getText());
+				
 				for (int i = 0; i < childNumber; i++) {
 					tRow.getChildAt(i).setSelected(true);
 				}
@@ -243,11 +247,38 @@ public class RoomsActivity extends Activity implements OnClickListener {
 				}
 				prevSelectedId = newId;
 				btnConnectToRoom.setEnabled(true);
+				if (selectedRoomId != -1) {
+					
+					int index = contentTable.indexOfChild(tRow);
+
+					//fullRoomInfoDlg.updateInfo(rooms.get(index - 1));
+					showDialog(rooms.get(index - 1));
+				}
 			}			
 		}
 		public int getSelectedRowId() {
 			return prevSelectedId;
 		}
+	}
+	
+	void showDialog(RoomInfo ri) {
+
+	    // DialogFragment.show() will take care of adding the fragment
+	    // in a transaction.  We also want to remove any currently showing
+	    // dialog, so make our own transaction and take care of that here.
+	    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+	    Fragment prev = getSupportFragmentManager().findFragmentByTag("dialog");
+	    if (prev != null) {
+	        ft.remove(prev);
+	    }
+	    ft.addToBackStack(null);
+
+	    // Create and show the dialog.
+	    DialogFragment newFragment = FullRoomInfoDialog.newInstance(ri);
+	    
+	    newFragment.show(ft, "dialog");
+	    Log.i("here", "gfyurfegre");
+	    //((FullRoomInfoDialog)newFragment).updateInfo(ri);
 	}
 	
 	@Override

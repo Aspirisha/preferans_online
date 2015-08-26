@@ -31,5 +31,21 @@
 	<string name="choose_password">Choose password</string>
 	<string name="login">login</string>
 	<string name="password">password</string>
+	
+	<!-- full room information headers -->
+	<string name="room_id">ID</string>
+	<string name="bullet">Bullet</string>
+	<string name="game_type">Game type</string>
+	<string name="whist_cost">Whist cost (coins)</string>
+	<string name="no_whist_rasp_exit">Raspasy are stopped after no-whist game</string>
+	<string name="players_number">Number of players</string>
+	<string name="rasp_exit">Raspasy exit</string>
+	<string name="rasp_prog">Raspasy progression</string>    
+	<string name="has_password">Has password</string> 
+	<string name="has_stalingrad">Has &quot;stalingrad&quot;</string>   
+	<string name="ten_whist">Has whisting on ten game</string>
+	<string name="without_three">Has &quot;without 3&quot; game exit</string>  
+	
+		    
 	<string name="server_ip">192.168.1.35</string>
 </resources>

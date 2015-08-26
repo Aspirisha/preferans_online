@@ -5,4 +5,7 @@
    <color name="selected_row">#ffcc00</color>
    <color name="unselected_row">#ffffff</color>
    <color name="score_line">#66665F</color>
+   
+   <color name="full_info_table_left_text_column">#000000</color>
+   <color name="full_info_table_right_text_column">#000000</color>
 </resources>

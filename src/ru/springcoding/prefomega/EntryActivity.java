@@ -6,14 +6,18 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import ru.springcoding.common.CommonEnums;
 import ru.springcoding.common.CommonEnums.MessageTypes;
 import ru.springcoding.common.CommonEnums.RecieverID;
+import ru.springcoding.prefomega.rooms.RoomsActivity;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -41,17 +45,17 @@ public class EntryActivity extends FragmentActivity implements OnClickListener {
 
 	WifiManager wifi;
 	RegisterDialog dlg;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.entry);
-		
+
 		PrefApplication.setVisibleWindow(RecieverID.ENTRY_ACTIVITY, this);
-		
+
 		if (!PrefApplication.getInstance().getLoginAndPassword())
 			showRegistrationPopup();
-		
+
 		findViews();
 		context = getApplicationContext();
 
@@ -63,10 +67,7 @@ public class EntryActivity extends FragmentActivity implements OnClickListener {
 			if (PrefApplication.regid.isEmpty()) {
 				PrefApplication.getInstance().registerInBackground();
 			} 
-		/*else {
-				PrefApplication.getInstance().pingServer();
-			}*/
-			
+
 		} else {
 			Log.i(TAG, "No valid Google Play Services APK found.");
 			Toast.makeText(this, "CheckPlayServices: No valid Google Play Services APK found.", 0).show();
@@ -78,28 +79,92 @@ public class EntryActivity extends FragmentActivity implements OnClickListener {
 		btnStartNewGame.setOnClickListener(this);
 		btnSettings.setOnClickListener(this);
 		btnExit.setOnClickListener(this);
-		
+
 		if (!isOnline()) {
 			Toast.makeText(this, "Internet connection not available.", 0).show();
+		} else {
+			pingServer();
 		}
-		
+
 		// tell the server we are online now
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
 		nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
 		nameValuePairs.add(new BasicNameValuePair("notification", "online"));
 		nameValuePairs.add(new BasicNameValuePair("request_type", "notification"));
-		PrefApplication.sendData(nameValuePairs);
-		
+		PrefApplication.sendData(nameValuePairs, false);
+
 		PrefApplication.runKeepAlive(true);
 	}
-	
-	public boolean isOnline() {
-	    ConnectivityManager cm =
-	        (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-	    NetworkInfo netInfo = cm.getActiveNetworkInfo();
-	    return netInfo != null && netInfo.isConnectedOrConnecting();
+
+
+	public void pingServer() {
+		new AsyncTask<Object, Object, Object>() {
+			
+			@Override
+			protected Object doInBackground(Object... params) {
+				long millisPerTry = 3000;
+				long sleepTime;
+				int tries = 0;
+				long startTime = System.currentTimeMillis();
+				
+				while (tries < 10) {
+					if (!PrefApplication.pingStatus) {
+						tries++;
+						Log.i("Ping", "Trying to ping server. Try #" + Integer.toString(tries));
+						sendPingRequest();
+						sleepTime = millisPerTry - (System.currentTimeMillis() - startTime);
+						try {
+							if (sleepTime > 0)
+								Thread.sleep(sleepTime);
+							else
+								Thread.sleep(10);
+						} catch (Exception e) {
+							Log.i("Exception: ", e.toString());
+						}
+					} else {
+						tries = 0;
+						break;
+					}
+				}
+				if (tries == 10) {
+					String oldId = PrefApplication.getInstance().getRegistrationId();
+					// TODO: change to AsynkTask in EntryActivity
+					PrefApplication.getInstance().registerInBackground();
+
+					PendingIntent contentIntent = null;
+					Intent intent = new Intent();
+					intent.putExtra("message", "");
+					intent.putExtra("messageType",
+							CommonEnums.MessageTypes.NEED_REGID_UPDATE.toString());
+					//contentIntent = PendingIntent.getActivity(this, 1,
+					//      intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+					//if (!oldId.isEmpty()) // we had some regId before so smth crashed. Tell it to server
+					//sendServerOldId(oldId);
+				}
+
+				return null;
+			}
+
+		}.execute(null, null, null);
 	}
-	
+
+	private void sendPingRequest() {
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+		nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
+		nameValuePairs.add(new BasicNameValuePair("request", "ping"));
+		nameValuePairs.add(new BasicNameValuePair("request_type", "request"));
+		PrefApplication.sendData(nameValuePairs, false); 
+	}
+
+
+	public boolean isOnline() {
+		ConnectivityManager cm =
+				(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo netInfo = cm.getActiveNetworkInfo();
+		return netInfo != null && netInfo.isConnectedOrConnecting();
+	}
+
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
@@ -119,7 +184,7 @@ public class EntryActivity extends FragmentActivity implements OnClickListener {
 			Intent settAct = new Intent(this, SettingsActivity.class);
 			startActivity(settAct);
 			break;
-			
+
 		}
 
 	}
@@ -142,7 +207,7 @@ public class EntryActivity extends FragmentActivity implements OnClickListener {
 		getMenuInflater().inflate(R.menu.entry, menu);
 		return true;
 	}
-	
+
 	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
@@ -155,33 +220,33 @@ public class EntryActivity extends FragmentActivity implements OnClickListener {
 		case ENTRY_REGISTRATION_RESULT:
 			try {
 				String data[] = msg.split(" ");
-				
+
 				int id = Integer.parseInt(data[0]);
 				GameInfo.ownPlayer.id = data[0];
-				
+
 				GameInfo.ownPlayer.name = data[1];
 				GameInfo.password = data[2];
 				GameInfo.isRegistered = true;
 				PrefApplication.getInstance().storeLoginAndPassword();
-				
+
 				dlg.dismiss();
 				dlg = null;
 			} catch (NumberFormatException e) {
-				
+
 			}
-				
+
 			break;
 		default:
 			break;
-			
+
 		}
 	}
-	
+
 	private void showRegistrationPopup() {		
 		dlg = new RegisterDialog();
 		dlg.show(getSupportFragmentManager(), "dlg");
 	}
-	
+
 	/*
 	@Override
 	public void onBackPressed() {
@@ -191,5 +256,5 @@ public class EntryActivity extends FragmentActivity implements OnClickListener {
 		nameValuePairs.add(new BasicNameValuePair("notification", "offline"));
 		PrefApplication.sendData(nameValuePairs, "NotificationManager.php");
 	}*/
-	
+
 }

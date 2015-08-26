@@ -187,8 +187,10 @@ containing a value of this type.
         public static final int common_signin_btn_light_text_disabled=0x7f050006;
         public static final int common_signin_btn_light_text_focused=0x7f050007;
         public static final int common_signin_btn_light_text_pressed=0x7f050005;
-        public static final int common_signin_btn_text_dark=0x7f05000f;
-        public static final int common_signin_btn_text_light=0x7f050010;
+        public static final int common_signin_btn_text_dark=0x7f050011;
+        public static final int common_signin_btn_text_light=0x7f050012;
+        public static final int full_info_table_left_text_column=0x7f05000f;
+        public static final int full_info_table_right_text_column=0x7f050010;
         public static final int opaque_red=0x7f05000a;
         public static final int score_line=0x7f05000e;
         public static final int selected_row=0x7f05000c;
@@ -203,6 +205,10 @@ containing a value of this type.
          */
         public static final int activity_horizontal_margin=0x7f090000;
         public static final int activity_vertical_margin=0x7f090001;
+        public static final int full_room_info_margin_from_top=0x7f090008;
+        public static final int full_room_info_margin_hor=0x7f090007;
+        public static final int full_room_info_margin_left=0x7f090006;
+        public static final int full_room_info_margin_ver=0x7f090009;
         public static final int reg_form_margins_left_right=0x7f090004;
         public static final int reg_form_top_margin=0x7f090005;
         public static final int rooms_scroll_height=0x7f090003;
@@ -302,40 +308,67 @@ containing a value of this type.
         public static final int whist=0x7f02005a;
     }
     public static final class id {
-        public static final int RelativeLayout1=0x7f0c000a;
-        public static final int RelativeRooms=0x7f0c0009;
-        public static final int action_settings=0x7f0c0021;
+        public static final int RelativeLayout1=0x7f0c0025;
+        public static final int RelativeRooms=0x7f0c0024;
+        public static final int TableLayout1=0x7f0c0009;
+        public static final int action_settings=0x7f0c003c;
         public static final int buttonAboutGame=0x7f0c0008;
-        public static final int buttonApply=0x7f0c0020;
-        public static final int buttonConnectToRoom=0x7f0c001d;
-        public static final int buttonCreateRoom=0x7f0c001c;
+        public static final int buttonApply=0x7f0c003b;
+        public static final int buttonConnectToRoom=0x7f0c0038;
+        public static final int buttonCreateRoom=0x7f0c0037;
         public static final int buttonExit=0x7f0c0007;
-        public static final int buttonNewRoomBack=0x7f0c000c;
-        public static final int buttonOkNewRoom=0x7f0c000b;
-        public static final int buttonRoomsBack=0x7f0c001b;
+        public static final int buttonNewRoomBack=0x7f0c0027;
+        public static final int buttonOkNewRoom=0x7f0c0026;
+        public static final int buttonRoomsBack=0x7f0c0036;
         public static final int buttonSettings=0x7f0c0006;
-        public static final int buttonSettingsBack=0x7f0c001e;
+        public static final int buttonSettingsBack=0x7f0c0039;
         public static final int buttonStart=0x7f0c0005;
-        public static final int checkStalingrad=0x7f0c000d;
-        public static final int content_table=0x7f0c001a;
-        public static final int editBet=0x7f0c0013;
-        public static final int editTextUserName=0x7f0c001f;
+        public static final int checkStalingrad=0x7f0c0028;
+        public static final int content_table=0x7f0c0035;
+        public static final int editBet=0x7f0c002e;
+        public static final int editTextUserName=0x7f0c003a;
+        public static final int fi_bullet=0x7f0c0013;
+        public static final int fi_button_connect=0x7f0c0023;
+        public static final int fi_button_hide=0x7f0c0022;
+        public static final int fi_gameType=0x7f0c000f;
+        public static final int fi_hasPassword=0x7f0c000d;
+        public static final int fi_hasStalingrad=0x7f0c0017;
+        public static final int fi_noWhistRaspExit=0x7f0c001d;
+        public static final int fi_playersNumber=0x7f0c0011;
+        public static final int fi_raspExit=0x7f0c0019;
+        public static final int fi_raspProg=0x7f0c001b;
+        public static final int fi_roomID=0x7f0c000b;
+        public static final int fi_tenWhist=0x7f0c0021;
+        public static final int fi_textView1=0x7f0c000a;
+        public static final int fi_textView11=0x7f0c0016;
+        public static final int fi_textView13=0x7f0c0018;
+        public static final int fi_textView15=0x7f0c001a;
+        public static final int fi_textView17=0x7f0c001e;
+        public static final int fi_textView19=0x7f0c0020;
+        public static final int fi_textView21=0x7f0c000e;
+        public static final int fi_textView23=0x7f0c001c;
+        public static final int fi_textView3=0x7f0c000c;
+        public static final int fi_textView5=0x7f0c0010;
+        public static final int fi_textView7=0x7f0c0012;
+        public static final int fi_textView9=0x7f0c0014;
+        public static final int fi_whistCost=0x7f0c0015;
+        public static final int fi_withoutThree=0x7f0c001f;
         public static final int hybrid=0x7f0c0000;
-        public static final int linearLayout1=0x7f0c0018;
-        public static final int loginTE=0x7f0c0016;
+        public static final int linearLayout1=0x7f0c0033;
+        public static final int loginTE=0x7f0c0031;
         public static final int none=0x7f0c0001;
         public static final int normal=0x7f0c0002;
-        public static final int passwordTE=0x7f0c0015;
-        public static final int registerButton=0x7f0c0017;
+        public static final int passwordTE=0x7f0c0030;
+        public static final int registerButton=0x7f0c0032;
         public static final int satellite=0x7f0c0003;
-        public static final int scrollview_rooms=0x7f0c0019;
-        public static final int spinnerBullet=0x7f0c0011;
-        public static final int spinnerGameType=0x7f0c000e;
+        public static final int scrollview_rooms=0x7f0c0034;
+        public static final int spinnerBullet=0x7f0c002c;
+        public static final int spinnerGameType=0x7f0c0029;
         public static final int terrain=0x7f0c0004;
-        public static final int textInsertBet=0x7f0c0012;
-        public static final int textView1=0x7f0c000f;
-        public static final int textView2=0x7f0c0010;
-        public static final int yourMoneyOnNewRoom=0x7f0c0014;
+        public static final int textInsertBet=0x7f0c002d;
+        public static final int textView1=0x7f0c002a;
+        public static final int textView2=0x7f0c002b;
+        public static final int yourMoneyOnNewRoom=0x7f0c002f;
     }
     public static final class integer {
         public static final int google_play_services_version=0x7f070000;
@@ -343,11 +376,12 @@ containing a value of this type.
     public static final class layout {
         public static final int celltemplate=0x7f030000;
         public static final int entry=0x7f030001;
-        public static final int game=0x7f030002;
-        public static final int new_room=0x7f030003;
-        public static final int registerlayout=0x7f030004;
-        public static final int rooms=0x7f030005;
-        public static final int settings=0x7f030006;
+        public static final int full_room_info=0x7f030002;
+        public static final int game=0x7f030003;
+        public static final int new_room=0x7f030004;
+        public static final int registerlayout=0x7f030005;
+        public static final int rooms=0x7f030006;
+        public static final int settings=0x7f030007;
     }
     public static final class menu {
         public static final int entry=0x7f0b0000;
@@ -382,6 +416,7 @@ containing a value of this type.
          */
         public static final int auth_client_using_bad_version_title=0x7f060014;
         public static final int back=0x7f060029;
+        public static final int bullet=0x7f060039;
         public static final int cancel=0x7f06002b;
         public static final int chooseBullet=0x7f06002e;
         public static final int choose_login=0x7f060034;
@@ -466,18 +501,31 @@ containing a value of this type.
         public static final int entry_start_new_game=0x7f06001f;
         public static final int exist_rooms=0x7f06001c;
         public static final int gameType=0x7f06002f;
+        public static final int game_type=0x7f06003a;
         public static final int get_regid=0x7f060031;
+        public static final int has_password=0x7f060040;
+        public static final int has_stalingrad=0x7f060041;
         public static final int login=0x7f060036;
+        public static final int no_whist_rasp_exit=0x7f06003c;
         public static final int password=0x7f060037;
         public static final int player_name=0x7f060022;
+        public static final int players_number=0x7f06003d;
+        public static final int rasp_exit=0x7f06003e;
+        public static final int rasp_prog=0x7f06003f;
         public static final int register=0x7f060032;
         public static final int registration_step=0x7f060033;
+        /**  full room information headers 
+         */
+        public static final int room_id=0x7f060038;
         public static final int save_settings=0x7f060023;
-        public static final int server_ip=0x7f060038;
+        public static final int server_ip=0x7f060044;
         public static final int set_vist_cost=0x7f060028;
         public static final int settings_back_button=0x7f060021;
         public static final int start_back=0x7f060026;
+        public static final int ten_whist=0x7f060042;
         public static final int title_activity_rooms=0x7f060024;
+        public static final int whist_cost=0x7f06003b;
+        public static final int without_three=0x7f060043;
         public static final int your_money=0x7f060030;
     }
     public static final class style {

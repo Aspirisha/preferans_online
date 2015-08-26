@@ -38,7 +38,7 @@ public class SettingsActivity extends Activity implements OnClickListener {
 			nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
 			nameValuePairs.add(new BasicNameValuePair("request", "current_name"));
 			nameValuePairs.add(new BasicNameValuePair("request_type", "request"));
-			PrefApplication.sendData(nameValuePairs);
+			PrefApplication.sendData(nameValuePairs, false);
         } else {
         	etUserName.setText(GameInfo.ownPlayer.name);
         }
@@ -57,7 +57,7 @@ public class SettingsActivity extends Activity implements OnClickListener {
 			nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
 	        nameValuePairs.add(new BasicNameValuePair("new_name", newName));
 	        nameValuePairs.add(new BasicNameValuePair("request_type", "request"));
-			PrefApplication.sendData(nameValuePairs);
+			PrefApplication.sendData(nameValuePairs, false);
 			GameInfo.ownPlayer.name = newName;
 			break;
 		}
