@@ -5,7 +5,7 @@ import java.util.Date;
 public class Player {
 
 	private long id;
-	private Long roomId;
+	private Long roomId = null;
 	private String name = "";
 	private String password = "";
 	private Date joiningDate;
@@ -13,8 +13,8 @@ public class Player {
 	private String regId = "";
 	private boolean isOnline = false;
 	private String cards = "";
-	private Integer timeLeft = 0;
-	private Integer myNumber = 0;
+	private Integer timeLeft = null;
+	private Integer myNumber = null;
 	
 	public Player() { }
 	public Player(String _name, String _password, int _coins, String _regID) {

@@ -1,5 +1,6 @@
 package com.prefserver.servlets;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
@@ -16,6 +17,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONArray;
+
 import ru.springcoding.common.CommonEnums.MessageTypes;
 import ru.springcoding.common.CommonEnums.RecieverID;
 import ru.springcoding.common.RoomInfo;
@@ -24,6 +27,7 @@ import ru.springcoding.common.Serializer;
 import com.google.android.gcm.server.Message;
 import com.google.android.gcm.server.MulticastResult;
 import com.google.android.gcm.server.Sender;
+import com.google.gson.Gson;
 import com.prefserver.dao.PlayerDao;
 import com.prefserver.dao.PlayerDaoImpl;
 import com.prefserver.dao.RoomDao;
@@ -53,6 +57,7 @@ public class DispatcherServlet extends HttpServlet {
 		Map<String, Integer> tmp = new HashMap<String, Integer>();
 		tmp.put("register", 1);
 		tmp.put("existing_rooms", 2);
+		tmp.put("ping", 0);
 		requestsHash = tmp;
 	}
 
@@ -120,7 +125,6 @@ public class DispatcherServlet extends HttpServlet {
 			Message message = new Message.Builder().timeToLive(30)
 					.delayWhileIdle(true).setData(data)
 					.build();
-			System.out.println("THERE");
 			MulticastResult result = sender.send(message, regIDs, 1);
 			System.out.println(result.toString());
 			//request.setAttribute("pushStatus", result.toString());
@@ -158,6 +162,9 @@ public class DispatcherServlet extends HttpServlet {
 		
 		System.out.println(req);
 		switch (requestsHash.get(req)) {
+		case 0:
+			processPingRequest(request, response);
+			break;
 		case 1:
 			processRegisterRequest(request, response);
 			break;
@@ -168,6 +175,15 @@ public class DispatcherServlet extends HttpServlet {
 			break;
 		}
 	}
+	
+	void processPingRequest(HttpServletRequest request, HttpServletResponse response) {
+		String reg_id = request.getParameter("reg_id");
+		String password = request.getParameter("password");		
+		String login = request.getParameter("login");
+		
+		sendData(reg_id, "", RecieverID.PING_ANSWER, MessageTypes.KEEP_ALIVE_ANSWER);
+	}
+		
 	
 	void processRegisterRequest(HttpServletRequest request, HttpServletResponse response) {
 		String login = request.getParameter("login");
@@ -224,6 +240,7 @@ public class DispatcherServlet extends HttpServlet {
 		System.out.println(reg_id);
 		
 		assert(rooms != null);
+		
 		for (Room r : rooms) {
 			RoomInfo ri = new RoomInfo();
 			ri.bullet = r.getBullet();
@@ -248,26 +265,20 @@ public class DispatcherServlet extends HttpServlet {
 			ri.tenWhist = r.isTenWhist();
 			ri.whistCost = r.getWhistCost();
 			ri.withoutThree = r.isWithoutThree();
-			
 			roomsInfo.add(ri);
 		}
 		
 		int tries = 0;
 		boolean sent = false;
+		Gson gson = new Gson();
+		String s = gson.toJson(roomsInfo);
 		
 		do {
-			try {
-				System.out.println("HERE");
-				String s = Serializer.toString(roomsInfo);
-				System.out.println(s);
-				sendData(reg_id, s, RecieverID.ROOMS_ACTIVITY, 
-						MessageTypes.ROOMS_EXISTING_ROOMS);
-				sent = true;
-				System.out.println("Sent rooms data.");
-			} catch (IOException e) {
-				System.out.println(e.toString());
-				tries++;
-			}
+			System.out.println(s);
+			sendData(reg_id, s, RecieverID.ROOMS_ACTIVITY, 
+					MessageTypes.ROOMS_EXISTING_ROOMS);
+			sent = true;
+			System.out.println("Sent rooms data.");
 		} while (!sent && tries < 3);
 		
 		if (!sent) {
