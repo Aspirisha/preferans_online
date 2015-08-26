@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import ru.springcoding.common.CommonEnums.RecieverID;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,7 +23,7 @@ public class SettingsActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		PrefApplication.setVisibleWindow(4, this);
+		PrefApplication.setVisibleWindow(RecieverID.SETTINGS_ACTIVITY, this);
 		setContentView(R.layout.settings);
 		
         btnSettingsBack = (Button)findViewById(R.id.buttonSettingsBack);
@@ -36,7 +37,8 @@ public class SettingsActivity extends Activity implements OnClickListener {
 	        ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 			nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
 			nameValuePairs.add(new BasicNameValuePair("request", "current_name"));
-			PrefApplication.sendData(nameValuePairs, "RequestManager.php");
+			nameValuePairs.add(new BasicNameValuePair("request_type", "request"));
+			PrefApplication.sendData(nameValuePairs, false);
         } else {
         	etUserName.setText(GameInfo.ownPlayer.name);
         }
@@ -54,7 +56,8 @@ public class SettingsActivity extends Activity implements OnClickListener {
 			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 			nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
 	        nameValuePairs.add(new BasicNameValuePair("new_name", newName));
-			PrefApplication.sendData(nameValuePairs, "updatesettings.php");
+	        nameValuePairs.add(new BasicNameValuePair("request_type", "request"));
+			PrefApplication.sendData(nameValuePairs, false);
 			GameInfo.ownPlayer.name = newName;
 			break;
 		}

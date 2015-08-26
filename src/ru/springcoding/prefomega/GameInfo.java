@@ -28,6 +28,9 @@ public class GameInfo {
 	public static boolean paddingsAreCounted = false;
 	public static Map<Integer, Integer> ServerToClientCards;
 	
+	public static String password = "";
+	public static boolean isRegistered = false;
+	
 	public static String roomId;
 	public static String roomName;
 	

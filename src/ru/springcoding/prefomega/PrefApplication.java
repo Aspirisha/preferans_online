@@ -1,8 +1,9 @@
 package ru.springcoding.prefomega;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -12,10 +13,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.gcm.GoogleCloudMessaging;
-
+import ru.springcoding.common.CommonEnums.RecieverID;
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
@@ -28,24 +27,33 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+
 
 public class PrefApplication extends Application {
 	private static PrefApplication singleton = null;
 	
-	public static String regid;
+	private static String serverIp = null;
+	public static volatile String regid;
 	public static String message;
 	public static int screenWidth;
 	public static int screenHeight;
-	private static int currentVisibleWindow; // this variable will be checked each time 
+	private static RecieverID currentVisibleWindow; // this variable will be checked each time 
 										     // when server sends us smth. For, if the data is old,
 											 // we don't need it anymore and just skip.
 	private static boolean metricsSet = false;
-	public static boolean pingStatus = false;
+	public static volatile boolean pingStatus = false;
 	
-	private static String SENDER_ID = "841120567778";
+	private static String SENDER_ID = "264728257590";
 	static final String TAG = "GCMDemo";
 	public static final String EXTRA_MESSAGE = "message";
 	public static final String PROPERTY_REG_ID = "registration_id";
+	private static final String PROPERTY_LOGIN = "login";
+	private static final String PROPERTY_PASSWORD = "password";
+	private static final String PROPERTY_ID = "id";
+	
 	private static final String PROPERTY_APP_VERSION = "appVersion";
 	private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 	private static Context context;
@@ -68,6 +76,7 @@ public class PrefApplication extends Application {
 		screenHeight = metrics.heightPixels;
 		regTestThread = new RegistrationTestThread();
 		keepAliveThread = new KeepAliveThread();
+		serverIp = getResources().getString(R.string.server_ip);
 	}
 	
 	public static void setVisibleAreaSize(int height, int width) {
@@ -78,33 +87,91 @@ public class PrefApplication extends Application {
 		}
 	}
 	
-	public static void sendData(final ArrayList<NameValuePair> data, final String fileName) {
+	public void tryRegister(String login, String password) {
+		ArrayList<NameValuePair> loginAndPassword = new ArrayList<NameValuePair>();
+		loginAndPassword.add(new BasicNameValuePair("request_type", "request"));
+		loginAndPassword.add(new BasicNameValuePair("request", "register"));
+		loginAndPassword.add(new BasicNameValuePair("login", login));
+		loginAndPassword.add(new BasicNameValuePair("password", password));
+		loginAndPassword.add(new BasicNameValuePair("reg_id", regid));
+		sendData(loginAndPassword, true);
+	}
+	
+	public static void sendData(final ArrayList<NameValuePair> data, 
+			final boolean hasLoginAndPassword) {
          // 1) Connect via HTTP. 2) Encode data. 3) Send data.
-		new Thread(new Runnable() {
-			public void run() {
+		new AsyncTask<Void, Void, HttpResponse>() {
+
+			@Override
+			protected HttpResponse doInBackground(Void... params) {
 		        try {
+		        	if (!hasLoginAndPassword) {
+		        		data.add(new BasicNameValuePair("id", 
+		        				GameInfo.ownPlayer.id));
+		        		data.add(new BasicNameValuePair("login", 
+		        				GameInfo.ownPlayer.name));
+		        		data.add(new BasicNameValuePair("password", 
+		        				GameInfo.password));		        		
+		        	}
 		            HttpClient httpclient = new DefaultHttpClient();
-		            HttpPost httppost = new HttpPost("http://preferance.freevar.com/" + fileName);
+		            HttpPost httppost = new HttpPost("http://"+ serverIp +":8080/PrefServer/Dispatcher");
 		            httppost.setEntity(new UrlEncodedFormEntity(data));
 		            HttpResponse response = httpclient.execute(httppost);
 		            Log.i("postData", response.getStatusLine().toString());
+		            return response;
 		        }
 		        catch(Exception e) {
 		            Log.e("log_tag", "Error:  " + e.toString());
 		        }  
+				return null;
 			}
-		}).start();
+			
+			@Override
+			protected void onPostExecute(HttpResponse response) {
+				InputStream inputstream;
+				try {
+					if (response != null) {
+						inputstream = response.getEntity().getContent();
+						String line = PrefApplication.convertStreamToString(inputstream);
+						Log.i("log_tag", "Response:  " + line);
+					}
+				} catch (IllegalStateException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				super.onPostExecute(response);
+			}
+			
+		}.execute(null, null, null);
         
     }
 	
-	public static void setVisibleWindow(int i, Context c) {
+	public static String convertStreamToString(InputStream is) {
+	    String line = "";
+	    StringBuilder total = new StringBuilder();
+	    BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+	    try {
+	        while ((line = rd.readLine()) != null) {
+	            total.append(line);
+	        }
+	    } catch (Exception e) {
+	        Log.e("Stream2String", "Stream exception");
+	    }
+	    return total.toString();
+	}
+	
+	public static void setVisibleWindow(RecieverID i, Context c) {
 		synchronized (singleton.lock) {
 			currentVisibleWindow = i;
 			context = c;
 		}
 	}
 	
-	public static int getVisibleWindow() {
+	public static RecieverID getVisibleWindow() {
 		synchronized (singleton.lock) {
 			return currentVisibleWindow;
 		}
@@ -120,7 +187,7 @@ public class PrefApplication extends Application {
 				.isGooglePlayServicesAvailable(context);
 		if (resultCode != ConnectionResult.SUCCESS) {
 			if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-				GooglePlayServicesUtil.getErrorDialog(resultCode, null,
+				GooglePlayServicesUtil.getErrorDialog(resultCode, (Activity)context,
 						PLAY_SERVICES_RESOLUTION_REQUEST).show();
 			} else {
 				Log.i(TAG, "This device is not supported.");
@@ -141,7 +208,7 @@ public class PrefApplication extends Application {
 	 *         registration ID.
 	 */
 	public String getRegistrationId() {
-		final SharedPreferences prefs = getGCMPreferences();
+		final SharedPreferences prefs = getPreferences();
 		
 		regid = prefs.getString(PROPERTY_REG_ID, "");
 		if (regid.isEmpty()) {
@@ -159,14 +226,32 @@ public class PrefApplication extends Application {
 		}
 		return regid;
 	}
+	
+	public boolean getLoginAndPassword() {
+		final SharedPreferences prefs = getPreferences();
+		GameInfo.ownPlayer.name = prefs.getString(PROPERTY_LOGIN, "");
+		GameInfo.ownPlayer.id = prefs.getString(PROPERTY_ID, "");
+		GameInfo.password = prefs.getString(PROPERTY_PASSWORD, "");
+		GameInfo.isRegistered = !GameInfo.ownPlayer.name.isEmpty() 
+				&& !GameInfo.password.isEmpty() && !GameInfo.ownPlayer.id.isEmpty();
+		return GameInfo.isRegistered;
+	}
 
+	public void storeLoginAndPassword() {
+		final SharedPreferences prefs = getPreferences();
+		int appVersion = getAppVersion();
+		Log.i(TAG, "Saving login and password " + appVersion);
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.putString(PROPERTY_LOGIN, GameInfo.ownPlayer.name);
+		editor.putString(PROPERTY_PASSWORD, GameInfo.password);
+		editor.putString(PROPERTY_ID, GameInfo.ownPlayer.id);
+		editor.commit();
+	}
+	
 	/**
 	 * @return Application's {@code SharedPreferences}.
 	 */
-	private SharedPreferences getGCMPreferences() {
-		// This sample app persists the registration ID in shared preferences,
-		// but
-		// how you store the regID in your app is up to you.
+	private SharedPreferences getPreferences() {
 		return getSharedPreferences(EntryActivity.class.getSimpleName(), Context.MODE_PRIVATE);
 	}
 
@@ -230,10 +315,11 @@ public class PrefApplication extends Application {
 	 * message using the 'from' address in the message.
 	 */
 	private static void sendRegistrationIdToBackend() {
-		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 		nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
-		
-		PrefApplication.sendData(nameValuePairs, "updatesettings.php");
+		nameValuePairs.add(new BasicNameValuePair("request_type", "request"));
+		Log.i("regID", "reg_id = " + PrefApplication.regid);
+		PrefApplication.sendData(nameValuePairs, false);
 	}
 
 	/**
@@ -246,7 +332,7 @@ public class PrefApplication extends Application {
 	 *            registration ID
 	 */
 	private void storeRegistrationId(Context context, String regId) {
-		final SharedPreferences prefs = getGCMPreferences();
+		final SharedPreferences prefs = getPreferences();
 		int appVersion = getAppVersion();
 		Log.i(TAG, "Saving regId on app version " + appVersion);
 		SharedPreferences.Editor editor = prefs.edit();
@@ -265,6 +351,7 @@ public class PrefApplication extends Application {
 	
 	public void pingServer() {
 		regTestThread.setRunning(true);
+		regTestThread.start();
 	}
 	
 	public static void runKeepAlive(boolean run) {

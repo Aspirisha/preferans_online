@@ -6,6 +6,7 @@ import java.util.Arrays;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import ru.springcoding.common.CommonEnums.RecieverID;
 import ru.springcoding.prefomega.PlayingTableView.DrawState;
 import android.app.Activity;
 import android.app.Application;
@@ -58,15 +59,16 @@ public class GameActivity extends Activity implements OnClickListener {
 		GameInfo.nextPlayer.setMyNumber(GameInfo.ownPlayer.getNextNumber());
 		
 		getInfoAboutRoom();
-		PrefApplication.setVisibleWindow(3, this);
+		PrefApplication.setVisibleWindow(RecieverID.GAME_ACTIVITY, this);
 	}
 
 	private void getInfoAboutRoom() {
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
+		nameValuePairs.add(new BasicNameValuePair("request_type", "request"));
 		nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
 		nameValuePairs.add(new BasicNameValuePair("request", "all_data_about_room")); 
 		nameValuePairs.add(new BasicNameValuePair("room_id", GameInfo.roomId));
-		PrefApplication.sendData(nameValuePairs, "RequestManager.php");
+		PrefApplication.sendData(nameValuePairs, false);
 	}
 	
 	@Override
@@ -199,11 +201,11 @@ public class GameActivity extends Activity implements OnClickListener {
 	
 	private void notifyUserExitedFromRoom() {
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
-		nameValuePairs.add(new BasicNameValuePair("id", GameInfo.ownPlayer.id));
+		nameValuePairs.add(new BasicNameValuePair("request_type", "notification"));
 		nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
 		nameValuePairs.add(new BasicNameValuePair("notification", "user_exited")); 
 		nameValuePairs.add(new BasicNameValuePair("room_id", GameInfo.roomId));
-		PrefApplication.sendData(nameValuePairs, "NotificationManager.php");
+		PrefApplication.sendData(nameValuePairs, false);
 	}
 	
 	private void manageNewState(String msg) {
@@ -395,8 +397,6 @@ public class GameActivity extends Activity implements OnClickListener {
 			GameInfo.currentCardBet = GameInfo.ownPlayer.getNewBet();
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(5);
 		nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
-		nameValuePairs.add(new BasicNameValuePair("id", GameInfo.ownPlayer.id));
-
 		if (GameInfo.gameState == 1) { // trading is going on
 			nameValuePairs.add(new BasicNameValuePair("notification", "bet_is_done")); 
 		} else if (GameInfo.gameState == 3) { // we send put chosen game
@@ -404,52 +404,53 @@ public class GameActivity extends Activity implements OnClickListener {
 		}
 		nameValuePairs.add(new BasicNameValuePair("room_id", GameInfo.roomId));
 		nameValuePairs.add(new BasicNameValuePair("bet", Integer.toString(GameInfo.ownPlayer.getNewBet())));
-		PrefApplication.sendData(nameValuePairs, "NotificationManager.php");
+		nameValuePairs.add(new BasicNameValuePair("request_type", "notification"));
+		PrefApplication.sendData(nameValuePairs, false);
 		gameView.hideBetTable();
 	}
 	
 	public void sendThrownCardsToServer() {		
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
-		nameValuePairs.add(new BasicNameValuePair("id", GameInfo.ownPlayer.id));
 		nameValuePairs.add(new BasicNameValuePair("notification", "cards_are_thrown")); 
 		nameValuePairs.add(new BasicNameValuePair("room_id", GameInfo.roomId));
 		nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
 		String s = Integer.toString(GameInfo.ServerToClientCards.get(GameInfo.thrownCards.cards[0])) + " " 
 				+ Integer.toString(GameInfo.ServerToClientCards.get(GameInfo.thrownCards.cards[1]));
 		nameValuePairs.add(new BasicNameValuePair("cards", s));
-		PrefApplication.sendData(nameValuePairs, "NotificationManager.php");
+		nameValuePairs.add(new BasicNameValuePair("request_type", "notification"));
+		PrefApplication.sendData(nameValuePairs, false);
 	}
 	
 	public void sendMyWhistingChoiceToServer() {
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
-		nameValuePairs.add(new BasicNameValuePair("id", GameInfo.ownPlayer.id));
 		nameValuePairs.add(new BasicNameValuePair("notification", "whist_choice")); 
 		nameValuePairs.add(new BasicNameValuePair("room_id", GameInfo.roomId));
 		nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
 		nameValuePairs.add(new BasicNameValuePair("chosen_role", Integer.toString(GameInfo.ownPlayer.myRole)));
-		PrefApplication.sendData(nameValuePairs, "NotificationManager.php");
+		nameValuePairs.add(new BasicNameValuePair("request_type", "notification"));
+		PrefApplication.sendData(nameValuePairs, false);
 		gameView.hideChoiceTable();
 	}
 	
 	public void sendMyOpenCloseChoiceToServer() {
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
-		nameValuePairs.add(new BasicNameValuePair("id", GameInfo.ownPlayer.id));
 		nameValuePairs.add(new BasicNameValuePair("notification", "open_close")); 
 		nameValuePairs.add(new BasicNameValuePair("room_id", GameInfo.roomId));
 		nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
 		nameValuePairs.add(new BasicNameValuePair("is_open_game", Boolean.toString(GameInfo.isOpenGame)));
-		PrefApplication.sendData(nameValuePairs, "NotificationManager.php");
+		nameValuePairs.add(new BasicNameValuePair("request_type", "notification"));
+		PrefApplication.sendData(nameValuePairs, false);
 		gameView.hideChoiceTable();
 	}
 	
 	public void sendMyCardMoveToServer() {
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
-		nameValuePairs.add(new BasicNameValuePair("id", GameInfo.ownPlayer.id));
 		nameValuePairs.add(new BasicNameValuePair("notification", "card_move")); 
 		nameValuePairs.add(new BasicNameValuePair("room_id", GameInfo.roomId));
 		nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
+		nameValuePairs.add(new BasicNameValuePair("request_type", "notification"));
 		nameValuePairs.add(new BasicNameValuePair("move", Integer.toString(GameInfo.ServerToClientCards.get(GameInfo.ownPlayer.lastCardMove))));
-		PrefApplication.sendData(nameValuePairs, "NotificationManager.php");
+		PrefApplication.sendData(nameValuePairs, false);
 	}
 	
 	@Override // recycle bitmaps here to avoid memory leaks

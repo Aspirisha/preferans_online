@@ -1,5 +1,7 @@
 package ru.springcoding.prefomega;
 
+import ru.springcoding.common.CommonEnums.RecieverID;
+import ru.springcoding.prefomega.rooms.RoomsActivity;
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -54,22 +56,24 @@ public class GCMIntentService extends IntentService {
              * not interested in, or that you don't recognize.
              */
             if (GoogleCloudMessaging.MESSAGE_TYPE_SEND_ERROR.equals(messageType)) {
-                sendNotification(0, intent);
+                sendNotification(RecieverID.ENTRY_ACTIVITY, intent);
             } else if (GoogleCloudMessaging.MESSAGE_TYPE_DELETED.equals(messageType)) {
-                sendNotification(0, intent);
+                sendNotification(RecieverID.ENTRY_ACTIVITY, intent);
             // If it's a regular GCM message, do some work.
             } else if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
                 String s = extras.getString("message");
-                int receiver = -1;
-                try{
-                	receiver = Integer.parseInt(extras.getString("receiver"));
+                RecieverID receiver;
+                
+                try {
+                	receiver = RecieverID.valueOf(extras.getString("receiver"));
                 	Log.i(TAG, "Completed work @ " + SystemClock.elapsedRealtime());
                 } 
-                catch (Exception e)
-                {
+                
+                catch (Exception e) {
                 	Log.i(TAG, "Exception on receiver defining:" + e.toString());
                 	return;
                 }
+                
                 // Post notification of received message.
                 sendNotification(receiver, intent);
                 Log.i(TAG, "Received: " + extras.toString());
@@ -82,13 +86,15 @@ public class GCMIntentService extends IntentService {
     // Put the message into a notification and post it.
     // This is just one simple example of what you might choose to do with
     // a GCM message.
-    private void sendNotification(int receiver, Intent intent) {
+    private void sendNotification(RecieverID receiver, Intent intent) {
         mNotificationManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
 
         PendingIntent contentIntent = null;
         
-        if (receiver != PrefApplication.getVisibleWindow() && receiver < 100) // message is not fresh
+        if (receiver != PrefApplication.getVisibleWindow() 
+        		&& receiver != RecieverID.PING_ANSWER &&
+        		receiver != RecieverID.KEEP_ALIVE) // message is not fresh
         	return; 
         
         switch (receiver) {
@@ -98,7 +104,7 @@ public class GCMIntentService extends IntentService {
         	case NEW_ROOM_ACTIVITY:
         		intent.setClass(this, NewRoomActivity.class);
                 break;
-        	case EXISTING_ROOMS_ACTIVITY:
+        	case ROOMS_ACTIVITY:
         		intent.setClass(this, RoomsActivity.class);
         		break;
         	case GAME_ACTIVITY:
@@ -107,16 +113,19 @@ public class GCMIntentService extends IntentService {
         	case SETTINGS_ACTIVITY:
         		intent.setClass(this, SettingsActivity.class);
         		break;
-        	case 100: // it's ping info 
-        		PrefApplication.pingStatus = true;
-        		break;
-        	case KEEPALIVE_MANAGER: // it's keepalive message 
+        	case KEEP_ALIVE: // it's keepalive message 
         		String msg[] = intent.getStringExtra("message").split(" ");
-        		GameInfo.previous_server_keepalive_time = GameInfo.current_server_keepalive_time;
+        		
+        		/*GameInfo.previous_server_keepalive_time = GameInfo.current_server_keepalive_time;
         		GameInfo.current_server_keepalive_time = Long.parseLong(msg[0]);
         		GameInfo.ownPlayer.timeLeft = Integer.parseInt(msg[GameInfo.ownPlayer.getMyNumber()]);
         		GameInfo.prevPlayer.timeLeft = Integer.parseInt(msg[GameInfo.prevPlayer.getMyNumber()]);
         		GameInfo.nextPlayer.timeLeft = Integer.parseInt(msg[GameInfo.nextPlayer.getMyNumber()]);
+        		*/
+        		break;
+        	case PING_ANSWER:
+        		PrefApplication.pingStatus = true;
+        		Log.i("Ping", "Got ping answer!");
         		break;
             default: // no activity has such address => it's error
             	return;

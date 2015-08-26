@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import ru.springcoding.common.CommonEnums.RecieverID;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,7 +34,7 @@ public class NewRoomActivity extends Activity implements OnClickListener, OnTouc
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		PrefApplication.setVisibleWindow(1, this);
+		PrefApplication.setVisibleWindow(RecieverID.NEW_ROOM_ACTIVITY, this);
 		setContentView(R.layout.new_room);
 		
 		buttonCancel = (Button)findViewById(R.id.buttonNewRoomBack);
@@ -66,7 +67,8 @@ public class NewRoomActivity extends Activity implements OnClickListener, OnTouc
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 		nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
 		nameValuePairs.add(new BasicNameValuePair("request", "my_money")); // 1 = money
-		PrefApplication.sendData(nameValuePairs, "RequestManager.php");
+		nameValuePairs.add(new BasicNameValuePair("request_type", "request"));
+		PrefApplication.sendData(nameValuePairs, false);
 		
 	}
 	@Override
@@ -93,7 +95,8 @@ public class NewRoomActivity extends Activity implements OnClickListener, OnTouc
 	        nameValuePairs.add(new BasicNameValuePair("game_bullet", spinBullet.getSelectedItem().toString()));
 	        nameValuePairs.add(new BasicNameValuePair("enable_stalingrad", stalingrad));
 	        nameValuePairs.add(new BasicNameValuePair("is_private", "0"));
-			PrefApplication.sendData(nameValuePairs, "NewRoom.php");
+	        nameValuePairs.add(new BasicNameValuePair("request_type", "request"));
+			PrefApplication.sendData(nameValuePairs, false);
 			break;
 		case R.id.buttonNewRoomBack:
 			finish();

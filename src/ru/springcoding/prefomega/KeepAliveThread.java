@@ -48,8 +48,8 @@ public class KeepAliveThread extends Thread {
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
 		nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
 		nameValuePairs.add(new BasicNameValuePair("notification", "keep_alive"));
-		nameValuePairs.add(new BasicNameValuePair("id", GameInfo.ownPlayer.id));
-		PrefApplication.sendData(nameValuePairs, "NotificationManager.php");
+		nameValuePairs.add(new BasicNameValuePair("request_type", "notification"));
+		PrefApplication.sendData(nameValuePairs, false);
 	}
 	
 }
