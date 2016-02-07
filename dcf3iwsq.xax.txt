@@ -1,0 +1,21 @@
+﻿rtrey
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#	modified:   bin/Preferance.apk
+#	modified:   bin/classes.dex
+#	modified:   bin/classes/ru/springcoding/prefomega/RoomsActivity$TableClickListener.class
+#	modified:   bin/classes/ru/springcoding/prefomega/RoomsActivity.class
+#	modified:   bin/dexedLibs/google-play-services_lib-6879cde23d6e38cf2de4bf11d66f8140.jar
+#	modified:   bin/resources.ap_
+#	new file:   out.txt
+#	modified:   src/ru/springcoding/prefomega/RoomsActivity.java
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#	0r1i2qsm.szu.txt
+
