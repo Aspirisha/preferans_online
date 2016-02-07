@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="game_types">
+        <item >Sochi</item>
+        <item >Leningrad</item>
+        <item >Rostov</item>
+    </string-array>
+    
+    <string-array name="bullet_types">
+        <item >10</item>
+        <item >20</item>
+    </string-array>
+    
+</resources>
