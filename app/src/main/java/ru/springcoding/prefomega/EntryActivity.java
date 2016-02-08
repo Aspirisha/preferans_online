@@ -1,13 +1,11 @@
 package ru.springcoding.prefomega;
 
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -24,7 +22,8 @@ import org.apache.http.message.BasicNameValuePair;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import ru.springcoding.prefomega.CommonEnums.*;
+import ru.springcoding.prefomega.CommonEnums.MessageTypes;
+import ru.springcoding.prefomega.CommonEnums.RecieverID;
 import ru.springcoding.prefomega.rooms.RoomsActivity;
 
 public class EntryActivity extends FragmentActivity implements OnClickListener {
@@ -33,6 +32,7 @@ public class EntryActivity extends FragmentActivity implements OnClickListener {
 
     String SENDER_ID = "841120567778";
     static final String TAG = "GCMDemo";
+    static final int MAX_PING_TRIES = 10;
 
     // TextView mDisplay;
     AtomicInteger msgId = new AtomicInteger();
@@ -63,6 +63,7 @@ public class EntryActivity extends FragmentActivity implements OnClickListener {
         // Check device for Play Services APK. If check succeeds, proceed with
         // GCM registration.
         if (PrefApplication.checkPlayServices()) {
+            Log.i(TAG, "Found play services");
             PrefApplication.getInstance().getRegistrationId();
 
             if (PrefApplication.regid.isEmpty()) {
@@ -81,6 +82,7 @@ public class EntryActivity extends FragmentActivity implements OnClickListener {
         btnSettings.setOnClickListener(this);
         btnExit.setOnClickListener(this);
 
+        reset_logged_as();
         if (!isOnline()) {
             Toast.makeText(this, "Internet connection not available.", Toast.LENGTH_LONG).show();
         } else {
@@ -88,27 +90,29 @@ public class EntryActivity extends FragmentActivity implements OnClickListener {
         }
 
         // tell the server we are online now
-        ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
-        nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
-        nameValuePairs.add(new BasicNameValuePair("notification", "online"));
-        nameValuePairs.add(new BasicNameValuePair("request_type", "notification"));
-        PrefApplication.sendData(nameValuePairs, false);
+
+        if (GameInfo.isSignedIn) {
+            ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
+            nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
+            nameValuePairs.add(new BasicNameValuePair("notification", "online"));
+            nameValuePairs.add(new BasicNameValuePair("request_type", "notification"));
+            PrefApplication.sendData(nameValuePairs, false);
+        }
 
         PrefApplication.runKeepAlive(true);
     }
 
 
     public void pingServer() {
-        new AsyncTask<Object, Object, Object>() {
-
+        Thread thread = new Thread(new Runnable() {
             @Override
-            protected Object doInBackground(Object... params) {
-                long millisPerTry = 3000;
+            public void run() {
+                long millisPerTry = 5000;
                 long sleepTime;
                 int tries = 0;
-                long startTime = System.currentTimeMillis();
 
-                while (tries < 10) {
+                while (tries < MAX_PING_TRIES) {
+                    long startTime = System.currentTimeMillis();
                     if (!PrefApplication.pingStatus) {
                         tries++;
                         Log.i("Ping", "Trying to ping server. Try #" + Integer.toString(tries));
@@ -127,27 +131,15 @@ public class EntryActivity extends FragmentActivity implements OnClickListener {
                         break;
                     }
                 }
-                if (tries == 10) {
+                if (tries == MAX_PING_TRIES) {
                     String oldId = PrefApplication.getInstance().getRegistrationId();
-                    // TODO: change to AsynkTask in EntryActivity
                     PrefApplication.getInstance().registerInBackground();
-
-                    PendingIntent contentIntent = null;
-                    Intent intent = new Intent();
-                    intent.putExtra("message", "");
-                    intent.putExtra("messageType",
-                            CommonEnums.MessageTypes.NEED_REGID_UPDATE.toString());
-                    //contentIntent = PendingIntent.getActivity(this, 1,
-                    //      intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                    //if (!oldId.isEmpty()) // we had some regId before so smth crashed. Tell it to server
-                    //sendServerOldId(oldId);
                 }
 
-                return null;
             }
 
-        }.execute(null, null, null);
+        });
+        thread.start();
     }
 
     private void sendPingRequest() {
@@ -155,7 +147,7 @@ public class EntryActivity extends FragmentActivity implements OnClickListener {
         nameValuePairs.add(new BasicNameValuePair("reg_id", PrefApplication.regid));
         nameValuePairs.add(new BasicNameValuePair("request", "ping"));
         nameValuePairs.add(new BasicNameValuePair("request_type", "request"));
-        PrefApplication.sendData(nameValuePairs, false);
+        PrefApplication.sendData(nameValuePairs, true);
     }
 
 
@@ -174,7 +166,7 @@ public class EntryActivity extends FragmentActivity implements OnClickListener {
                 finish();
                 break;
             case R.id.buttonStart:
-                if (!GameInfo.isRegistered) {
+                if (!GameInfo.isSignedIn) {
                     showRegistrationPopup();
                     break;
                 }
@@ -186,11 +178,7 @@ public class EntryActivity extends FragmentActivity implements OnClickListener {
                 startActivity(settAct);
                 break;
             case R.id.buttonQuit:
-                ArrayList<NameValuePair> data = new ArrayList<NameValuePair>();
-                data.add(new BasicNameValuePair("request_type", "notification"));
-                data.add(new BasicNameValuePair("notification", "quit"));
-                PrefApplication.sendData(data, false);
-                GameInfo.ownPlayer.name = "";
+                PrefApplication.signOut();
                 reset_logged_as();
                 break;
 
@@ -235,7 +223,7 @@ public class EntryActivity extends FragmentActivity implements OnClickListener {
 
                     GameInfo.ownPlayer.name = data[1];
                     GameInfo.password = data[2];
-                    GameInfo.isRegistered = true;
+                    GameInfo.isSignedIn = true;
                     PrefApplication.getInstance().storeLoginAndPassword();
 
                     dlg.dismiss();
@@ -259,8 +247,8 @@ public class EntryActivity extends FragmentActivity implements OnClickListener {
 
     void reset_logged_as() {
         TextView logged_as = (TextView) findViewById(R.id.loagged_as_tv);
-        String prefix = (String) getResources().getString(R.string.currently_logged_as);
-        logged_as.setText(prefix + GameInfo.ownPlayer.name);
+        String prefix = getResources().getString(R.string.currently_logged_as);
+        logged_as.setText(String.format(prefix, GameInfo.ownPlayer.name));
     }
 
     private void showRegistrationPopup() {

@@ -243,9 +243,26 @@ public class PrefApplication extends Application {
 		GameInfo.ownPlayer.name = prefs.getString(PROPERTY_LOGIN, "");
 		GameInfo.ownPlayer.id = prefs.getString(PROPERTY_ID, "");
 		GameInfo.password = prefs.getString(PROPERTY_PASSWORD, "");
-		GameInfo.isRegistered = !GameInfo.ownPlayer.name.isEmpty() 
+		GameInfo.isSignedIn = !GameInfo.ownPlayer.name.isEmpty()
 				&& !GameInfo.password.isEmpty() && !GameInfo.ownPlayer.id.isEmpty();
-		return GameInfo.isRegistered;
+		return GameInfo.isSignedIn;
+	}
+
+	public static void signOut() {
+		if (!GameInfo.isSignedIn)
+			return;
+		ArrayList<NameValuePair> data = new ArrayList<NameValuePair>();
+		data.add(new BasicNameValuePair("request_type", "notification"));
+		data.add(new BasicNameValuePair("notification", "quit"));
+		data.add(new BasicNameValuePair("id", GameInfo.ownPlayer.id));
+		data.add(new BasicNameValuePair("login", GameInfo.ownPlayer.name));
+		data.add(new BasicNameValuePair("password", GameInfo.password));
+		PrefApplication.sendData(data, true);
+		GameInfo.ownPlayer.name = "";
+		GameInfo.password = "";
+		GameInfo.ownPlayer.id = null;
+		GameInfo.isSignedIn = false;
+		getInstance().storeLoginAndPassword();
 	}
 
 	public void storeLoginAndPassword() {

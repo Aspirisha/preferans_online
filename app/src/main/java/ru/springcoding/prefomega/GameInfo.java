@@ -1,10 +1,10 @@
 package ru.springcoding.prefomega;
 
+import android.graphics.Point;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import android.graphics.Point;
 
 public class GameInfo {
 	private static Long timeToShowClouds = Long.valueOf(0);
@@ -29,7 +29,7 @@ public class GameInfo {
 	public static Map<Integer, Integer> ServerToClientCards;
 	
 	public static String password = "";
-	public static boolean isRegistered = false;
+	public static boolean isSignedIn = false;
 	
 	public static String roomId;
 	public static String roomName;
