@@ -1,4 +1,5 @@
 package ru.springcoding.prefomega;
+
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
@@ -29,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 
 import ru.springcoding.prefomega.CommonEnums.RecieverID;
 
@@ -108,7 +110,7 @@ public class PrefApplication extends Application {
 		sendData(loginAndPassword, true);
 	}
 	
-	public static void sendData(final ArrayList<NameValuePair> data, 
+	public static void sendData(final List<NameValuePair> data,
 			final boolean hasLoginAndPassword) {
          // 1) Connect via HTTP. 2) Encode data. 3) Send data.
 		new AsyncTask<Void, Void, HttpResponse>() {
@@ -383,7 +385,9 @@ public class PrefApplication extends Application {
 	}
 	
 	public static void runKeepAlive(boolean run) {
-		keepAliveThread.setRunning(run);
-		keepAliveThread.start();
+		if (!keepAliveThread.isAlive()) {
+			keepAliveThread.setRunning(run);
+			keepAliveThread.start();
+		}
 	}
 }

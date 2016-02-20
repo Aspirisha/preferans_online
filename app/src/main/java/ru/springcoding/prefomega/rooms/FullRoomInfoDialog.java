@@ -31,16 +31,21 @@ public class FullRoomInfoDialog extends DialogFragment implements OnClickListene
 	private Button btn_connect;
 	private RoomInfo ri = null;
 	private boolean isInitialized = false;
-	
-	public FullRoomInfoDialog(RoomInfo ri) {
-		this.ri = ri;
+
+	public FullRoomInfoDialog() {
+		this.ri = null;
 	}
-	
+
 	static FullRoomInfoDialog newInstance(RoomInfo ri) {
-		FullRoomInfoDialog f = new FullRoomInfoDialog(ri);
+		FullRoomInfoDialog f = new FullRoomInfoDialog();
+		f.setRoomInfo(ri);
         return f;
 	}
 
+
+	void setRoomInfo(RoomInfo ri) {
+		this.ri = ri;
+	}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -93,13 +98,13 @@ public class FullRoomInfoDialog extends DialogFragment implements OnClickListene
 		String raspExitArray = Integer.toString(ri.raspExit[0]);
 		for (int i = 1; i < 3; i++)
 			raspExitArray += ", " + Integer.toString(ri.raspExit[i]);
-		tv_raspExit.setText(raspExitArray.substring(1, raspExitArray.length() - 1));
+		tv_raspExit.setText(raspExitArray);
 		tv_raspIsNoWhistExit.setText(Boolean.toString(ri.noWhistRaspasyExit));
 		
 		String raspProgArray = Integer.toString(ri.raspProgression[0]);
 		for (int i = 1; i < 3; i++)
 			raspProgArray += ", " + Integer.toString(ri.raspProgression[i]);
-		tv_raspProg.setText(raspProgArray.substring(1, raspProgArray.length() - 1));
+		tv_raspProg.setText(raspProgArray);
 		
 		tv_whistCost.setText(Float.toString(ri.whistCost));
 	}

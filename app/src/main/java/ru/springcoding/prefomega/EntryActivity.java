@@ -219,6 +219,7 @@ public class EntryActivity extends FragmentActivity implements OnClickListener {
                 try {
                     String data[] = msg.split(" ");
 
+                    int dummy = Integer.valueOf(data[0]);
                     GameInfo.ownPlayer.id = data[0];
 
                     GameInfo.ownPlayer.name = data[1];

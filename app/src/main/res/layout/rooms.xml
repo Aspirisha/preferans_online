@@ -6,7 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".RoomsActivity" 
+    tools:context=".RoomsActivity"
     android:background="@drawable/mback">
 
     <LinearLayout
@@ -16,7 +16,7 @@
         android:layout_alignParentTop="true"
         android:orientation="vertical" >
 
-    
+
 
         <ScrollView
             android:layout_width="match_parent"
@@ -49,13 +49,24 @@
         android:layout_centerHorizontal="true"
         android:text="@string/create_room" />
 
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_above="@id/buttonCreateRoom"
+        android:layout_centerHorizontal="true">
+
     <Button
-        android:id="@+id/buttonConnectToRoom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/buttonCreateRoom"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="54dp"
-        android:text="@string/connect_to_room" />
-
+        android:text="@string/full_room_info"
+        android:id="@+id/button_show_full_info"
+        android:layout_marginRight="@dimen/full_room_info_margin_hor"/>
+        <Button
+            android:id="@+id/buttonConnectToRoom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/connect_to_room"
+            android:layout_marginLeft="@dimen/full_room_info_margin_hor"/>
+    </TableRow>
 </RelativeLayout>

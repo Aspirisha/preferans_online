@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/TableLayout1"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/score_table" >
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/old_paper" >
 
-    <TableRow android:layout_width="0dp" 
-        android:layout_marginTop="@dimen/full_room_info_margin_from_top">
+    <TableRow
+        android:layout_marginTop="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <TextView
+            android:gravity="start"
             android:id="@+id/fi_textView1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -30,10 +34,11 @@
             android:text="TextView" />
     </TableRow>
 
-    <TableRow android:layout_width="0dp"
-            android:layout_marginTop="@dimen/full_room_info_margin_ver">
+    <TableRow android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <TextView
+            android:gravity="start"
             android:id="@+id/fi_textView3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -57,11 +62,11 @@
             android:text="TextView" />
     </TableRow>
 
-    <TableRow android:layout_width="0dp" 
-        
-            android:layout_marginTop="@dimen/full_room_info_margin_ver">
+    <TableRow android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <TextView
+            android:gravity="start"
             android:id="@+id/fi_textView21"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -85,10 +90,9 @@
             android:text="TextView" />
     </TableRow>
 
-    <TableRow android:layout_width="0dp" 
-        
-     		 android:layout_height="0dp"    
-            android:layout_marginTop="@dimen/full_room_info_margin_ver">
+    <TableRow
+        android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/fi_textView5"
@@ -114,10 +118,8 @@
             android:text="TextView" />
     </TableRow>
 
-    <TableRow android:layout_width="0dp" 
-        
-     		 android:layout_height="0dp"    
-            android:layout_marginTop="@dimen/full_room_info_margin_ver">
+    <TableRow android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/fi_textView7"
@@ -143,9 +145,8 @@
             android:text="TextView" />
     </TableRow>
 
-    <TableRow android:layout_width="0dp" 
-     		 android:layout_height="0dp"    
-            android:layout_marginTop="@dimen/full_room_info_margin_ver">
+    <TableRow android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/fi_textView9"
@@ -171,9 +172,8 @@
             android:text="TextView" />
     </TableRow>
 
-    <TableRow android:layout_width="0dp" 
-        
-            android:layout_marginTop="@dimen/full_room_info_margin_ver">
+    <TableRow android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/fi_textView11"
@@ -199,9 +199,8 @@
             android:text="TextView" />
     </TableRow>
 
-    <TableRow android:layout_width="0dp"
-        
-            android:layout_marginTop="@dimen/full_room_info_margin_ver" >
+    <TableRow android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/fi_textView13"
@@ -226,9 +225,8 @@
             android:text="TextView" />
     </TableRow>
 
-    <TableRow android:layout_width="0dp" 
-        
-            android:layout_marginTop="@dimen/full_room_info_margin_ver">
+    <TableRow android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/fi_textView15"
@@ -254,9 +252,8 @@
             android:text="TextView" />
     </TableRow>
 
-    <TableRow android:layout_width="0dp" 
-        
-            android:layout_marginTop="@dimen/full_room_info_margin_ver">
+    <TableRow android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/fi_textView23"
@@ -282,10 +279,8 @@
             android:text="TextView" />
     </TableRow>
 
-    <TableRow android:layout_width="0dp" 
-        
-            android:layout_marginTop="@dimen/full_room_info_margin_ver">
-
+    <TableRow android:layout_width="match_parent"
+        android:layout_height="wrap_content">
         <TextView
             android:id="@+id/fi_textView17"
             android:layout_width="0dp"
@@ -310,9 +305,8 @@
             android:text="TextView" />
     </TableRow>
 
-    <TableRow android:layout_width="0dp" 
-        
-            android:layout_marginTop="@dimen/full_room_info_margin_ver">
+    <TableRow android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/fi_textView19"
@@ -339,29 +333,33 @@
             android:text="TextView" />
     </TableRow>
 
-    <TableRow>
+    <TableRow android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="4dp"
+        android:weightSum="2">
 
         <Button
             android:id="@+id/fi_button_hide"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/full_room_info_margin_hor"
+            android:layout_marginLeft="@dimen/full_room_info_margin_left"
             android:layout_marginRight="@dimen/full_room_info_margin_hor"
-            android:layout_marginTop="@dimen/full_room_info_margin_ver"
+
+            android:scaleType="fitCenter"
             android:layout_weight="1"
             android:src="@drawable/ic_launcher"
             android:text="@string/back" />
 
         <Button
             android:id="@+id/fi_button_connect"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/full_room_info_margin_hor"
-            android:layout_marginRight="@dimen/full_room_info_margin_hor"
-            android:layout_marginTop="@dimen/full_room_info_margin_ver"
+            android:layout_marginRight="@dimen/full_room_info_margin_left"
             android:layout_weight="1"
             android:src="@drawable/ic_launcher"
             android:text="@string/connect_to_room" />
     </TableRow>
 
-</TableLayout>
+</LinearLayout>

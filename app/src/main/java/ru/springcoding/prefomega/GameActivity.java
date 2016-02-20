@@ -16,7 +16,7 @@ import java.util.Arrays;
 
 import ru.springcoding.prefomega.CommonEnums.RecieverID;
 import ru.springcoding.prefomega.PlayingTableView.DrawState;
-
+import ru.springcoding.prefomega.CommonEnums.MessageTypes;
 
 public class GameActivity extends Activity implements OnClickListener {
 	Button exitFromGame; // returns us to rooms
@@ -25,16 +25,7 @@ public class GameActivity extends Activity implements OnClickListener {
 	PlayingTableView playingTable;
 	
 	// different message types
-	static final int ROOM_INFO = 0;
-	static final int NEW_PLAYER_APPEARED = 1;
-	static final int CARDS_ARE_SENT = 2;
-	static final int ACTIVE_PLAYER_INFO = 3;
-	static final int PLAYER_EXITED = 4;
-	static final int GAME_STATE_INFO = 5;
-	static final int PLAYER_THREW_CARDS = 6;
-	static final int ROLES_INFO = 7;
-	static final int WHISTERS_VISIBLE_CARDS = 8;
-	static final int BETS_INFO = 9;
+
 	// game states codes
 	
 	
@@ -87,11 +78,11 @@ public class GameActivity extends Activity implements OnClickListener {
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
 		String msg = intent.getStringExtra("message");
-		int msgType = Integer.parseInt(intent.getStringExtra("messageType"));
+		MessageTypes msgType = MessageTypes.valueOf(intent.getStringExtra("messageType"));
 		String[] data;
 		switch (msgType)
 		{
-		case ROOM_INFO: // all data about room has come
+		case GAME_ROOM_INFO: // all data about room has come
 			try {
 				data = msg.split(" ");
 				GameInfo.roomName = data[0];
@@ -115,7 +106,7 @@ public class GameActivity extends Activity implements OnClickListener {
 				Log.i("GameAct", "Exception: " + e.toString());     
 			}
 			break;
-		case NEW_PLAYER_APPEARED:  // new player appeared
+		case GAME_NEW_PLAYER_APPEARED:  // new player appeared
 			data = msg.split(" ");
 			GameInfo.playersNumber = Integer.parseInt(data[1]);
 			int newPlayerNumber = Integer.parseInt(data[2]);
@@ -127,18 +118,18 @@ public class GameActivity extends Activity implements OnClickListener {
 				GameInfo.prevPlayer.id = newPlayerId;
 			
 			break;
-		case CARDS_ARE_SENT: // cards are sent
+		case GAME_CARDS_ARE_SENT: // cards are sent
 			manageSentCards(msg);
 			break;
-		case ACTIVE_PLAYER_INFO:  // active player info
+		case GAME_ACTIVE_PLAYER_INFO:  // active player info
 			GameInfo.activePlayer = Integer.parseInt(msg);
 			break;
-		case PLAYER_EXITED:  // player exited
+		case GAME_PLAYER_EXITED:  // player exited
 			break;
-		case GAME_STATE_INFO: // server has sent us current game state
+		case GAME_GAME_STATE_INFO: // server has sent us current game state
 			manageNewState(msg);
 			break;
-		case PLAYER_THREW_CARDS: // we are notified that player has thrown cards. So draw them on table
+		case GAME_PLAYER_THREW_CARDS: // we are notified that player has thrown cards. So draw them on table
 			if (GameInfo.activePlayer != GameInfo.ownPlayer.getMyNumber()) { // for else we already know that we have thrown cards
 				playingTable.drawThrownCards();
 			} else { // if we are active, we need to choose real game
@@ -147,16 +138,16 @@ public class GameActivity extends Activity implements OnClickListener {
 					gameView.showBetTable();
 			}
 			break;
-		case ROLES_INFO: // all the roles are sent
+		case GAME_ROLES_INFO: // all the roles are sent
 			data = msg.split(" ");
 			// our own role is definitely known for us
 			GameInfo.prevPlayer.myRole = Integer.parseInt(data[GameInfo.prevPlayer.getMyNumber() - 1]);
 			GameInfo.nextPlayer.myRole = Integer.parseInt(data[GameInfo.nextPlayer.getMyNumber() - 1]);
 			break;
-		case WHISTERS_VISIBLE_CARDS: // server has sent us visible cards of whisters
+		case GAME_WHISTERS_VISIBLE_CARDS: // server has sent us visible cards of whisters
 			manageWhistersCards(msg);
 			break;
-		case BETS_INFO: // current bets
+		case GAME_BETS_INFO: // current bets
 			data = msg.split(" ");
 			GameInfo.prevPlayer.setNewBet(Integer.parseInt(data[GameInfo.prevPlayer.getMyNumber() - 1]));
 			GameInfo.nextPlayer.setNewBet(Integer.parseInt(data[GameInfo.nextPlayer.getMyNumber() - 1]));

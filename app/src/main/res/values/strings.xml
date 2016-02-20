@@ -36,6 +36,7 @@
 
     <string name="sign_in">Sign in!</string>
 
+    <string name="full_room_info">Room info</string>
 	<!-- full room information headers -->
 	<string name="room_id">ID</string>
 	<string name="bullet">Bullet</string>

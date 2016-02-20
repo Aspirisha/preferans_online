@@ -107,6 +107,7 @@ public class GCMIntentService extends IntentService {
                 break;
         	case ROOMS_ACTIVITY:
         		intent.setClass(this, RoomsActivity.class);
+                Log.i("HERE", "FUCK!");
         		break;
         	case GAME_ACTIVITY:
         		intent.setClass(this, GameActivity.class);
